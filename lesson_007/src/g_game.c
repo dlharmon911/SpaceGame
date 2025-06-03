@@ -1,0 +1,120 @@
+#include <allegro5/allegro5.h>
+#include <stdint.h>
+#include <libspace.h>
+#include "g_constants.h"
+#include "g_game.h"
+#include "g_stats.h"
+#include "g_models.h"
+
+static g_game_data_t* s_game_data = NULL;
+
+void g_game_zero_initialize_data(g_game_data_t* data)
+{
+	s_game_data = data;
+
+	if (!s_game_data)
+	{
+		return;
+	}
+
+	g_texture_zero_initialize_data(&s_game_data->m_textures);
+	g_stats_zero_initialize_data(&s_game_data->m_stats);
+	g_ship_zero_initialize_data(&s_game_data->m_ship);
+	s_game_data->m_draw_flag = S_MODEL_DRAW_FLAG_TEXTURED;
+	data->m_is_running = false;
+}
+
+int32_t g_game_initialize_data()
+{
+	s_log_print("Creating the vertex declaration - ");
+	s_vertex_create_decl();
+	if (!s_vertex_decl_created())
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Creating the game textures\n");
+	if (g_texture_initialize_data(&s_game_data->m_textures) < 0)
+	{
+		return -1;
+	}
+
+	g_ship_initialize(&s_game_data->m_textures, &s_game_data->m_ship);
+	s_game_data->m_stats.m_ship_position = &s_game_data->m_ship.m_object.m_model.m_center;
+
+	return 0;
+}
+
+void g_game_destroy_data()
+{
+	g_texture_unitialize_data(&s_game_data->m_textures);
+
+	if (s_vertex_decl_created())
+	{
+		s_vertex_destroy_decl();
+		s_log_println("The vertex declaration has been destroyed");
+	}
+}
+
+void g_game_logic()
+{
+	if (s_input_was_key_button_released(ALLEGRO_KEY_ESCAPE))
+	{
+		s_game_data->m_is_running = false;
+		s_input_acknowledge_key_button(ALLEGRO_KEY_ESCAPE);
+	}
+
+	if (s_input_was_key_button_released(ALLEGRO_KEY_F3))
+	{
+		++s_game_data->m_draw_flag;
+		if (s_game_data->m_draw_flag == S_MODEL_DRAW_FLAG_COUNT)
+		{
+			s_game_data->m_draw_flag = 0;
+		}
+		s_input_acknowledge_key_button(ALLEGRO_KEY_F3);
+	}
+
+	if (s_input_is_key_button_pressed(ALLEGRO_KEY_UP) || s_input_is_key_button_pressed(ALLEGRO_KEY_W))
+	{
+		g_ship_forward_thrust(&s_game_data->m_ship);
+	}
+
+	if (s_input_is_key_button_pressed(ALLEGRO_KEY_DOWN) || s_input_is_key_button_pressed(ALLEGRO_KEY_S))
+	{
+		g_ship_reverse_thrust(&s_game_data->m_ship);
+	}
+
+	if (s_input_is_key_button_pressed(ALLEGRO_KEY_LEFT) || s_input_is_key_button_pressed(ALLEGRO_KEY_A))
+	{
+		g_ship_rotate(&s_game_data->m_ship, G_SHIP_ROTATE_AMOUNT);
+	}
+
+	if (s_input_is_key_button_pressed(ALLEGRO_KEY_RIGHT) || s_input_is_key_button_pressed(ALLEGRO_KEY_D))
+	{
+		g_ship_rotate(&s_game_data->m_ship, -G_SHIP_ROTATE_AMOUNT);
+	}
+
+	g_ship_update(&s_game_data->m_ship);
+}
+
+void g_game_draw()
+{
+	static ALLEGRO_TRANSFORM backup;
+	static ALLEGRO_TRANSFORM transform;
+
+	al_copy_transform(&backup, al_get_current_transform());
+	al_identity_transform(&transform);
+	al_compose_transform(&transform, &backup);
+	al_use_transform(&transform);
+
+	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
+
+	al_draw_line(0.0f, -G_GAMESCREEN_SIZE_HALF.m_y, 0.0f, G_GAMESCREEN_SIZE_HALF.m_y, al_premul_rgba_f(1.0f, 1.0f, 1.0f, 0.25f), 2.0f);
+	al_draw_line(-G_GAMESCREEN_SIZE_HALF.m_x, 0.0f, G_GAMESCREEN_SIZE_HALF.m_x, 0.0f, al_premul_rgba_f(1.0f, 1.0f, 1.0f, 0.25f), 2.0f);
+
+	g_ship_draw(&s_game_data->m_ship, s_game_data->m_draw_flag);
+
+	al_use_transform(&backup);
+}
