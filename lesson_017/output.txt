@@ -11,7 +11,11 @@ Creating the timer (0.0) - success
 Creating the event queue - success
 Creating the built-in font - success
 Creating the vertex declaration - success
-Loading the game textures: "assets.7z" - success
+Creating the game textures - Generating star bitmap - passed!
+Generating ship bitmap - passed!
+Generating boulder bitmap - passed!
+Generating star bitmap - passed!
+success
 Initializing ship data
 Initializing and scattering boulders
 Initializing and scattering stars

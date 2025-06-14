@@ -7,8 +7,11 @@
 
 enum
 {
-	S_COLOR_FLOAT_SIZE = 4
+	S_COLOR_FLOAT_SIZE = 4,
+	S_COLOR_COMPONENT_MAX = 0xff
 };
+
+static const float S_COLOR_COMPONENT_MAX_F = 1.0f;
 
 typedef struct s_color_t
 {

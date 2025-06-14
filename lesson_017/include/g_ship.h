@@ -77,11 +77,11 @@ void g_ship_update_step(g_ship_t* ship);
 /// <returns>n/a</returns>
 void g_ship_thrust(g_ship_t* ship, float thrust);
 
-/// <summary>Alter velocity to turn ship model</summary>
+/// <summary>Rotate ship model</summary>
 /// <param name='ship'> - pointer to container of ship data</param>
-/// <param name='direction'> - direction of velocity change</param>
+/// <param name='delta'> - amount of angle change</param>
 /// <returns>n/a</returns>
-void g_ship_turn(g_ship_t* ship, int32_t direction);
+void g_ship_rotate(g_ship_t* ship, float delta);
 
 /// <summary>Fire bullet</summary>
 /// <param name='ship'> - pointer to container of ship data</param>

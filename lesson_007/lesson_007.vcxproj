@@ -145,9 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="include\g_app.h" />
     <ClInclude Include="include\g_constants.h" />
     <ClInclude Include="include\g_game.h" />
@@ -165,6 +162,9 @@
     <ClCompile Include="src\g_stats.c" />
     <ClCompile Include="src\g_textures.c" />
     <ClCompile Include="src\g_texture_ship.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,8 +21,6 @@ void g_model_generate_star_model(s_quad_model_t* quad_model, s_model_t* model, A
 		return;
 	}
 
-	model->m_texture = texture;
-
 	s_point_t size = { G_TEXTURE_STAR_CHUNK_SIZE.m_x * scale, G_TEXTURE_STAR_CHUNK_SIZE.m_y * scale };
 	s_point_t uv_size = { G_TEXTURE_STAR_CHUNK_SIZE.m_x, G_TEXTURE_STAR_CHUNK_SIZE.m_y };
 
@@ -30,11 +28,14 @@ void g_model_generate_star_model(s_quad_model_t* quad_model, s_model_t* model, A
 	uint32_t t_v = (uint32_t)(G_TEXTURE_STAR_SIZE.m_y / G_TEXTURE_STAR_CHUNK_SIZE.m_y);
 	s_point_t uv =
 	{
-		(float)s_random_generate(t_u - 1) * G_TEXTURE_STAR_CHUNK_SIZE.m_x,
-		(float)s_random_generate(t_v - 1) * G_TEXTURE_STAR_CHUNK_SIZE.m_y
+		(float)s_random_generate(t_u - 1),
+		(float)s_random_generate(t_v - 1)
 	};
 	float color_scale = s_math_min_f(1.0f, scale * G_STAR_COLOR_SCALE);
 	s_color_t color = { color_scale, color_scale, color_scale, color_scale };
+
+	model->m_texture = texture;
+	s_point_multiply(&uv, &G_TEXTURE_STAR_CHUNK_SIZE);
 
 	s_models_generate_quad_model_vertices(quad_model, &size, &uv, &uv_size, &color);
 

@@ -164,12 +164,12 @@ void g_game_logic(g_game_data_t* data)
 
 	if (s_input_is_key_button_pressed(ALLEGRO_KEY_LEFT) || s_input_is_key_button_pressed(ALLEGRO_KEY_A))
 	{
-		g_ship_turn(&data->m_ship, G_SHIP_TURN_LEFT);
+		g_ship_rotate(&data->m_ship, G_SHIP_ROTATE_AMOUNT);
 	}
 
 	if (s_input_is_key_button_pressed(ALLEGRO_KEY_RIGHT) || s_input_is_key_button_pressed(ALLEGRO_KEY_D))
 	{
-		g_ship_turn(&data->m_ship, G_SHIP_TURN_RIGHT);
+		g_ship_rotate(&data->m_ship, -G_SHIP_ROTATE_AMOUNT);
 	}
 
 	if (s_input_was_key_button_pressed(ALLEGRO_KEY_SPACE) || s_input_was_mouse_button_pressed(ALLEGRO_MOUSE_BUTTON_LEFT))

@@ -282,9 +282,8 @@ static void g_app_draw()
 
 	al_copy_transform(&backup, al_get_current_transform());
 	al_identity_transform(&transform);
-	al_scale_transform(&transform, 1.0f, -1.0f);
-	al_translate_transform(&transform, G_GAMESCREEN_SIZE_HALF.m_x, G_GAMESCREEN_SIZE_HALF.m_y);
-	al_scale_transform(&transform, g_data.m_display_scale.m_x, g_data.m_display_scale.m_y);
+	al_translate_transform(&transform, G_GAMESCREEN_SIZE_HALF.m_x, -G_GAMESCREEN_SIZE_HALF.m_y);
+	al_scale_transform(&transform, g_data.m_display_scale.m_x, -g_data.m_display_scale.m_y);
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
 

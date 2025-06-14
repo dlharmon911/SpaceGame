@@ -7,6 +7,11 @@
 #include <string.h>
 #include "libspace/s_base.h"
 
+enum
+{
+	S_STRING_ARRAY_MAX_SIZE = 256
+};
+
 bool s_string_compare(const char* string1, const char* string2);
 bool s_string_compare_ignore_case(const char* string1, const char* string2);
 size_t s_string_get_length(const char* string);

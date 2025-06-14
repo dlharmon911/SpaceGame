@@ -33,6 +33,7 @@ void g_model_generate_star_model(s_quad_model_t* quad_model, s_model_t* model, A
 		(float)s_random_generate(t_u - 1),
 		(float)s_random_generate(t_v - 1)
 	};
+	s_point_multiply(&uv, &G_TEXTURE_STAR_CHUNK_SIZE);
 	float color_scale = s_math_min_f(1.0f, scale * G_STAR_COLOR_SCALE);
 	s_color_t color = { color_scale, color_scale, color_scale, color_scale };
 

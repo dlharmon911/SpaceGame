@@ -14,10 +14,8 @@ enum
 {
 	/// <summary>Initial maximum number of bullets</summary>
 	G_BULLET_INITIAL_MAX_COUNT = 20,
-
 	/// <summary>Maximum number of bullets</summary>
-	G_BULLET_MAX_COUNT = 40,
-
+	G_BULLET_MAX_COUNT = 40
 };
 
 enum
@@ -42,10 +40,8 @@ typedef struct g_bullet_array_t
 {
 	/// <summary>Current count of bullets that are live in the bullet array</summary>
 	size_t m_count;
-
 	/// <summary>Maximum number of bullets the bullet array can hold</summary>
 	size_t m_max_count;
-
 	/// <summary>Array to hold bullet array data</summary>
 	g_bullet_node_t m_bullet[G_BULLET_MAX_COUNT];
 } g_bullet_array_t;

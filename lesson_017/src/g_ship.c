@@ -98,28 +98,18 @@ void g_ship_thrust(g_ship_t* ship, float thrust)
 		return;
 	}
 
-
-	if (thrust < 0.0f)
-	{
-		float speed = s_point_get_length(&ship->m_object.m_velocity);
-		if (speed < fabsf(thrust))
-		{
-			s_point_set_zero(&ship->m_object.m_velocity);
-		}
-	}
-
 	s_object_thrust(&ship->m_object, thrust);
 
 }
 
-void g_ship_turn(g_ship_t* ship, int32_t direction)
+void g_ship_rotate(g_ship_t* ship, float delta)
 {
 	if (!ship)
 	{
 		return;
 	}
 
-	ship->m_turn = direction;
+	s_object_rotate(&ship->m_object, delta);
 }
 
 bool g_ship_fire_bullet(g_ship_t* ship)

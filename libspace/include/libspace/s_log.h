@@ -42,7 +42,7 @@ void s_log_print(const char* message);
 /// <returns>n/a - no return value</returns>
 void s_log_println(const char* message);
 
-/// <summary>Write a string "true" or "false" depending on boolean value</summary>
+/// <summary>Write a string S_STRING_TRUE or S_STRING_FALSE depending on boolean value</summary>
 /// <param name='value'> - value output</param>
 /// <returns>n/a - no return value</returns>
 void s_log_print_bool(bool value);

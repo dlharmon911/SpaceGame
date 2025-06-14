@@ -461,7 +461,7 @@ static void g_app_draw(const g_app_data_t* data)
 		g_stats_draw(data->m_builtin_font, &data->m_game_data.m_stats, 0.0f, 0.0f);
 	}
 
-	g_mouse_cursor_draw(&data->m_mouse_cursor, data->m_settings.m_game.m_draw_flag);
+	g_mouse_cursor_draw(&data->m_mouse_cursor, S_MODEL_DRAW_FLAG_TEXTURED);
 
 	al_use_transform(&backup);
 

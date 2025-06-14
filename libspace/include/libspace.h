@@ -18,6 +18,11 @@
  *      See readme.txt for copyright information.
  */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "libspace/s_base.h"
 #include "libspace/s_flags.h"
 #include "libspace/s_color.h"
@@ -37,5 +42,9 @@
 #include "libspace/s_screenshot.h"
 #include "libspace/s_collision.h"
 #include "libspace/s_camera.h"
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // !_HEADER_GUARD_LIBSPACE_LIBRARY_H_

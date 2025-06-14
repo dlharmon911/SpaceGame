@@ -8,6 +8,8 @@
 #include "libspace/s_base.h"
 #include "libspace/s_string.h"
 
+static const int32_t S_STRING_NUMBER_BASE = 10;
+
 bool s_string_compare(const char* string1, const char* string2)
 {
 	if (!string1)
@@ -89,12 +91,11 @@ bool s_string_get_as_bool(const char* string)
 		return false;
 	}
 
-	const char tstring[5] = "true";
 	size_t index = 0;
 
-	while (tstring[index])
+	while (S_STRING_TRUE[index])
 	{
-		if (tolower(string[index]) != tstring[index])
+		if (tolower(string[index]) != S_STRING_TRUE[index])
 		{
 			return false;
 		}
@@ -129,7 +130,7 @@ int32_t s_string_get_as_int32(const char* string)
 		return 0;
 	}
 
-	int32_t value = strtol(string, &endptr, 10);
+	int32_t value = strtol(string, &endptr, S_STRING_NUMBER_BASE);
 
 	if (endptr && *endptr != 0)
 	{
@@ -153,7 +154,7 @@ int64_t s_string_get_as_int64(const char* string)
 		return 0;
 	}
 
-	int64_t value = strtoll(string, &endptr, 10);
+	int64_t value = strtoll(string, &endptr, S_STRING_NUMBER_BASE);
 
 	if (endptr && *endptr != 0)
 	{
@@ -187,7 +188,7 @@ uint32_t s_string_get_as_uint32(const char* string)
 		return 0;
 	}
 
-	uint32_t value = strtoul(string, &endptr, 10);
+	uint32_t value = strtoul(string, &endptr, S_STRING_NUMBER_BASE);
 
 	if (endptr && *endptr != 0)
 	{
@@ -211,7 +212,7 @@ uint64_t s_string_get_as_uint64(const char* string)
 		return 0;
 	}
 
-	uint64_t value = strtoull(string, &endptr, 10);
+	uint64_t value = strtoull(string, &endptr, S_STRING_NUMBER_BASE);
 
 	if (endptr && *endptr != 0)
 	{
@@ -271,7 +272,7 @@ double s_string_get_as_double(const char* string)
 
 void s_string_set_as_bool(char* string, size_t length, bool value)
 {
-	sprintf_s(string, length, "%s", (value ? "true" : "false"));
+	sprintf_s(string, length, "%s", (value ? S_STRING_TRUE : S_STRING_FALSE));
 }
 
 void s_string_set_as_int8(char* string, size_t length, int8_t value)

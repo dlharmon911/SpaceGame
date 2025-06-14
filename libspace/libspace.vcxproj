@@ -138,7 +138,6 @@
     <ClInclude Include="include\libspace\s_collision.h" />
     <ClInclude Include="include\libspace\s_color.h" />
     <ClInclude Include="include\libspace\s_config.h" />
-    <ClInclude Include="include\libspace\s_file.h" />
     <ClInclude Include="include\libspace\s_flags.h" />
     <ClInclude Include="include\libspace\s_input.h" />
     <ClInclude Include="include\libspace\s_log.h" />
@@ -159,7 +158,6 @@
     <ClCompile Include="src\s_circle.c" />
     <ClCompile Include="src\s_collision.c" />
     <ClCompile Include="src\s_config.c" />
-    <ClCompile Include="src\s_file.c" />
     <ClCompile Include="src\s_flags.c" />
     <ClCompile Include="src\s_input.c" />
     <ClCompile Include="src\s_log.c" />

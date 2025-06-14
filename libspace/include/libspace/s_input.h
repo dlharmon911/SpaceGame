@@ -9,7 +9,7 @@
 enum
 {
 	S_KEY_BUTTON_MAX = ALLEGRO_KEY_MAX,
-	S_MOUSE_BUTTON_MAX = 3
+	S_MOUSE_BUTTON_MAX = ALLEGRO_MOUSE_BUTTON_MIDDLE
 };
 
 /// <summary>Sets the value of the button state variable at index specified</summary>

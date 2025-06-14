@@ -14,7 +14,7 @@ void s_vertex_create_decl()
 		{ ALLEGRO_PRIM_POSITION, ALLEGRO_PRIM_FLOAT_2, offsetof(s_vertex_t, m_point)},
 		{ ALLEGRO_PRIM_TEX_COORD_PIXEL, ALLEGRO_PRIM_FLOAT_2, offsetof(s_vertex_t, m_uv)},
 		{ ALLEGRO_PRIM_COLOR_ATTR, 0, offsetof(s_vertex_t, m_color)},
-	  {0, 0, 0}
+		{0, 0, 0}
 	};
 
 	if (s_vertex_decl)

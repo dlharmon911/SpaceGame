@@ -35,3 +35,13 @@ float s_math_min_f(float a, float b)
 
 	return b;
 }
+
+float s_math_degree_to_radian(float degree)
+{
+	return degree * S_DEG_TO_RAD_RATIO;
+}
+
+float s_math_radian_to_degree(float radian)
+{
+	return radian * S_RAD_TO_DEG_RATIO;
+}

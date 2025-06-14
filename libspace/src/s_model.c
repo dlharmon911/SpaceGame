@@ -243,12 +243,7 @@ void s_model_draw(const s_model_t* model, int32_t flag)
 		buffer = &model->m_outline_buffer;
 		draw_flag = ALLEGRO_PRIM_LINE_LOOP;
 	} break;
-	case S_MODEL_DRAW_FLAG_WIREFRAME:
-	{
-		texture = NULL;
-		buffer = &model->m_index_buffer;
-		draw_flag = ALLEGRO_PRIM_LINE_LOOP;
-	} break;
+
 	case S_MODEL_DRAW_FLAG_FULLFRAME:
 	{
 		texture = NULL;
@@ -371,7 +366,7 @@ void s_models_generate_quad_model_vertices(s_quad_model_t* model, const s_point_
 	{
 		s_point_set(&model->m_vertices[v_index].m_point, &vertices[v_index]);
 		s_point_subtract(&model->m_vertices[v_index].m_point, &center);
-		//s_point_rotate(&model->m_vertices[v_index].m_point, S_PI_HALF);
+
 		model->m_vertices[v_index].m_point.m_x *= _size.m_x;
 		model->m_vertices[v_index].m_point.m_y *= _size.m_y;
 

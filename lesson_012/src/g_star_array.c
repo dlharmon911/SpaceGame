@@ -8,6 +8,11 @@
 #include "g_star.h"
 #include "g_star_array.h"
 
+enum
+{
+	G_STAR_SCALE_ARRAY_SIZE = 5
+};
+
 void g_star_array_zero_initialize_data(g_star_array_t* star_array)
 {
 	if (!star_array)
@@ -47,7 +52,7 @@ void g_star_array_scatter(ALLEGRO_BITMAP* texture, g_star_array_t* star_array)
 		return;
 	}
 
-	const uint32_t scale[5] =
+	const uint32_t scale[G_STAR_SCALE_ARRAY_SIZE] =
 	{
 		G_STAR_LAYER_01,
 		G_STAR_LAYER_02,
@@ -60,7 +65,7 @@ void g_star_array_scatter(ALLEGRO_BITMAP* texture, g_star_array_t* star_array)
 	uint32_t upper = 0;
 	g_star_t* star = NULL;
 
-	for (size_t j = 0; j < 5; ++j)
+	for (size_t j = 0; j < G_STAR_SCALE_ARRAY_SIZE; ++j)
 	{
 		upper += scale[j];
 

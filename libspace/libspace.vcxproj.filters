@@ -66,9 +66,6 @@
     <ClInclude Include="include\libspace\s_screenshot.h">
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\libspace\s_file.h">
-      <Filter>Header Files\LibSpace Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\libspace\s_collision.h">
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
@@ -123,9 +120,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\s_screenshot.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\s_file.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\s_circle.c">

@@ -4,64 +4,99 @@
 #include "g_constants.h"
 #include "g_textures.h"
 
-static void g_texture_generate_radar_background(float x, float y, float width, float height)
+static const ALLEGRO_COLOR G_RADAR_COLOR_SHADE = { 0.32352941f, 0.98039216f, 1.0f, 1.0f };
+static const float G_RADAR_CIRCLE_RADIUS = 64.0f;
+static const float G_RADAR_COLOR_CIRCLE_BACKGROUND = 0.058823529f;
+static const float G_RADAR_COLOR_CIRCLE_LAYER_INSIDE = 0.13725490196f;
+static const float G_RADAR_COLOR_CIRCLE_LAYER_OUTSIDE = 0.8f;
+static const float G_RADAR_LINE_THICKNESS = 1.0f;
+static const float G_RADAR_CIRCLE_INSIDE_THICKNESS = 1.0f;
+static const float G_RADAR_CIRCLE_OUTSIDE_THICKNESS = 2.0f;
+static const float G_RADAR_COLOR_CROSSHAIR = 0.75294117647f;
+static const float G_RADAR_COLOR_SWEEP = 1.0f;
+static const float G_RADAR_ICON_RADIUS = 5.0f;
+static const s_point_t G_RADAR_ICON_TEXTURE_SIZE = { 16.0f, 16.0f };
+static const int32_t G_RADAR_SWEEP_ANGLE_START = -90;
+static const int32_t G_RADAR_SWEEP_ANGLE_END = 90;
+static const int32_t G_RADAR_ICON_SEGMENT_SIZE = 50;
+
+static ALLEGRO_COLOR* g_texture_radar_shade_color(float color)
 {
-	float radius = floorf(width * 0.5f);
-	s_point_t center = { 0.0f, 0.0f };
+	static ALLEGRO_COLOR rv = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	s_point_set_f(&center, x + width * 0.5f, y + height * 0.5f);
+	rv.r = color * G_RADAR_COLOR_SHADE.r;
+	rv.g = color * G_RADAR_COLOR_SHADE.g;
+	rv.b = color * G_RADAR_COLOR_SHADE.b;
+	rv.a = 1.0f;
 
-	al_draw_filled_circle(center.m_x, center.m_y, radius, al_map_rgb(0, 15, 0));
+	return &rv;
 }
 
-static void g_texture_generate_radar_sweep(float x, float y, float width, float height)
+static void g_texture_generate_radar_background(float center_x, float center_y, float radius)
+{
+	al_draw_filled_circle(center_x, center_y, radius, *g_texture_radar_shade_color(G_RADAR_COLOR_CIRCLE_BACKGROUND));
+}
+
+static void g_texture_generate_radar_sweep(float center_x, float center_y, float radius)
 {
 	s_point_t center = { 0.0f, 0.0f };
 	s_point_t outer = { 0.0f, 0.0f };
 	s_point_t outer2 = { 0.0f, 0.0f };
-	float radius = floorf(width * 0.5f);
 	float angle = 0.0f;
 	float color = 0.0f;
-	float arc = 1.0f / 180.0f;
-	float start = 0.05f;
+	float arc = 1.0f / (float)(G_RADAR_SWEEP_ANGLE_END - G_RADAR_SWEEP_ANGLE_START);
+	float start = G_RADAR_COLOR_CIRCLE_BACKGROUND;
+	float color_map = { 0.0f };
+	float factor = 0.0f;
+	float sradius = radius - 1.0f;
 
-	s_point_set_f(&center, x + width * 0.5f, y + height * 0.5f);
+	s_point_set_f(&center, center_x, center_y);
 	s_point_set(&outer, &center);
-	s_point_add_f(&outer, width * 0.5f, 0.0f);
+	s_point_add_f(&outer, sradius * cosf(angle), sradius * sinf(angle));
 
-	al_draw_filled_circle(center.m_x, center.m_y, radius, al_map_rgb(255,0, 255));
+	al_draw_filled_circle(center_x, center_y, sradius, S_COLOR_MAGIC_PINK.m_al_color);
 
-	for (int32_t i = -90; i <= 90; ++i)
+	for (int32_t i = G_RADAR_SWEEP_ANGLE_START; i <= G_RADAR_SWEEP_ANGLE_END; ++i)
 	{
-		angle = (float)i * S_PI_DOUBLE / 360.0f;
+		angle = s_math_degree_to_radian((float)i);
 		s_point_set(&outer2, &center);
-		s_point_add_f(&outer2, radius * cosf(angle), radius * sinf(angle));
+		s_point_add_f(&outer2, sradius * cosf(angle), sradius * sinf(angle));
 
 		color += arc;
 
-		al_draw_filled_triangle(center.m_x, center.m_y, outer2.m_x, outer2.m_y, outer.m_x, outer.m_y, al_map_rgb_f(0.0f, s_math_min_f(1.0f, start + color), 0.0f));
+		factor = s_math_min_f(S_COLOR_COMPONENT_MAX_F, start + color);
+
+		color_map = G_RADAR_COLOR_SWEEP * factor;
+
+		al_draw_filled_triangle(center_x, center_y, outer2.m_x, outer2.m_y, outer.m_x, outer.m_y, *g_texture_radar_shade_color(color_map));
 		s_point_set(&outer, &outer2);
 	}
 }
 
-static void g_texture_generate_radar_overlay(float x, float y, float width, float height)
+static void g_texture_generate_radar_overlay(float center_x, float center_y, float radius)
 {
-	float radius = floorf(width * 0.5f);
+	al_draw_line(center_x - radius, center_y, center_x + radius, center_y, *g_texture_radar_shade_color(G_RADAR_COLOR_CROSSHAIR), G_RADAR_LINE_THICKNESS);
+	al_draw_line(center_x, center_y - radius, center_x, center_y + radius, *g_texture_radar_shade_color(G_RADAR_COLOR_CROSSHAIR), G_RADAR_LINE_THICKNESS);
 
-	al_draw_line(x + width * 0.5f, y, x + width * 0.5f, y + height, al_map_rgb(192, 192, 192), 1.0f);
-	al_draw_line(x, y + height * 0.5f, x + width, y + height * 0.5f, al_map_rgb(192, 192, 192), 1.0f);
-
-	al_draw_circle(x + width * 0.5f, y + height * 0.5f, radius, al_map_rgb(35, 149, 0), 1.0f);
-	al_draw_circle(x + width * 0.5f, y + height * 0.5f, radius - 1.0f, al_map_rgb(0, 255, 0), 1.0f);
+	al_draw_circle(center_x, center_y, radius - 1.0f, *g_texture_radar_shade_color(G_RADAR_COLOR_CIRCLE_LAYER_OUTSIDE), G_RADAR_CIRCLE_OUTSIDE_THICKNESS);
+	al_draw_circle(center_x, center_y, radius, *g_texture_radar_shade_color(G_RADAR_COLOR_CIRCLE_LAYER_INSIDE), G_RADAR_CIRCLE_INSIDE_THICKNESS);
 }
 
 static void g_texture_generate_radar_icon(float x, float y, float width, float height)
 {
-	float radius = 4.0f;
+	float radius = G_RADAR_ICON_RADIUS;
+	float color_map = 0.0f;
+	float factor = 0.0f;
+	int32_t seg_count = S_COLOR_COMPONENT_MAX / G_RADAR_ICON_SEGMENT_SIZE;
+	int32_t seg_start = S_COLOR_COMPONENT_MAX % G_RADAR_ICON_SEGMENT_SIZE;
 
-	for (uint32_t i = 55; i <= 255; i += 50)
+	for (int32_t i = 0; i <= seg_count; ++i)
 	{
-		al_draw_filled_circle(x + width * 0.5f, y + height * 0.5f, radius - 1, al_map_rgb(0, (uint8_t)i, 0));
+		factor = (float)(i * G_RADAR_ICON_SEGMENT_SIZE + seg_start) / (float)S_COLOR_COMPONENT_MAX;
+
+		color_map  = G_RADAR_COLOR_SWEEP * factor;
+
+		al_draw_filled_circle(x + width * 0.5f, y + height * 0.5f, radius - 1, *g_texture_radar_shade_color(color_map));
 		radius -= 0.5f;
 	}
 }
@@ -93,10 +128,10 @@ int32_t g_texture_generate_radar_texture(ALLEGRO_BITMAP** bitmap)
 	s_point_set(&half_size, &G_TEXTURE_RADAR_SIZE);
 	s_point_multiply_f(&half_size, 0.5f);
 
-	g_texture_generate_radar_background(0.0f, 0.0f, half_size.m_x, half_size.m_y);
-	g_texture_generate_radar_sweep(0.0f, half_size.m_y, half_size.m_x, half_size.m_y);
-	g_texture_generate_radar_overlay(half_size.m_x, 0.0f, half_size.m_x, half_size.m_y);
-	g_texture_generate_radar_icon(half_size.m_x, half_size.m_y, 16.0f, 16.0f);
+	g_texture_generate_radar_background(G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS);
+	g_texture_generate_radar_sweep(G_RADAR_CIRCLE_RADIUS, half_size.m_y + G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS);
+	g_texture_generate_radar_overlay(half_size.m_x + G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS);
+	g_texture_generate_radar_icon(half_size.m_x, half_size.m_y, G_RADAR_ICON_TEXTURE_SIZE.m_x, G_RADAR_ICON_TEXTURE_SIZE.m_y);
 
 
 

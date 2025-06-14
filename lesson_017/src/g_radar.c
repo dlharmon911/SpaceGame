@@ -68,20 +68,22 @@ static void g_radar_draw_boulder_array_icons(const g_radar_t* radar, int32_t fla
 			angle = atan2f(difference.m_y, difference.m_x);
 			length = s_point_get_length(&difference);
 
-			if (length < (G_RADAR_LENGTH_MAX - G_RADAR_LENGTH_EDGE_MARGIN))
+			if (length >= (G_RADAR_LENGTH_MAX - G_RADAR_LENGTH_EDGE_MARGIN))
 			{
-				scale = (length / G_RADAR_LENGTH_MAX);
-
-				difference.m_x = -G_RADAR_SIZE_HALF.m_x * scale * cosf(angle);
-				difference.m_y = G_RADAR_SIZE_HALF.m_y * scale * sinf(angle);
-
-				al_identity_transform(&transform);
-				s_point_translate(&transform, &difference);
-				al_compose_transform(&transform, &backup);
-				al_use_transform(&transform);
-
-				s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_ICON], flag);
+				length = (G_RADAR_LENGTH_MAX - G_RADAR_LENGTH_EDGE_MARGIN);
 			}
+
+			scale = (length / G_RADAR_LENGTH_MAX);
+
+			difference.m_x = -G_RADAR_SIZE_HALF.m_x * scale * cosf(angle);
+			difference.m_y = G_RADAR_SIZE_HALF.m_y * scale * sinf(angle);
+
+			al_identity_transform(&transform);
+			s_point_translate(&transform, &difference);
+			al_compose_transform(&transform, &backup);
+			al_use_transform(&transform);
+
+			s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_ICON], flag);
 		}
 	}
 
@@ -107,6 +109,7 @@ void g_radar_draw(const g_radar_t* radar, float north, int32_t flag)
 
 	s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_BACKGROUND], flag);
 	s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_SWEEP], flag);
+	s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_CIRCLE], flag);
 
 
 	al_identity_transform(&transform);
@@ -124,7 +127,6 @@ void g_radar_draw(const g_radar_t* radar, float north, int32_t flag)
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
 
-	s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_CIRCLE], flag);
 
 	al_draw_textf(radar->m_font, al_map_rgb_f(1.0f, 1.0f, 1.0f), 0.0f, radar->m_position.m_y, ALLEGRO_ALIGN_CENTER, "(%d, %d)", (int32_t)radar->m_ship_center->m_x, (int32_t)radar->m_ship_center->m_y);
 

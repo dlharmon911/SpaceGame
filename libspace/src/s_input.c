@@ -10,8 +10,9 @@ static s_point_t s_input_mouse_axis = { 0.0f, 0.0f };
 
 enum
 {
-	S_BUTTON_PRESSED = 0x1,
-	S_BUTTON_CHANGED = 0x2
+	S_BUTTON_DEFAULT,
+	S_BUTTON_PRESSED = 0x01,
+	S_BUTTON_CHANGED = 0x02
 };
 
 void s_input_set_key_button_array_index(size_t index, bool pressed)
@@ -35,7 +36,7 @@ uint8_t s_input_get_key_button_array_index(size_t index)
 {
 	if (index >= S_KEY_BUTTON_MAX)
 	{
-		return 0;
+		return S_BUTTON_DEFAULT;
 	}
 
 	return s_input_key_buttons[index];
@@ -128,34 +129,34 @@ float s_input_get_mouse_axis_y()
 
 void s_input_set_mouse_button_array_index(size_t index, bool pressed)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
 		return;
 	}
 
 	if (pressed)
 	{
-		s_input_mouse_buttons[index - 1] = (S_BUTTON_PRESSED | S_BUTTON_CHANGED);
+		s_input_mouse_buttons[index - ALLEGRO_MOUSE_BUTTON_LEFT] = (S_BUTTON_PRESSED | S_BUTTON_CHANGED);
 	}
 	else
 	{
-		s_input_mouse_buttons[index - 1] = S_BUTTON_CHANGED;
+		s_input_mouse_buttons[index - ALLEGRO_MOUSE_BUTTON_LEFT] = S_BUTTON_CHANGED;
 	}
 }
 
 uint8_t s_input_get_mouse_button_array_index(size_t index)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
-		return 0;
+		return S_BUTTON_DEFAULT;
 	}
 
-	return s_input_mouse_buttons[index - 1];
+	return s_input_mouse_buttons[index - ALLEGRO_MOUSE_BUTTON_LEFT];
 }
 
 bool s_input_is_mouse_button_pressed(size_t index)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
 		return false;
 	}
@@ -165,7 +166,7 @@ bool s_input_is_mouse_button_pressed(size_t index)
 
 static bool s_input_has_mouse_button_changed(size_t index)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
 		return false;
 	}
@@ -175,7 +176,7 @@ static bool s_input_has_mouse_button_changed(size_t index)
 
 bool s_input_was_mouse_button_pressed(size_t index)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
 		return false;
 	}
@@ -185,7 +186,7 @@ bool s_input_was_mouse_button_pressed(size_t index)
 
 bool s_input_was_mouse_button_released(size_t index)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
 		return false;
 	}
@@ -195,12 +196,12 @@ bool s_input_was_mouse_button_released(size_t index)
 
 void s_input_acknowledge_mouse_button(size_t index)
 {
-	if (index < 1 || index >= S_MOUSE_BUTTON_MAX)
+	if (index < ALLEGRO_MOUSE_BUTTON_LEFT || index >= S_MOUSE_BUTTON_MAX)
 	{
 		return;
 	}
 
-	s_input_mouse_buttons[index - 1] = (s_input_mouse_buttons[index - 1] & S_BUTTON_PRESSED);
+	s_input_mouse_buttons[index - ALLEGRO_MOUSE_BUTTON_LEFT] = (s_input_mouse_buttons[index - ALLEGRO_MOUSE_BUTTON_LEFT] & S_BUTTON_PRESSED);
 }
 
 void s_input_acknowledge_all_mouse_buttons()

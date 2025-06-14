@@ -6,11 +6,18 @@
 #include "g_textures.h"
 #include "g_models.h"
 
+enum
+{
+	G_BOULD_COLOR_ARRAY_SIZE = 6
+};
+
 static const ALLEGRO_COLOR G_COLOR_BOULDER = { 0.34901963f, 0.235294119f, 0.141176477f, 1.0f };
+static const float G_BOULDER_TEXTURE_COLOR_BASE = 0.75f;
+static const float G_BOULDER_TEXTURE_COLOR_LIGHT = 1.2f;
 
 static void g_bitmaps_texturize_bitmap()
 {
-	ALLEGRO_COLOR list[6] =
+	ALLEGRO_COLOR list[G_BOULD_COLOR_ARRAY_SIZE] =
 	{ G_COLOR_BOULDER,
 		{ 0.0f, 0.0f, 0.0f, 1.0f},
 		{ 0.0f, 0.0f, 0.0f, 1.0f},
@@ -18,28 +25,28 @@ static void g_bitmaps_texturize_bitmap()
 		{ 0.0f, 0.0f, 0.0f, 1.0f},
 		{ 0.0f, 0.0f, 0.0f, 1.0f}
 	};
-	float base = 0.75f;
-	float light = 1.2f;
+	float base = G_BOULDER_TEXTURE_COLOR_BASE;
+	float light = G_BOULDER_TEXTURE_COLOR_LIGHT;
 
-	for (int32_t i = 1; i < 5; ++i)
+	for (int32_t i = 1; i < (G_BOULD_COLOR_ARRAY_SIZE - 1); ++i)
 	{
-		float a = ((float)i - 1) / 5.0f;
+		float a = ((float)i - 1) / (float)(G_BOULD_COLOR_ARRAY_SIZE - 1);
 
 		list[i].r = list[0].r * (base + ((1.0f - base) * a));
 		list[i].g = list[0].g * (base + ((1.0f - base) * a));
 		list[i].b = list[0].b * (base + ((1.0f - base) * a));
 	}
 
-	list[5].r = s_math_min_f(1.0f, list[0].r * light);
-	list[5].g = s_math_min_f(1.0f, list[0].g * light);
-	list[5].b = s_math_min_f(1.0f, list[0].b * light);
+	list[(G_BOULD_COLOR_ARRAY_SIZE - 1)].r = s_math_min_f(1.0f, list[0].r * light);
+	list[(G_BOULD_COLOR_ARRAY_SIZE - 1)].g = s_math_min_f(1.0f, list[0].g * light);
+	list[(G_BOULD_COLOR_ARRAY_SIZE - 1)].b = s_math_min_f(1.0f, list[0].b * light);
 
 	for (int32_t j = 0; j < (int32_t)G_TEXTURE_BOULDER_SIZE.m_y; ++j)
 	{
 		for (int32_t i = 0; i < (int32_t)G_TEXTURE_BOULDER_SIZE.m_x; ++i)
 		{
 			uint32_t r = s_random_generate(99);
-			int32_t c = 5;
+			int32_t c = (G_BOULD_COLOR_ARRAY_SIZE - 1);
 
 			if (r < 50)
 			{

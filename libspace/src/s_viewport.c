@@ -44,6 +44,8 @@ void s_viewport_set_p(s_viewport_t* viewport, const s_point_t* point, const s_po
 
 void s_viewport_translate(ALLEGRO_TRANSFORM* transform, const s_viewport_t* viewport)
 {
+	s_point_t translate_amount = { 0.0f, 0.0f };
+
 	if (!transform)
 	{
 		return;
@@ -54,11 +56,17 @@ void s_viewport_translate(ALLEGRO_TRANSFORM* transform, const s_viewport_t* view
 		return;
 	}
 
-	al_translate_transform(transform, viewport->m_point.m_x + viewport->m_size.m_x * 0.5f, viewport->m_point.m_y + viewport->m_size.m_y * 0.5f);
+	s_point_set(&translate_amount, &viewport->m_size);
+	s_point_multiply_f(&translate_amount, 0.5f);
+	s_point_add(&translate_amount, &viewport->m_point);
+
+	al_translate_transform(transform, translate_amount.m_x, translate_amount.m_y);
 }
 
 void s_viewport_scale(ALLEGRO_TRANSFORM* transform, const s_viewport_t* viewport, const s_point_t* original_size)
 {
+	s_point_t scale_amount = { 0.0f, 0.0f };
+
 	if (!transform)
 	{
 		return;
@@ -74,5 +82,8 @@ void s_viewport_scale(ALLEGRO_TRANSFORM* transform, const s_viewport_t* viewport
 		return;
 	}
 
-	al_scale_transform(transform, viewport->m_size.m_x / original_size->m_x, viewport->m_size.m_y / original_size->m_y);
+	s_point_set(&scale_amount, &viewport->m_size);
+	s_point_divide(&scale_amount, original_size);
+
+	al_scale_transform(transform, scale_amount.m_x, scale_amount.m_y);
 }
