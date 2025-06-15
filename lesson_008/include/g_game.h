@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro5.h>
 #include <stdint.h>
+#include <libspace.h>
 #include "g_constants.h"
 #include "g_stats.h"
 #include "g_models.h"
@@ -18,6 +19,7 @@ typedef struct g_game_data_t
 	g_ship_t m_ship;
 	g_star_array_t m_star_array;
 	int32_t m_draw_flag;
+	S_INPUT_DATA* m_input_data;
 	bool m_is_running;
 } g_game_data_t;
 

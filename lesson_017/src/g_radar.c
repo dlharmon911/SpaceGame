@@ -52,6 +52,8 @@ static void g_radar_draw_boulder_array_icons(const g_radar_t* radar, int32_t fla
 	const g_boulder_t* boulder = NULL;
 	const g_boulder_node_t* boulder_node = NULL;
 	float scale = 0.0f;
+	float diff = 0.0f;
+	int32_t index = 0;
 
 	al_copy_transform(&backup, al_get_current_transform());
 
@@ -66,11 +68,32 @@ static void g_radar_draw_boulder_array_icons(const g_radar_t* radar, int32_t fla
 
 			s_point_get_difference(&difference, radar->m_ship_center, &boulder->m_object.m_model.m_center);
 			angle = atan2f(difference.m_y, difference.m_x);
+
+			float b = -radar->m_angle + S_PI_HALF;
+			float a = angle;
+
+			diff = a - b;
+			while (diff < 0.0f)
+			{
+				diff += S_PI_DOUBLE;
+			}
+			while (diff >= S_PI_DOUBLE)
+			{
+				diff -= S_PI_DOUBLE;
+			}
+
+			index = (((int32_t)s_math_radian_to_degree(diff) * G_MODEL_RADAR_MODEL_ICON_COUNT) / (int32_t)S_PI_DEG_DOUBLE) + G_MODEL_RADAR_MODEL_ICON_START;
+
+			if (index < G_MODEL_RADAR_MODEL_ICON_START || index > G_MODEL_RADAR_MODEL_ICON_END)
+			{
+				continue;
+			}
+
 			length = s_point_get_length(&difference);
 
 			if (length >= (G_RADAR_LENGTH_MAX - G_RADAR_LENGTH_EDGE_MARGIN))
 			{
-				length = (G_RADAR_LENGTH_MAX - G_RADAR_LENGTH_EDGE_MARGIN);
+				continue;
 			}
 
 			scale = (length / G_RADAR_LENGTH_MAX);
@@ -83,7 +106,16 @@ static void g_radar_draw_boulder_array_icons(const g_radar_t* radar, int32_t fla
 			al_compose_transform(&transform, &backup);
 			al_use_transform(&transform);
 
-			s_model_draw(&radar->m_model[G_MODEL_RADAR_MODEL_ICON], flag);
+
+
+			const s_model_t* model = &radar->m_model[index];
+
+			if (!model)
+			{
+				continue;
+			}
+
+			s_model_draw(model, flag);
 		}
 	}
 
@@ -127,9 +159,7 @@ void g_radar_draw(const g_radar_t* radar, float north, int32_t flag)
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
 
-
 	al_draw_textf(radar->m_font, al_map_rgb_f(1.0f, 1.0f, 1.0f), 0.0f, radar->m_position.m_y, ALLEGRO_ALIGN_CENTER, "(%d, %d)", (int32_t)radar->m_ship_center->m_x, (int32_t)radar->m_ship_center->m_y);
-
 	al_use_transform(&backup);
 }
 

@@ -13,9 +13,7 @@ static const float G_BOULDER_RADIUS_PERMUTATION_MIN = 0.15f;
 
 static float bitmaps_permutate_radius(float radius, float min_radius, float max_radius)
 {
-	int r = s_random_generate(99);
-
-	if (r < 50)
+	if (s_random_percent(0.5f))
 	{
 		float new_radius = s_random_generate_constraint_f(min_radius, max_radius);
 

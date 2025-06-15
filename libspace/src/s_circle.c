@@ -12,8 +12,10 @@ void s_circle_zero_initialize_data(s_circle_t* circle)
 		return;
 	}
 
-	s_point_set_zero(&circle->m_center);
-	circle->m_radius = 0.0f;
+	for (size_t i = 0; i < S_CIRCLE_FLOAT_SIZE; ++i)
+	{
+		circle->m_float_array[i] = 0.0f;
+	}
 }
 
 void s_circle_set(s_circle_t* circle, const s_circle_t* circle2)

@@ -7,6 +7,7 @@
 
 typedef struct g_game_data_t
 {
+	S_INPUT_DATA* m_input_data;
 	bool m_is_running;
 } g_game_data_t;
 

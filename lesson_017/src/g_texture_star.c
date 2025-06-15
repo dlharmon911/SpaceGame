@@ -5,17 +5,25 @@
 #include "g_textures.h"
 #include "g_models.h"
 
+static const float G_STAR_TEXTURE_COLOR_MIN = 0.85f;
+static const float G_STAR_TEXTURE_COLOR_MAX = 1.0f;
+static const float G_STAR_TEXTURE_DIFF_MIN = 0.2f;
+static const float G_STAR_TEXTURE_DIFF_MAX = 0.4f;
+static const float G_STAR_TEXTURE_THICKNESS_MIN = 2.0f;
+static const float G_STAR_TEXTURE_THICKNESS_MAX = 10.0f;
+
+
 static void g_bitmaps_draw_star(float x, float y)
 {
 	s_color_t color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	color.m_red = s_random_generate_constraint_f(0.85f, 1.0f);
-	color.m_green = s_random_generate_constraint_f(0.85f, 1.0f);
-	color.m_blue = s_random_generate_constraint_f(0.85f, 1.0f);
+	color.m_red = s_random_generate_constraint_f(G_STAR_TEXTURE_COLOR_MIN, G_STAR_TEXTURE_COLOR_MAX);
+	color.m_green = s_random_generate_constraint_f(G_STAR_TEXTURE_COLOR_MIN, G_STAR_TEXTURE_COLOR_MAX);
+	color.m_blue = s_random_generate_constraint_f(G_STAR_TEXTURE_COLOR_MIN, G_STAR_TEXTURE_COLOR_MAX);
 
 	s_point_t center = { x + G_TEXTURE_STAR_CHUNK_SIZE.m_x * 0.5f, y + G_TEXTURE_STAR_CHUNK_SIZE.m_y * 0.5f };
-	float diff = s_random_generate_constraint_f(G_TEXTURE_STAR_CHUNK_SIZE.m_x * 0.2f, G_TEXTURE_STAR_CHUNK_SIZE.m_x * 0.40f);
-	float thickness = 2.0f + s_random_generate_f(G_TEXTURE_STAR_CHUNK_SIZE.m_x * 0.25f);
+	float diff = s_random_generate_constraint_f(G_TEXTURE_STAR_CHUNK_SIZE.m_x * G_STAR_TEXTURE_DIFF_MIN, G_TEXTURE_STAR_CHUNK_SIZE.m_x * G_STAR_TEXTURE_DIFF_MAX);
+	float thickness = s_random_generate_constraint_f(G_STAR_TEXTURE_THICKNESS_MIN, G_STAR_TEXTURE_THICKNESS_MAX);
 
 	al_draw_line(center.m_x, center.m_y - diff, center.m_x, center.m_y + diff, color.m_al_color, thickness);
 	al_draw_line(center.m_x - diff, center.m_y, center.m_x + diff, center.m_y, color.m_al_color, thickness);

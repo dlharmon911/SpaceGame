@@ -6,10 +6,22 @@
 #include "libspace/s_base.h"
 #include "libspace/s_point.h"
 
+enum
+{
+	S_CIRCLE_FLOAT_SIZE = S_POINT_FLOAT_SIZE + 1
+};
+
 typedef struct s_circle_t
 {
-	s_point_t m_center;
-	float m_radius;
+	union
+	{
+		struct
+		{
+			s_point_t m_center;
+			float m_radius;
+		};
+		float m_float_array[S_CIRCLE_FLOAT_SIZE];
+	};
 } s_circle_t;
 
 void s_circle_zero_initialize_data(s_circle_t* circle);

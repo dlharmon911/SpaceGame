@@ -19,6 +19,7 @@ typedef struct g_app_data_t
 	ALLEGRO_DISPLAY* m_display;
 	ALLEGRO_TIMER* m_logic_timer;
 	ALLEGRO_EVENT_QUEUE* m_event_queue;
+	S_INPUT_DATA* m_input_data;
 	ALLEGRO_FONT* m_builtin_font;
 	s_point_t m_display_scale;
 	g_settings_t m_settings;

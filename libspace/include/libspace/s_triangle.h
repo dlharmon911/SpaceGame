@@ -7,7 +7,8 @@
 
 enum
 {
-	S_TRIANGLE_POINT_COUNT = 3
+	S_TRIANGLE_POINT_COUNT = 3,
+	S_TRIANGLE_FLOAT_ARRAY = S_TRIANGLE_POINT_COUNT * S_POINT_FLOAT_SIZE
 };
 
 typedef struct s_triangle_t
@@ -19,6 +20,7 @@ typedef struct s_triangle_t
 			s_point_t m_point3;
 		};
 		s_point_t m_point_array[S_TRIANGLE_POINT_COUNT];
+		float m_float_array[S_TRIANGLE_FLOAT_ARRAY];
 	};
 } s_triangle_t;
 

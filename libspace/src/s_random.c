@@ -27,3 +27,8 @@ float s_random_generate_constraint_f(float lower_limit, float upper_limit)
 {
 	return lower_limit + s_random_generate_f(upper_limit - lower_limit);
 }
+
+bool s_random_percent(float percent)
+{
+	return (percent * 100000.0f) < s_random_generate_f(100000.0f);
+}

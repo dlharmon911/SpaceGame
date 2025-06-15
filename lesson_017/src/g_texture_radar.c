@@ -4,16 +4,16 @@
 #include "g_constants.h"
 #include "g_textures.h"
 
-static const ALLEGRO_COLOR G_RADAR_COLOR_SHADE = { 0.32352941f, 0.98039216f, 1.0f, 1.0f };
-static const float G_RADAR_CIRCLE_RADIUS = 64.0f;
+static const ALLEGRO_COLOR G_RADAR_COLOR_SHADE = { 0.0f, 1.0f, 0.0f, 1.0f };
 static const float G_RADAR_COLOR_CIRCLE_BACKGROUND = 0.058823529f;
 static const float G_RADAR_COLOR_CIRCLE_LAYER_INSIDE = 0.13725490196f;
 static const float G_RADAR_COLOR_CIRCLE_LAYER_OUTSIDE = 0.8f;
+static const float G_RADAR_COLOR_CROSSHAIR = 0.75294117647f;
+static const float G_RADAR_COLOR_SWEEP = 1.0f;
+static const float G_RADAR_CIRCLE_RADIUS = 64.0f;
 static const float G_RADAR_LINE_THICKNESS = 1.0f;
 static const float G_RADAR_CIRCLE_INSIDE_THICKNESS = 1.0f;
 static const float G_RADAR_CIRCLE_OUTSIDE_THICKNESS = 2.0f;
-static const float G_RADAR_COLOR_CROSSHAIR = 0.75294117647f;
-static const float G_RADAR_COLOR_SWEEP = 1.0f;
 static const float G_RADAR_ICON_RADIUS = 5.0f;
 static const s_point_t G_RADAR_ICON_TEXTURE_SIZE = { 16.0f, 16.0f };
 static const int32_t G_RADAR_SWEEP_ANGLE_START = -90;

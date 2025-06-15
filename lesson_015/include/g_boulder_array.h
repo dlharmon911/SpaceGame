@@ -11,19 +11,11 @@
 enum G_BOULDER_COUNTS
 {
 	/// <summary>Initial capacity of boulder array capacity</summary>
-	G_BOULDER_INITIAL_MAX_COUNT = 20,
-
-	G_BOULDER_MAX_COUNT = 4 * G_BOULDER_INITIAL_MAX_COUNT
-};
-
-enum G_BOULDER_NODE_STATUS_FLAGS
-{
+	G_BOULDER_INITIAL_COUNT = 20,
 	/// <summary>Status flag default setting</summary>
-	G_BOULDER_STATUS_UNINITIALIZED = 0,
-	/// <summary>Status flag default setting</summary>
-	G_BOULDER_STATUS_INITIALIZED = 1,
+	G_BOULDER_STATUS_DEFAULT = 1,
 	/// <summary>Status flag indicating alive</summary>
-	G_BOULDER_STATUS_LIVE = 2
+	G_BOULDER_STATUS_LIVE = 1
 };
 
 /// <summary>Data struct for internal vector of the boulder array</summary>
@@ -38,20 +30,32 @@ typedef struct g_boulder_node_t
 /// <summary>Data struct for boulder array</summary>
 typedef struct g_boulder_array_t
 {
-	/// <summary>Current count of boulders that are live in the boulder array</summary>
+	/// <summary>Current count of boulder that are live in the boulder array</summary>
 	size_t m_count;
-
-	/// <summary>Maximum number of boulders the boulder array can hold</summary>
-	size_t m_max_count;
-
-	/// <summary>Array to hold boulder array data</summary>
-	g_boulder_node_t m_boulder[G_BOULDER_MAX_COUNT];
+	/// <summary>Vector to hold boulder array data</summary>
+	s_vector_t* m_boulder_list;
 } g_boulder_array_t;
 
 /// <summary>Zero initializes boulder array data</summary>
 /// <param name='boulder_array'> - pointer to container of boulder array data</param>
 /// <returns>n/a</returns>
 void g_boulder_array_zero_initialize_data(g_boulder_array_t* boulder_array);
+
+/// <summary>Initializes boulder array vector</summary>
+/// <param name='boulder_array'> - pointer to container of boulder array data</param>
+/// <param name='initial_size'> - initial size of internal vector</param>
+/// <returns>int32_t - 0 on success, -1 on failure</returns>
+int32_t g_boulder_array_initialize(g_boulder_array_t* boulder_array, size_t initial_size);
+
+/// <summary>Clear and release internal vector</summary>
+/// <param name='boulder_array'> - pointer to container of boulder array data</param>
+/// <returns>n/a</returns>
+void g_boulder_array_free(g_boulder_array_t* boulder_array);
+
+/// <summary>Get number of boulders in boulder_array's vector</summary>
+/// <param name='boulder_array'> - pointer to container of boulder array data</param>
+/// <returns>size_t - number of boulders in array</returns>
+size_t g_boulder_array_get_size(const g_boulder_array_t* boulder_array);
 
 /// <summary>Draws boulder array to display</summary>
 /// <param name='boulder_array'> - pointer to container of boulder array data</param>

@@ -1,8 +1,7 @@
 Initialization begin
-Installing the keyboard - success
-Installing the mouse - success
-Creating the display (800.0, 600.0) - success
-Creating the timer (0.0) - success
+Installing the input - success
+Creating the display (800.0, 600.0) -success
+Creating the timer (0.0) -success
 Creating the event queue - success
 Initialization end
 
@@ -10,6 +9,5 @@ Shutdown begin
 The event queue has been destroyed
 The timer has been destroyed
 The display has been destroyed
-The mouse has been uninstalled
-The keyboard has been uninstalled
+Input has been uninstalled
 Shutdown end

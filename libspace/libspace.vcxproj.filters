@@ -137,6 +137,9 @@
     <ClCompile Include="src\s_camera.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\s_color.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

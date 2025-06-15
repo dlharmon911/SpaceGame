@@ -7,9 +7,9 @@
 #include "g_constants.h"
 #include "g_stats.h"
 
-static const s_point_t s_line_offset = { 0.5f, 0.5f };
-static const float s_line_spacing = 9.0f;
-static const ALLEGRO_COLOR s_color = { 1.0f, 1.0f, 1.0f };
+static const s_point_t S_STATS_LINE_OFFSET = { 0.5f, 0.5f };
+static const float S_STATS_LINE_SPACING = 9.0f;
+static const ALLEGRO_COLOR S_STATS_COLOR = { 1.0f, 1.0f, 1.0f };
 
 static void g_stats_draw_line(const ALLEGRO_FONT* font, float x, float y, int32_t* line, const char* const format, ...)
 {
@@ -22,7 +22,7 @@ static void g_stats_draw_line(const ALLEGRO_FONT* font, float x, float y, int32_
 	vsnprintf(buffer, 2048, format, va_arg_list);
 	va_end(va_arg_list);
 
-	al_draw_text(font, s_color, x + s_line_offset.m_x, y + s_line_offset.m_y + s_line_spacing * (float)(*line), 0, buffer);
+	al_draw_text(font, S_STATS_COLOR, x + S_STATS_LINE_OFFSET.m_x, y + S_STATS_LINE_OFFSET.m_y + S_STATS_LINE_SPACING * (float)(*line), 0, buffer);
 
 	(*line) = (*line) + 1;
 }

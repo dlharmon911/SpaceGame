@@ -12,9 +12,9 @@ void s_triangle_zero_initialize_data(s_triangle_t* triangle)
 		return;
 	}
 
-	for (int32_t i = 0; i < S_TRIANGLE_POINT_COUNT; ++i)
+	for (size_t i = 0; i < S_POINT_FLOAT_SIZE; ++i)
 	{
-		s_point_zero_initialize_data(&triangle->m_point_array[i]);
+		triangle->m_float_array[i] = 0.0f;
 	}
 }
 

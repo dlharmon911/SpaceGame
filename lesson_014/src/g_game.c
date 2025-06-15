@@ -1,5 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <stdint.h>
+#include <libspace.h>
 #include "g_constants.h"
 #include "g_stats.h"
 #include "g_models.h"
@@ -26,6 +27,7 @@ void g_game_zero_initialize_data(g_game_data_t* data)
 	g_ship_zero_initialize_data(&data->m_ship);
 	g_star_array_zero_initialize_data(&data->m_star_array);
 	g_boulder_array_zero_initialize_data(&data->m_boulder_array);
+	data->m_input_data = NULL;
 	data->m_settings = NULL;
 	data->m_apply_constraint = true;
 	data->m_is_running = false;
@@ -123,46 +125,46 @@ void g_game_logic(g_game_data_t* data)
 		return;
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_ESCAPE))
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_ESCAPE))
 	{
 		data->m_is_running = false;
-		s_input_acknowledge_key_button(ALLEGRO_KEY_ESCAPE);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_ESCAPE);
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_F3))
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_F3))
 	{
 		++data->m_settings->m_game.m_draw_flag;
 		if (data->m_settings->m_game.m_draw_flag == S_MODEL_DRAW_FLAG_COUNT)
 		{
 			data->m_settings->m_game.m_draw_flag = 0;
 		}
-		s_input_acknowledge_key_button(ALLEGRO_KEY_F3);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_F3);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_UP) || s_input_is_key_button_pressed(ALLEGRO_KEY_W))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_UP) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_W))
 	{
 		g_ship_thrust(&data->m_ship, G_SHIP_THRUST);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_DOWN) || s_input_is_key_button_pressed(ALLEGRO_KEY_S))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_DOWN) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_S))
 	{
 		g_ship_thrust(&data->m_ship, G_SHIP_THRUST * -G_SHIP_REVERSE_THRUST_RATIO);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_LEFT) || s_input_is_key_button_pressed(ALLEGRO_KEY_A))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_LEFT) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_A))
 	{
 		g_ship_rotate(&data->m_ship, G_SHIP_ROTATE_AMOUNT);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_RIGHT) || s_input_is_key_button_pressed(ALLEGRO_KEY_D))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_RIGHT) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_D))
 	{
 		g_ship_rotate(&data->m_ship, -G_SHIP_ROTATE_AMOUNT);
 	}
 
-	if (s_input_was_key_button_pressed(ALLEGRO_KEY_SPACE))
+	if (s_input_was_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_SPACE))
 	{
 		g_ship_fire_bullet(&data->m_ship);
-		s_input_acknowledge_key_button(ALLEGRO_KEY_SPACE);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_SPACE);
 	}
 
 	g_game_update(data);

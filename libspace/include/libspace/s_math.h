@@ -10,6 +10,10 @@
 static const float S_PI = { (float)ALLEGRO_PI };
 static const float S_PI_DOUBLE = { (float)ALLEGRO_PI * 2.0f };
 static const float S_PI_HALF = { (float)ALLEGRO_PI * 0.5f };
+static const float S_PI_THREE_HALF = { (float)ALLEGRO_PI * 1.5f };
+static const float S_PI_DEG = { 180.0f };
+static const float S_PI_DEG_DOUBLE = { 360.0f };
+static const float S_PI_DEG_THREE_HALF = { 270.0f };
 static const float S_DEG_TO_RAD_RATIO = { (float)ALLEGRO_PI / 180.0f };
 static const float S_RAD_TO_DEG_RATIO = { 180.0f / (float)ALLEGRO_PI };
 

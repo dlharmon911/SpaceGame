@@ -33,6 +33,9 @@ typedef struct g_game_data_t
 	/// <summary>Boulder entity data array</summary>
 	g_boulder_array_t m_boulder_array;
 
+	/// <summary>Input data (keyboard, mouse, joystick)</summary>
+	S_INPUT_DATA* m_input_data;
+
 	/// <summary>Configuration settings handler</summary>
 	g_settings_t* m_settings;
 

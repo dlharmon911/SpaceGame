@@ -87,7 +87,29 @@ void g_model_generate_radar_model_array(s_quad_model_t* quad_model_array, s_mode
 
 	for (size_t i = 0; i < G_MODEL_RADAR_MODEL_COUNT; ++i)
 	{
+		size_t j = i;
+
+		if (i >= G_MODEL_RADAR_MODEL_ICON_START && i <= G_MODEL_RADAR_MODEL_ICON_END)
+		{
+			j = G_MODEL_RADAR_MODEL_ICON_START;
+		}
+
 		model_array[i].m_texture = texture;
-		g_model_generate_radar_model_quad(&quad_model_array[i], &model_array[i], &position[i], &size[i], scale[i]);
+		g_model_generate_radar_model_quad(&quad_model_array[i], &model_array[i], &position[j], &size[j], scale[j]);
+	}
+
+	for (size_t i = G_MODEL_RADAR_MODEL_ICON_START; i <= G_MODEL_RADAR_MODEL_ICON_END; ++i)
+	{
+		float shade = 1.0f - (float)(i - G_MODEL_RADAR_MODEL_ICON_START) / (float)(G_MODEL_RADAR_MODEL_ICON_COUNT);
+		s_vertex_buffer_t* buffer = &model_array[i].m_vertex_buffer;
+
+		for (size_t v = 0; v < buffer->m_count; ++v)
+		{
+			s_color_t* color = &(buffer->m_buffer + v)->m_color;
+
+			color->m_red *= shade;
+			color->m_green *= shade;
+			color->m_blue *= shade;
+		}
 	}
 }

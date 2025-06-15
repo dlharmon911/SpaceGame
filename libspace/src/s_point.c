@@ -484,6 +484,16 @@ void s_point_translate(ALLEGRO_TRANSFORM* transform, const s_point_t* point)
 	al_translate_transform(transform, point->m_x, point->m_y);
 }
 
+void s_point_translate_f(ALLEGRO_TRANSFORM* transform, float x, float y)
+{
+	if (!transform)
+	{
+		return;
+	}
+
+	al_translate_transform(transform, x, y);
+}
+
 void s_point_scale(ALLEGRO_TRANSFORM* transform, const s_point_t* point)
 {
 	if (!transform)

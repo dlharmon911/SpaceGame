@@ -15,6 +15,7 @@ typedef struct g_game_data_t
 	g_texture_list_t m_textures;
 	g_ship_t m_ship;
 	int32_t m_draw_flag;
+	S_INPUT_DATA* m_input_data;
 	bool m_is_running;
 } g_game_data_t;
 

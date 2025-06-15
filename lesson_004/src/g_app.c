@@ -10,6 +10,7 @@ typedef struct g_app_data_t
 	ALLEGRO_DISPLAY* m_display;
 	ALLEGRO_TIMER* m_logic_timer;
 	ALLEGRO_EVENT_QUEUE* m_event_queue;
+	S_INPUT_DATA* m_input_data;
 	bool m_update_logic;
 } g_app_data_t;
 
@@ -49,16 +50,8 @@ int32_t g_app_initialize()
 	}
 	s_log_println("success");
 
-	s_log_print("Installing the keyboard - ");
-	if (!al_install_keyboard())
-	{
-		s_log_println("failure");
-		return -1;
-	}
-	s_log_println("success");
-
-	s_log_print("Installing the mouse - ");
-	if (!al_install_mouse())
+	s_log_print("Installing the input - ");
+	if (!(g_data.m_input_data = s_input_install()))
 	{
 		s_log_println("failure");
 		return -1;
@@ -95,13 +88,13 @@ int32_t g_app_initialize()
 
 	al_register_event_source(g_data.m_event_queue, al_get_display_event_source(g_data.m_display));
 	al_register_event_source(g_data.m_event_queue, al_get_timer_event_source(g_data.m_logic_timer));
-	al_register_event_source(g_data.m_event_queue, al_get_keyboard_event_source());
-	al_register_event_source(g_data.m_event_queue, al_get_mouse_event_source());
+	s_input_register_with_event_queue(g_data.m_input_data, g_data.m_event_queue);
 
 	s_log_println("Initialization end\n");
 	s_log_flush();
 
 	g_data.m_game_data.m_is_running = true;
+	g_data.m_game_data.m_input_data = g_data.m_input_data;
 
 	return 0;
 }
@@ -131,16 +124,11 @@ void g_app_shutdown()
 		s_log_println("The display has been destroyed");
 	}
 
-	if (al_is_mouse_installed())
+	if (g_data.m_input_data)
 	{
-		al_uninstall_mouse();
-		s_log_println("The mouse has been uninstalled");
-	}
-
-	if (al_is_keyboard_installed())
-	{
-		al_uninstall_keyboard();
-		s_log_println("The keyboard has been uninstalled");
+		s_input_uninstall(g_data.m_input_data);
+		s_log_println("Input has been uninstalled");
+		g_data.m_input_data = NULL;
 	}
 
 	if (al_is_font_addon_initialized())
@@ -182,23 +170,39 @@ static void g_app_input()
 		} break;
 		case ALLEGRO_EVENT_KEY_DOWN:
 		{
-			s_input_set_key_button_array_index((size_t)event.keyboard.keycode, true);
+			s_input_set_keyboard_button_array_index(g_data.m_input_data, (size_t)event.keyboard.keycode, true);
 		} break;
 		case ALLEGRO_EVENT_KEY_UP:
 		{
-			s_input_set_key_button_array_index((size_t)event.keyboard.keycode, false);
+			s_input_set_keyboard_button_array_index(g_data.m_input_data, (size_t)event.keyboard.keycode, false);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_AXES:
 		{
-			s_input_set_mouse_axis((float)event.mouse.x, (float)event.mouse.y);
+			s_input_set_mouse_axis(g_data.m_input_data, (float)event.mouse.x, (float)event.mouse.y);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			s_input_set_mouse_button_array_index((size_t)event.mouse.button, true);
+			s_input_set_mouse_button_array_index(g_data.m_input_data, (size_t)event.mouse.button, true);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{
-			s_input_set_mouse_button_array_index((size_t)event.mouse.button, false);
+			s_input_set_mouse_button_array_index(g_data.m_input_data, (size_t)event.mouse.button, false);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_AXIS:
+		{
+			s_input_set_joystick_axis(g_data.m_input_data, event.joystick.stick, event.joystick.axis, event.joystick.pos);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN:
+		{
+			s_input_set_joystick_button_array_index(g_data.m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_BUTTON_UP:
+		{
+			s_input_set_joystick_button_array_index(g_data.m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_CONFIGURATION:
+		{
+			s_input_reconfigure_joystick(g_data.m_input_data, al_reconfigure_joysticks());
 		} break;
 		default: return;
 		}

@@ -19,6 +19,7 @@ void g_app_zero_initialize_data(g_app_data_t* data)
 	data->m_display = NULL;
 	data->m_logic_timer = NULL;
 	data->m_event_queue = NULL;
+	data->m_input_data = NULL;
 	data->m_builtin_font = NULL;
 	data->m_update_logic = false;
 	data->m_show_stats = false;
@@ -98,21 +99,16 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Installing the keyboard - ");
-	if (!al_install_keyboard())
+	s_log_print("Installing the input - ");
+	if (!(data->m_input_data = s_input_install()))
 	{
 		s_log_println("failure");
 		return -1;
 	}
 	s_log_println("success");
 
-	s_log_print("Installing the mouse - ");
-	if (!al_install_mouse())
-	{
-		s_log_println("failure");
-		return -1;
-	}
-	s_log_println("success");
+
+
 
 	s_log_printf("Creating the display (%.1lf, %.1lf) - ", data->m_settings.m_display.m_size.m_x, data->m_settings.m_display.m_size.m_y);
 	al_set_new_window_title(G_TITLE);
@@ -148,8 +144,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 
 	al_register_event_source(data->m_event_queue, al_get_display_event_source(data->m_display));
 	al_register_event_source(data->m_event_queue, al_get_timer_event_source(data->m_logic_timer));
-	al_register_event_source(data->m_event_queue, al_get_keyboard_event_source());
-	al_register_event_source(data->m_event_queue, al_get_mouse_event_source());
+	s_input_register_with_event_queue(data->m_input_data, data->m_event_queue);
 
 	s_log_print("Creating the built-in font - ");
 	if (!(data->m_builtin_font = al_create_builtin_font()))
@@ -163,6 +158,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	data->m_game_data.m_settings = &data->m_settings;
 	data->m_game_data.m_stats.m_settings = &data->m_settings;
 	data->m_game_data.m_builtin_font = data->m_builtin_font;
+	data->m_game_data.m_input_data = data->m_input_data;
 
 	if (g_game_initialize_data(&data->m_game_data) < 0)
 	{
@@ -216,16 +212,10 @@ void g_app_shutdown(g_app_data_t* data)
 		s_log_println("The display has been destroyed");
 	}
 
-	if (al_is_mouse_installed())
+	if (data->m_input_data)
 	{
-		al_uninstall_mouse();
-		s_log_println("The mouse has been uninstalled");
-	}
-
-	if (al_is_keyboard_installed())
-	{
-		al_uninstall_keyboard();
-		s_log_println("The keyboard has been uninstalled");
+		s_input_uninstall(data->m_input_data);
+		data->m_input_data = NULL;
 	}
 
 	if (PHYSFS_isInit())
@@ -308,15 +298,15 @@ static void g_app_input(g_app_data_t* data)
 		} break;
 		case ALLEGRO_EVENT_KEY_DOWN:
 		{
-			s_input_set_key_button_array_index((size_t)event.keyboard.keycode, true);
+			s_input_set_keyboard_button_array_index(data->m_input_data, (size_t)event.keyboard.keycode, true);
 		} break;
 		case ALLEGRO_EVENT_KEY_UP:
 		{
-			s_input_set_key_button_array_index((size_t)event.keyboard.keycode, false);
+			s_input_set_keyboard_button_array_index(data->m_input_data, (size_t)event.keyboard.keycode, false);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_AXES:
 		{
-			s_input_set_mouse_axis((float)event.mouse.x, (float)event.mouse.y);
+			s_input_set_mouse_axis(data->m_input_data, (float)event.mouse.x, (float)event.mouse.y);
 			s_point_set_f(&data->m_game_data.m_mouse, (float)event.mouse.x, (float)event.mouse.y);
 			g_mouse_cursor_set_position(&data->m_mouse_cursor, &data->m_game_data.m_mouse);
 			s_point_divide(&data->m_game_data.m_mouse, &data->m_display_scale);
@@ -324,11 +314,11 @@ static void g_app_input(g_app_data_t* data)
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
-			s_input_set_mouse_button_array_index((size_t)event.mouse.button, true);
+			s_input_set_mouse_button_array_index(data->m_input_data, (size_t)event.mouse.button, true);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 		{
-			s_input_set_mouse_button_array_index((size_t)event.mouse.button, false);
+			s_input_set_mouse_button_array_index(data->m_input_data, (size_t)event.mouse.button, false);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
 		{
@@ -337,6 +327,22 @@ static void g_app_input(g_app_data_t* data)
 		case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
 		{
 			g_mouse_cursor_set_visible(&data->m_mouse_cursor, false);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_AXIS:
+		{
+			s_input_set_joystick_axis(data->m_input_data, event.joystick.stick, event.joystick.axis, event.joystick.pos);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN:
+		{
+			s_input_set_joystick_button_array_index(data->m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_BUTTON_UP:
+		{
+			s_input_set_joystick_button_array_index(data->m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_CONFIGURATION:
+		{
+			s_input_reconfigure_joystick(data->m_input_data, al_reconfigure_joysticks());
 		} break;
 		default: return;
 		}
@@ -353,16 +359,16 @@ static void g_app_logic(g_app_data_t* data)
 		return;
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_F1))
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_F1))
 	{
 		data->m_show_stats = !data->m_show_stats;
-		s_input_acknowledge_key_button(ALLEGRO_KEY_F1);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_F1);
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_F2))
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_F2))
 	{
 		s_screenshot_save(al_get_backbuffer(data->m_display));
-		s_input_acknowledge_key_button(ALLEGRO_KEY_F2);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_F2);
 	}
 
 	g_game_logic(&data->m_game_data);
@@ -439,32 +445,26 @@ static void g_app_draw(const g_app_data_t* data)
 	static ALLEGRO_TRANSFORM backup;
 	static ALLEGRO_TRANSFORM transform;
 
-
-	al_copy_transform(&backup, al_get_current_transform());
-	al_identity_transform(&transform);
-
 	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
 	g_app_draw_viewport(data, &data->m_viewport);
 
-	al_identity_transform(&transform);
-	al_translate_transform(&transform, data->m_viewport.m_point.m_x * data->m_display_scale.m_x, data->m_viewport.m_point.m_y * data->m_display_scale.m_y);
-	al_use_transform(&transform);
-
+	al_copy_transform(&backup, al_get_current_transform());
 	al_identity_transform(&transform);
 	al_scale_transform(&transform, 1.0f, 2.0f);
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
 
-	al_use_transform(&transform);
 	if (data->m_show_stats)
 	{
 		g_stats_draw(data->m_builtin_font, &data->m_game_data.m_stats, 0.0f, 0.0f);
 	}
 
+	al_identity_transform(&transform);
+	al_use_transform(&transform);
+
 	g_mouse_cursor_draw(&data->m_mouse_cursor, S_MODEL_DRAW_FLAG_TEXTURED);
 
 	al_use_transform(&backup);
-
 	al_flip_display();
 }
 

@@ -56,6 +56,7 @@ static bool g_collison_do_boulder_vs_bullet_collision(const g_boulder_t* boulder
 static bool g_collison_do_boulder_array_vs_bullet_collision(g_boulder_array_t* boulder_array, const g_bullet_t* bullet, g_stats_collision_t* stats)
 {
 	g_boulder_node_t* boulder_node = NULL;
+	size_t size = 0;
 
 	if (!boulder_array)
 	{
@@ -67,9 +68,11 @@ static bool g_collison_do_boulder_array_vs_bullet_collision(g_boulder_array_t* b
 		return false;
 	}
 
-	for (size_t i = 0; i < boulder_array->m_max_count; ++i)
+	size = s_vector_get_size(boulder_array->m_boulder_list);
+
+	for (size_t i = 0; i < size; ++i)
 	{
-		boulder_node = &boulder_array->m_boulder[i];
+		boulder_node = (g_boulder_node_t*)s_vector_get_value(boulder_array->m_boulder_list, i);
 
 		if (s_flags_is_set(boulder_node->m_status, G_BOULDER_STATUS_LIVE) &&
 			g_collison_do_boulder_vs_bullet_collision(&boulder_node->m_boulder, bullet, stats))

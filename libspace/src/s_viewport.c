@@ -10,8 +10,10 @@ void s_viewport_zero_initialize_data(s_viewport_t* viewport)
 		return;
 	}
 
-	s_point_zero_initialize_data(&viewport->m_point);
-	s_point_zero_initialize_data(&viewport->m_size);
+	for (size_t i = 0; i < S_VIEWPORT_FLOAT_SIZE; ++i)
+	{
+		viewport->m_float_array[i] = 0.0f;
+	}
 }
 
 void s_viewport_set(s_viewport_t* viewport, const s_viewport_t* viewport2)

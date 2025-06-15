@@ -7,11 +7,6 @@
 #include "libspace/s_log.h"
 #include "libspace/s_string.h"
 
-enum
-{
-	S_LOG_STRING_ARRAY_MAX_SIZE = 2048
-};
-
 static ALLEGRO_FILE** s_log_get_file()
 {
 	static ALLEGRO_FILE* p_file = NULL;
@@ -57,7 +52,7 @@ void s_log_close()
 		return;
 	}
 	
-	al_fclose((*p_file));
+	al_fclose(*p_file);
 	(*p_file) = NULL;
 }
 
@@ -96,7 +91,7 @@ void s_log_flush()
 		return;
 	}
 
-	al_fflush((*p_file));
+	al_fflush(*p_file);
 }
 
 void s_log_print(const char* message)
@@ -190,27 +185,75 @@ void s_log_print_char(char c)
 	s_log_printf("%c", c);
 }
 
+#ifdef _MSC_VER
+static size_t s_log_get_format_length(const char* format, va_list ap)
+{
+	va_list ap_copy;
+	int retval = 0;
+
+	va_copy(ap_copy, ap);
+	retval = _vscprintf(format, ap_copy);
+	va_end(ap_copy);
+
+	if (retval <= 0)
+	{
+		return (size_t)0;
+	}
+
+	return (size_t)retval;
+}
+#endif
+
+#ifdef __GNUC__
+static int s_log_get_format_length(const char *format, va_list ap)
+{
+	va_list ap_copy;
+	va_copy(ap_copy, ap);
+	int retval = vsnprintf(NULL, 0, format, ap_copy);
+	va_end(ap_copy);
+	return retval;
+}
+#endif
+
 void s_log_print_vargs(const char* const format, va_list va_arg_list)
 {
-	static char buffer[S_LOG_STRING_ARRAY_MAX_SIZE];
+	static char* buffer = NULL;
+	static size_t length = 0;
 
-	buffer[0] = 0;
+	if (!format)
+	{
+		return;
+	}
+	
+	length = s_log_get_format_length(format, va_arg_list);
 
-	vsnprintf(buffer, S_LOG_STRING_ARRAY_MAX_SIZE, format, va_arg_list);
+	if (length <= 0)
+	{
+		return;
+	}
+
+	if (!(buffer = (char*)al_malloc(length * sizeof(char))))
+	{
+		return;
+	}
+
+	vsnprintf(buffer, length, format, va_arg_list);
 
 	s_log_print(buffer);
+
+	al_free(buffer);
 }
 
 void s_log_printf(const char* const format, ...)
 {
 	static va_list va_arg_list;
-	static char buffer[S_LOG_STRING_ARRAY_MAX_SIZE];
 
-	buffer[0] = 0;
+	if (!format)
+	{
+		return;
+	}
 
 	va_start(va_arg_list, format);
 	s_log_print_vargs(format, va_arg_list);
 	va_end(va_arg_list);
-
-	s_log_print(buffer);
 }

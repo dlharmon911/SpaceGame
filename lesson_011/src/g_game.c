@@ -28,6 +28,7 @@ void g_game_zero_initialize_data(g_game_data_t* data)
 	g_star_array_zero_initialize_data(&g_game_data->m_star_array);
 	g_boulder_array_zero_initialize_data(&data->m_boulder_array);
 	g_game_data->m_settings = NULL;
+	data->m_input_data = NULL;
 	data->m_is_running = false;
 }
 
@@ -97,38 +98,38 @@ void g_game_destroy_data()
 
 void g_game_logic()
 {
-	if (s_input_was_key_button_released(ALLEGRO_KEY_ESCAPE))
+	if (s_input_was_keyboard_button_released(g_game_data->m_input_data, ALLEGRO_KEY_ESCAPE))
 	{
 		g_game_data->m_is_running = false;
-		s_input_acknowledge_key_button(ALLEGRO_KEY_ESCAPE);
+		s_input_acknowledge_keyboard_button(g_game_data->m_input_data, ALLEGRO_KEY_ESCAPE);
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_F3))
+	if (s_input_was_keyboard_button_released(g_game_data->m_input_data, ALLEGRO_KEY_F3))
 	{
 		++g_game_data->m_settings->m_game.m_draw_flag;
 		if (g_game_data->m_settings->m_game.m_draw_flag == S_MODEL_DRAW_FLAG_COUNT)
 		{
 			g_game_data->m_settings->m_game.m_draw_flag = 0;
 		}
-		s_input_acknowledge_key_button(ALLEGRO_KEY_F3);
+		s_input_acknowledge_keyboard_button(g_game_data->m_input_data, ALLEGRO_KEY_F3);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_UP) || s_input_is_key_button_pressed(ALLEGRO_KEY_W))
+	if (s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_UP) || s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_W))
 	{
 		g_ship_forward_thrust(&g_game_data->m_ship);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_DOWN) || s_input_is_key_button_pressed(ALLEGRO_KEY_S))
+	if (s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_DOWN) || s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_S))
 	{
 		g_ship_reverse_thrust(&g_game_data->m_ship);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_LEFT) || s_input_is_key_button_pressed(ALLEGRO_KEY_A))
+	if (s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_LEFT) || s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_A))
 	{
 		g_ship_rotate(&g_game_data->m_ship, G_SHIP_ROTATE_AMOUNT);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_RIGHT) || s_input_is_key_button_pressed(ALLEGRO_KEY_D))
+	if (s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_RIGHT) || s_input_is_keyboard_button_pressed(g_game_data->m_input_data, ALLEGRO_KEY_D))
 	{
 		g_ship_rotate(&g_game_data->m_ship, -G_SHIP_ROTATE_AMOUNT);
 	}

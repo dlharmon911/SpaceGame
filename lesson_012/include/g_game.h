@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro5.h>
 #include <stdint.h>
+#include <libspace.h>
 #include "g_constants.h"
 #include "g_stats.h"
 #include "g_models.h"
@@ -34,6 +35,9 @@ typedef struct g_game_data_t
 
 	/// <summary>Configuration settings handler</summary>
 	g_settings_t* m_settings;
+
+	/// <summary>Input data (keyboard, mouse, joystick)</summary>
+	S_INPUT_DATA* m_input_data;
 
 	/// <summary>Boolean set if game should continue to process</summary>
 	bool m_is_running;

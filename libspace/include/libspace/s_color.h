@@ -41,4 +41,6 @@ static const s_color_t S_COLOR_BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };
 /// <summary>RGBA White</summary>
 static const s_color_t S_COLOR_WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+void s_color_zero_initialize_data(s_color_t* color);
+
 #endif // !_HEADER_GUARD_LIBSPACE_COLOR_H_

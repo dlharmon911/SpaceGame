@@ -21,7 +21,7 @@ typedef struct g_stats_t
 	/// <summary>Number of active boulders</summary>
 	size_t* m_boulder_count;
 	/// <summary>Capacity of boulder vector</summary>
-	size_t* m_boulder_capacity;
+	size_t m_boulder_capacity;
 	/// <summary>Number of active bullets</summary>
 	size_t* m_bullet_count;
 	/// <summary>Capacity of bullet array</summary>

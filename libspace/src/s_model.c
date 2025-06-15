@@ -9,8 +9,6 @@
 #include "libspace/s_model.h"
 #include "libspace/s_math.h"
 
-extern ALLEGRO_VERTEX_DECL* s_vertex_decl;
-
 static void s_model_index_buffer_zero_initialize_data(s_index_buffer_t* buffer)
 {
 	if (!buffer)
@@ -208,6 +206,17 @@ void s_model_draw(const s_model_t* model, int32_t flag)
 	static ALLEGRO_BITMAP* texture = NULL;
 	static int32_t draw_flag = ALLEGRO_PRIM_LINE_LOOP;
 	static const s_index_buffer_t* buffer = NULL;
+	static const ALLEGRO_VERTEX_DECL* vertex_decl = NULL;
+
+	if (!vertex_decl)
+	{
+		vertex_decl = s_vertex_get_decl();
+
+		if (!vertex_decl)
+		{
+			return;
+		}
+	}
 
 	if (!model)
 	{
@@ -256,7 +265,7 @@ void s_model_draw(const s_model_t* model, int32_t flag)
 		buffer = NULL;
 		draw_flag = -1;
 	} break;
-	};
+	}
 
 	if (!buffer)
 	{
@@ -264,7 +273,7 @@ void s_model_draw(const s_model_t* model, int32_t flag)
 	}
 
 	al_draw_indexed_prim(model->m_vertex_buffer.m_buffer,
-		s_vertex_decl,
+		vertex_decl,
 		texture,
 		buffer->m_buffer,
 		buffer->m_count,

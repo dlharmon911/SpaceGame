@@ -10,13 +10,16 @@
 #include "g_boulder.h"
 #include "g_boulder_array.h"
 
+static const ALLEGRO_COLOR G_RADAR_COLOR_TEXT = { 0.75f, 0.75f, 0.75f, 1.0f };
 static const float G_RADAR_LENGTH_MAX = 1200.0f;
 static const float G_RADAR_ROTATION_AMOUNT = 0.035f;
 static const float G_RADAR_LENGTH_EDGE_MARGIN = 16.0f;
+static const float G_RADAR_TEXT_MARGIN = 4.0f;
 static const s_point_t G_RADAR_SIZE = { 128.0f, 128.0f };
 static const s_point_t G_RADAR_SIZE_HALF = { 64.0f, 64.0f };
 static const s_point_t G_RADAR_MARGIN = { 16.0f, 16.0f };
-static const float G_RADAR_SCALE = 1.75f;
+static const float G_RADAR_SCALE = 2.0f;
+static const float G_RADAR_SCALE_TEXT = 2.75f;
 
 /// <summary>Data struct for radar entity</summary>
 typedef struct g_radar_t
@@ -47,6 +50,9 @@ void g_radar_initialize(ALLEGRO_BITMAP* texture, g_radar_t* radar);
 /// <returns>n/a</returns>
 void g_radar_draw(const g_radar_t* radar, int32_t flag);
 
+/// <summary>Update radar sweep motion</summary>
+/// <param name='radar'> - pointer to container of radar data</param>
+/// <returns>n/a</returns>
 void g_radar_update(g_radar_t* radar);
 
 #endif // !_HEADER_GUARD_RADAR_H_

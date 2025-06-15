@@ -9,11 +9,23 @@
 static const float S_CAMERA_MAX_SPEED = 4.5f;
 static const float S_CAMERA_MAX_DISTANCE = 200.0f;
 
+enum
+{
+	S_CAMERA_FLOAT_SIZE = 2 * S_POINT_FLOAT_SIZE
+};
+
 typedef struct s_camera_t
 {
+	union
+	{
+		struct
+		{
+			s_point_t m_center;
+			s_point_t m_velocity;
+		};
+		float m_float_array[S_CAMERA_FLOAT_SIZE];
+	};
 	s_point_t* m_following;
-	s_point_t m_center;
-	s_point_t m_velocity;
 } s_camera_t;
 
 void s_camera_zero_initialize_data(s_camera_t* camera);

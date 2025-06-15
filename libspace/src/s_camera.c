@@ -12,9 +12,11 @@ void s_camera_zero_initialize_data(s_camera_t* camera)
 		return;
 	}
 
-	s_point_set_zero(&camera->m_center);
+	for (size_t i = 0; i < S_CAMERA_FLOAT_SIZE; ++i)
+	{
+		camera->m_float_array[i] = 0.0f;
+	}
 	camera->m_following = NULL;
-	s_point_set_zero(&camera->m_velocity);
 }
 
 void s_camera_set(s_camera_t* camera, const s_camera_t* camera2)
@@ -29,9 +31,11 @@ void s_camera_set(s_camera_t* camera, const s_camera_t* camera2)
 		return;
 	}
 
-	s_point_set(&camera->m_center, &camera2->m_center);
+	for (size_t i = 0; i < S_CAMERA_FLOAT_SIZE; ++i)
+	{
+		camera->m_float_array[i] = camera2->m_float_array[i];
+	}
 	camera->m_following = camera2->m_following;
-	s_point_set(&camera->m_velocity, &camera2->m_velocity);
 }
 
 void s_camera_set_p(s_camera_t* camera, const s_point_t* center, s_point_t* following, const s_point_t* velocity)
@@ -57,8 +61,8 @@ void s_camera_set_p(s_camera_t* camera, const s_point_t* center, s_point_t* foll
 	}
 
 	s_point_set(&camera->m_center, center);
-	camera->m_following = following;
 	s_point_set(&camera->m_velocity, velocity);
+	camera->m_following = following;
 }
 
 const s_point_t* s_camera_get_center(const s_camera_t* camera)

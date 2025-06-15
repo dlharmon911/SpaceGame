@@ -28,8 +28,9 @@ void g_game_zero_initialize_data(g_game_data_t* data)
 	g_boulder_array_zero_initialize_data(&data->m_boulder_array);
 	s_camera_zero_initialize_data(&data->m_camera);
 	s_point_set_zero(&data->m_mouse);
+	data->m_input_data = NULL;
 	data->m_settings = NULL;
-	data->m_apply_constraint = true;
+	data->m_apply_constraint = false;
 	data->m_is_running = false;
 }
 
@@ -70,6 +71,14 @@ int32_t g_game_initialize_data(g_game_data_t* data)
 		s_log_println("success");
 	}
 
+	s_log_print("Creating the boulder array - ");
+	if (g_boulder_array_initialize(&data->m_boulder_array, G_BOULDER_INITIAL_COUNT) < 0)
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
 	s_log_println("Initializing ship data");
 	g_ship_initialize(data->m_textures.m_texture[G_TEXTURE_SHIP], &data->m_ship);
 	data->m_stats.m_ship_position = &data->m_ship.m_object.m_model.m_center;
@@ -80,7 +89,7 @@ int32_t g_game_initialize_data(g_game_data_t* data)
 
 	data->m_stats.m_star_count = data->m_star_array.m_count;
 	data->m_stats.m_boulder_count = &data->m_boulder_array.m_count;
-	data->m_stats.m_boulder_capacity = &data->m_boulder_array.m_max_count;
+	data->m_stats.m_boulder_capacity = 0;
 	data->m_stats.m_bullet_count = &data->m_ship.m_bullet_array.m_count;
 	data->m_stats.m_bullet_capacity = &data->m_ship.m_bullet_array.m_max_count;
 	data->m_stats.m_mouse = &data->m_mouse;
@@ -95,6 +104,12 @@ void g_game_destroy_data(g_game_data_t* data)
 	if (!data)
 	{
 		return;
+	}
+
+	if (data->m_boulder_array.m_boulder_list)
+	{
+		g_boulder_array_free(&data->m_boulder_array);
+		s_log_println("Releasing boulder array memory");
 	}
 
 	s_log_println("Releasing texture memory");
@@ -114,47 +129,47 @@ void g_game_logic(g_game_data_t* data)
 		return;
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_ESCAPE))
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_ESCAPE))
 	{
 		data->m_is_running = false;
-		s_input_acknowledge_key_button(ALLEGRO_KEY_ESCAPE);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_ESCAPE);
 	}
 
-	if (s_input_was_key_button_released(ALLEGRO_KEY_F3))
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_F3))
 	{
 		++data->m_settings->m_game.m_draw_flag;
 		if (data->m_settings->m_game.m_draw_flag == S_MODEL_DRAW_FLAG_COUNT)
 		{
 			data->m_settings->m_game.m_draw_flag = 0;
 		}
-		s_input_acknowledge_key_button(ALLEGRO_KEY_F3);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_F3);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_UP) || s_input_is_key_button_pressed(ALLEGRO_KEY_W))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_UP) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_W))
 	{
 		g_ship_thrust(&data->m_ship, G_SHIP_THRUST);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_DOWN) || s_input_is_key_button_pressed(ALLEGRO_KEY_S))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_DOWN) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_S))
 	{
 		g_ship_thrust(&data->m_ship, G_SHIP_THRUST * -G_SHIP_REVERSE_THRUST_RATIO);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_LEFT) || s_input_is_key_button_pressed(ALLEGRO_KEY_A))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_LEFT) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_A))
 	{
 		g_ship_rotate(&data->m_ship, G_SHIP_ROTATE_AMOUNT);
 	}
 
-	if (s_input_is_key_button_pressed(ALLEGRO_KEY_RIGHT) || s_input_is_key_button_pressed(ALLEGRO_KEY_D))
+	if (s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_RIGHT) || s_input_is_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_D))
 	{
 		g_ship_rotate(&data->m_ship, -G_SHIP_ROTATE_AMOUNT);
 	}
 
-	if (s_input_was_key_button_pressed(ALLEGRO_KEY_SPACE) || s_input_was_mouse_button_pressed(ALLEGRO_MOUSE_BUTTON_LEFT))
+	if (s_input_was_keyboard_button_pressed(data->m_input_data, ALLEGRO_KEY_SPACE) || s_input_was_mouse_button_pressed(data->m_input_data, ALLEGRO_MOUSE_BUTTON_LEFT))
 	{
 		g_ship_fire_bullet(&data->m_ship);
-		s_input_acknowledge_key_button(ALLEGRO_KEY_SPACE);
-		s_input_acknowledge_mouse_button(ALLEGRO_MOUSE_BUTTON_LEFT);
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_SPACE);
+		s_input_acknowledge_mouse_button(data->m_input_data, ALLEGRO_MOUSE_BUTTON_LEFT);
 	}
 
 	g_game_update(data);
@@ -169,6 +184,7 @@ static void g_game_update_step(g_game_data_t* data)
 	if (g_collison_do_boulder_array_vs_bullet_array_collision(&data->m_boulder_array, &data->m_ship.m_bullet_array, &data->m_stats.m_collisions))
 	{
 		g_boulder_array_process_collisions(&data->m_boulder_array);
+		data->m_stats.m_boulder_capacity = s_vector_get_capacity(data->m_boulder_array.m_boulder_list);
 	}
 
 	if (data->m_apply_constraint)
@@ -195,10 +211,7 @@ void g_game_update(g_game_data_t* data)
 
 	g_star_array_apply_window_constraint(&data->m_star_array, &G_GAMESCREEN_TOP_LEFT, &G_GAMESCREEN_BOTTOM_RIGHT);
 
-	if (!data->m_apply_constraint)
-	{
-		s_camera_update(&data->m_camera);
-	}
+	s_camera_update(&data->m_camera);
 }
 
 void g_game_draw(const g_game_data_t* data)
@@ -210,7 +223,6 @@ void g_game_draw(const g_game_data_t* data)
 	{
 		return;
 	}
-
 
 	al_clear_to_color(S_COLOR_BLACK.m_al_color);
 	g_star_array_draw(&data->m_star_array, data->m_settings->m_game.m_draw_flag);

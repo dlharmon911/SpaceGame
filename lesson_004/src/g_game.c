@@ -8,16 +8,17 @@ static g_game_data_t* s_game_data = NULL;
 
 void g_game_zero_initialize_data(g_game_data_t* data)
 {
+	data->m_input_data = NULL;
 	data->m_is_running = false;
 	s_game_data = data;
 }
 
 void g_game_logic()
 {
-	if (s_input_was_key_button_released(ALLEGRO_KEY_ESCAPE))
+	if (s_input_was_keyboard_button_released(s_game_data->m_input_data, ALLEGRO_KEY_ESCAPE))
 	{
 		s_game_data->m_is_running = false;
-		s_input_acknowledge_key_button(ALLEGRO_KEY_ESCAPE);
+		s_input_acknowledge_keyboard_button(s_game_data->m_input_data, ALLEGRO_KEY_ESCAPE);
 	}
 }
 

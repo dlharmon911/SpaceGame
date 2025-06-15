@@ -22,6 +22,7 @@ typedef struct g_game_data_t
 	g_star_array_t m_star_array;
 	g_boulder_array_t m_boulder_array;
 	g_settings_t* m_settings;
+	S_INPUT_DATA* m_input_data;
 	bool m_is_running;
 } g_game_data_t;
 

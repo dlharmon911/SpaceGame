@@ -109,6 +109,12 @@ void s_log_print_char(char c);
 
 /// <summary>Write a formatted string to the log file</summary>
 /// <param name='format'> - format specifier</param>
+/// <param name='va_arg_list'> - variadic arguments</param>
+/// <returns>n/a - no return value</returns>
+void s_log_print_vargs(const char* const format, va_list va_arg_list);
+
+/// <summary>Write a formatted string to the log file</summary>
+/// <param name='format'> - format specifier</param>
 /// <param name='...'> - arguments if any</param>
 /// <returns>n/a - no return value</returns>
 void s_log_printf(const char* const format, ...);

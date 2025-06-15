@@ -20,6 +20,7 @@
 #include <allegro5/allegro_physfs.h>
 #include <physfs.h>
 #include <time.h>
+#include <libspace.h>
 #include "g_constants.h"
 #include "g_app.h"
 #include "g_game.h"
@@ -35,6 +36,8 @@ typedef struct g_app_data_t
 	ALLEGRO_TIMER* m_logic_timer;
 	/// <summary>Event Queue member</summary>
 	ALLEGRO_EVENT_QUEUE* m_event_queue;
+	/// <summary>Input data (keyboard, mouse, joystick)</summary>
+	S_INPUT_DATA* m_input_data;
 	/// <summary>Font used to display stats</summary>
 	ALLEGRO_FONT* m_builtin_font;
 	/// <summary>Scale ration of display to actual game area</summary>

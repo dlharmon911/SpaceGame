@@ -157,6 +157,7 @@
     <ClCompile Include="src\s_camera.c" />
     <ClCompile Include="src\s_circle.c" />
     <ClCompile Include="src\s_collision.c" />
+    <ClCompile Include="src\s_color.c" />
     <ClCompile Include="src\s_config.c" />
     <ClCompile Include="src\s_flags.c" />
     <ClCompile Include="src\s_input.c" />

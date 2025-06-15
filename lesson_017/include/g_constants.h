@@ -18,6 +18,7 @@ enum
 {
 	/// <summary>Constant for the screen width</summary>
 	G_GAMESCREEN_WIDTH = 1200,
+
 	/// <summary>Constant for the screen height</summary>
 	G_GAMESCREEN_HEIGHT = 1200
 };

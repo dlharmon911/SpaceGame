@@ -10,7 +10,7 @@
 static const char* G_TEXTURE_ARCHIVE_FILENAME = "assets.7z";
 
 /// <summary>Flag to generate new textures instead of loading from file</summary>
-static const bool G_TEXTURES_GENERATE_NEW = { false };
+static const bool G_TEXTURES_GENERATE_NEW = { true };
 
 /// <summary>Flag to save newly generated textures to file</summary>
 static const bool G_TEXTURES_SAVE_TO_FILE = { false };

@@ -37,16 +37,16 @@ static void g_bitmaps_texturize_bitmap()
 		list[i].b = list[0].b * (base + ((1.0f - base) * a));
 	}
 
-	list[(G_BOULD_COLOR_ARRAY_SIZE - 1)].r = s_math_min_f(1.0f, list[0].r * light);
-	list[(G_BOULD_COLOR_ARRAY_SIZE - 1)].g = s_math_min_f(1.0f, list[0].g * light);
-	list[(G_BOULD_COLOR_ARRAY_SIZE - 1)].b = s_math_min_f(1.0f, list[0].b * light);
+	list[G_BOULD_COLOR_ARRAY_SIZE - 1].r = s_math_min_f(1.0f, list[0].r * light);
+	list[G_BOULD_COLOR_ARRAY_SIZE - 1].g = s_math_min_f(1.0f, list[0].g * light);
+	list[G_BOULD_COLOR_ARRAY_SIZE - 1].b = s_math_min_f(1.0f, list[0].b * light);
 
 	for (int32_t j = 0; j < (int32_t)G_TEXTURE_BOULDER_SIZE.m_y; ++j)
 	{
 		for (int32_t i = 0; i < (int32_t)G_TEXTURE_BOULDER_SIZE.m_x; ++i)
 		{
 			uint32_t r = s_random_generate(99);
-			int32_t c = (G_BOULD_COLOR_ARRAY_SIZE - 1);
+			uint32_t c = (G_BOULD_COLOR_ARRAY_SIZE - 1);
 
 			if (r < 50)
 			{

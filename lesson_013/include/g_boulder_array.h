@@ -8,7 +8,7 @@
 #include "g_constants.h"
 #include "g_boulder.h"
 
-enum
+enum G_BOULDER_COUNTS
 {
 	/// <summary>Initial capacity of boulder array capacity</summary>
 	G_BOULDER_INITIAL_COUNT = 20,
