@@ -7,14 +7,14 @@
 #include "g_constants.h"
 #include "g_bullet.h"
 
-void g_bullet_zero_initialize_data(g_bullet_t* bullet)
+void g_bullet_set_zero(g_bullet_t* bullet)
 {
 	if (!bullet)
 	{
 		return;
 	}
 
-	s_object_zero_initialize_data(&bullet->m_object);
+	s_object_set_zero(&bullet->m_object);
 	bullet->m_object.m_max_speed = G_BULLET_MAX_SPEED;
 	bullet->m_iterations = 0;
 }

@@ -6,14 +6,14 @@
 #include "g_models.h"
 #include "g_ship.h"
 
-void g_ship_zero_initialize_data(g_ship_t* ship)
+void g_ship_set_zero(g_ship_t* ship)
 {
 	if (!ship)
 	{
 		return;
 	}
 
-	s_object_zero_initialize_data(&ship->m_object);
+	s_object_set_zero(&ship->m_object);
 
 	ship->m_object.m_max_speed = G_OBJECT_MAX_SPEED;
 }

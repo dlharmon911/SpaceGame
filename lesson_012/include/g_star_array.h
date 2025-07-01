@@ -50,7 +50,7 @@ typedef struct g_star_array_t
 /// <summary>Zero initializes star array data</summary>
 /// <param name='star_array'> - pointer to container of star array data</param>
 /// <returns>n/a</returns>
-void g_star_array_zero_initialize_data(g_star_array_t* star_array);
+void g_star_array_set_zero(g_star_array_t* star_array);
 
 /// <summary>Draws star array to display</summary>
 /// <param name='star_array'> - pointer to container of star array data</param>

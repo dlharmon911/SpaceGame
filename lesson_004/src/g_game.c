@@ -6,7 +6,7 @@
 
 static g_game_data_t* s_game_data = NULL;
 
-void g_game_zero_initialize_data(g_game_data_t* data)
+void g_game_set_zero(g_game_data_t* data)
 {
 	data->m_input_data = NULL;
 	data->m_is_running = false;

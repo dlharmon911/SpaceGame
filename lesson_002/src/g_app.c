@@ -14,7 +14,7 @@ typedef struct g_app_data_t
 
 static g_app_data_t g_data;
 
-static void g_app_zero_initialize_data()
+static void g_app_set_zero()
 {
 	g_data.m_display = NULL;
 	g_data.m_logic_timer = NULL;
@@ -25,7 +25,7 @@ static void g_app_zero_initialize_data()
 
 int32_t g_app_initialize()
 {
-	g_app_zero_initialize_data();
+	g_app_set_zero();
 
 	if (!al_init())
 	{

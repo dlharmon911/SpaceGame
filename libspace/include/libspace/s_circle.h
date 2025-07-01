@@ -24,7 +24,7 @@ typedef struct s_circle_t
 	};
 } s_circle_t;
 
-void s_circle_zero_initialize_data(s_circle_t* circle);
+void s_circle_set_zero(s_circle_t* circle);
 void s_circle_set(s_circle_t* circle, const s_circle_t* circle2);
 void s_circle_set_p(s_circle_t* circle, const s_point_t* center, float radius);
 void s_circle_draw(const s_circle_t* circle, float x, float y, ALLEGRO_COLOR color, float thickness);

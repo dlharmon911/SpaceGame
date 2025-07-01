@@ -5,14 +5,14 @@
 #include "g_star.h"
 #include "g_mouse_cursor.h"
 
-void g_mouse_cursor_zero_initialize_data(g_mouse_cursor_t* mouse_cursor)
+void g_mouse_cursor_set_zero(g_mouse_cursor_t* mouse_cursor)
 {
 	if (!mouse_cursor)
 	{
 		return;
 	}
 
-	g_star_zero_initialize_data(&mouse_cursor->m_icon);
+	g_star_set_zero(&mouse_cursor->m_icon);
 	s_point_set_zero(&mouse_cursor->m_position);
 	mouse_cursor->m_visible = true;
 	mouse_cursor->m_active = true;

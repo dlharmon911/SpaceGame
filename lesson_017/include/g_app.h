@@ -41,8 +41,6 @@ typedef struct g_app_data_t
 	S_INPUT_DATA* m_input_data;
 	/// <summary>Scale ration of display to actual game area</summary>
 	ALLEGRO_FONT* m_builtin_font;
-	/// <summary>Scale ration of display to actual game area</summary>
-	s_point_t m_display_scale;
 	/// <summary>Data struct for configuration settings</summary>
 	g_settings_t m_settings;
 	/// <summary>Position and size of game view</summary>
@@ -58,7 +56,7 @@ typedef struct g_app_data_t
 /// <summary>Zero initialize application data</summary>
 /// <param name='data'> - pointer to container of application data</param>
 /// <returns>n/a</returns>
-void g_app_zero_initialize_data(g_app_data_t* data);
+void g_app_set_zero(g_app_data_t* data);
 
 /// <summary>Initialize application</summary>
 /// <param name='argc'> - argument array size passed from main</param>

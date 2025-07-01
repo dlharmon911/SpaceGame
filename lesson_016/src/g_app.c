@@ -10,7 +10,7 @@
 #include "g_app.h"
 #include "g_game.h"
 
-void g_app_zero_initialize_data(g_app_data_t* data)
+void g_app_set_zero(g_app_data_t* data)
 {
 	if (!data)
 	{
@@ -25,13 +25,13 @@ void g_app_zero_initialize_data(g_app_data_t* data)
 	data->m_update_logic = false;
 	data->m_show_stats = false;
 	s_point_set_f(&data->m_display_scale, 1.0f, 1.0f);
-	g_game_zero_initialize_data(&data->m_game_data);
-	s_viewport_zero_initialize_data(&data->m_viewport);
-	g_mouse_cursor_zero_initialize_data(&data->m_mouse_cursor);
-	s_point_set_f(&data->m_viewport.m_size, 600.0f, 600.0f);
-	s_point_set(&data->m_viewport.m_point, &G_DISPLAY_INITIAL_SIZE);
-	s_point_subtract(&data->m_viewport.m_point, &data->m_viewport.m_size);
-	s_point_multiply_f(&data->m_viewport.m_point, 0.5f);
+	g_game_set_zero(&data->m_game_data);
+	s_viewport_set_zero(&data->m_viewport);
+	g_mouse_cursor_set_zero(&data->m_mouse_cursor);
+	s_point_set_f(&data->m_viewport.m_rectangle.m_size, 600.0f, 600.0f);
+	s_point_set(&data->m_viewport.m_rectangle.m_point, &G_DISPLAY_INITIAL_SIZE);
+	s_point_subtract(&data->m_viewport.m_rectangle.m_point, &data->m_viewport.m_rectangle.m_size);
+	s_point_multiply_f(&data->m_viewport.m_rectangle.m_point, 0.5f);
 }
 
 int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
@@ -158,7 +158,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	data->m_game_data.m_stats.m_settings = &data->m_settings;
 	data->m_game_data.m_builtin_font = data->m_builtin_font;
 
-	if (g_game_initialize_data(&data->m_game_data) < 0)
+	if (g_game(&data->m_game_data) < 0)
 	{
 		return -1;
 	}
@@ -310,7 +310,7 @@ static void g_app_input(g_app_data_t* data)
 			s_point_set_f(&data->m_game_data.m_mouse, (float)event.mouse.x, (float)event.mouse.y);
 			g_mouse_cursor_set_position(&data->m_mouse_cursor, &data->m_game_data.m_mouse);
 			s_point_divide(&data->m_game_data.m_mouse, &data->m_display_scale);
-			s_point_subtract_f(&data->m_game_data.m_mouse, data->m_viewport.m_point.m_x + data->m_viewport.m_size.m_x * 0.5f, data->m_viewport.m_point.m_y + data->m_viewport.m_size.m_y * 0.5f);
+			s_point_subtract_f(&data->m_game_data.m_mouse, data->m_viewport.m_rectangle.m_point.m_x + data->m_viewport.m_rectangle.m_size.m_x * 0.5f, data->m_viewport.m_rectangle.m_point.m_y + data->m_viewport.m_rectangle.m_size.m_y * 0.5f);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
@@ -412,10 +412,10 @@ static void g_app_draw_viewport(const g_app_data_t* data, const s_viewport_t* vi
 	static int32_t clip[4] = { 0, 0, 0, 0 };
 
 	al_get_clipping_rectangle(clip, clip + 1, clip + 2, clip + 3);
-	al_set_clipping_rectangle((int32_t)(viewport->m_point.m_x * data->m_display_scale.m_x),
-		(int32_t)(viewport->m_point.m_y * data->m_display_scale.m_y),
-		(int32_t)(viewport->m_size.m_x * data->m_display_scale.m_x),
-		(int32_t)(viewport->m_size.m_y * data->m_display_scale.m_y));
+	al_set_clipping_rectangle((int32_t)(viewport->m_rectangle.m_point.m_x * data->m_display_scale.m_x),
+		(int32_t)(viewport->m_rectangle.m_point.m_y * data->m_display_scale.m_y),
+		(int32_t)(viewport->m_rectangle.m_size.m_x * data->m_display_scale.m_x),
+		(int32_t)(viewport->m_rectangle.m_size.m_y * data->m_display_scale.m_y));
 
 	al_copy_transform(&backup, al_get_current_transform());
 	al_identity_transform(&transform);
@@ -453,7 +453,7 @@ static void g_app_draw(const g_app_data_t* data)
 	g_app_draw_viewport(data, &data->m_viewport);
 
 	al_identity_transform(&transform);
-	al_translate_transform(&transform, data->m_viewport.m_point.m_x * data->m_display_scale.m_x, data->m_viewport.m_point.m_y * data->m_display_scale.m_y);
+	al_translate_transform(&transform, data->m_viewport.m_rectangle.m_point.m_x * data->m_display_scale.m_x, data->m_viewport.m_rectangle.m_point.m_y * data->m_display_scale.m_y);
 	al_use_transform(&transform);
 
 	al_identity_transform(&transform);

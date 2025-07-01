@@ -6,14 +6,14 @@
 #include "g_models.h"
 #include "g_star.h"
 
-void g_star_zero_initialize_data(g_star_t* star)
+void g_star_set_zero(g_star_t* star)
 {
 	if (!star)
 	{
 		return;
 	}
 
-	s_object_zero_initialize_data(&star->m_object);
+	s_object_set_zero(&star->m_object);
 	star->m_object.m_max_speed = G_OBJECT_MAX_SPEED;
 	star->m_z = 0.0f;
 }

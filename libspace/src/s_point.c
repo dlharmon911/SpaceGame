@@ -5,7 +5,7 @@
 #include "libspace/s_math.h"
 #include "libspace/s_point.h"
 
-void s_point_zero_initialize_data(s_point_t* point)
+void s_point_set_zero(s_point_t* point)
 {
 	if (!point)
 	{
@@ -203,19 +203,6 @@ void s_point_set(s_point_t* point, const s_point_t* point2)
 	for (size_t i = 0; i < S_POINT_FLOAT_SIZE; ++i)
 	{
 		point->m_float_array[i] = point2->m_float_array[i];
-	}
-}
-
-void s_point_set_zero(s_point_t* point)
-{
-	if (!point)
-	{
-		return;
-	}
-
-	for (size_t i = 0; i < S_POINT_FLOAT_SIZE; ++i)
-	{
-		point->m_float_array[i] = 0.0f;
 	}
 }
 
@@ -507,4 +494,14 @@ void s_point_scale(ALLEGRO_TRANSFORM* transform, const s_point_t* point)
 	}
 
 	al_scale_transform(transform, point->m_x, point->m_y);
+}
+
+void s_point_scale_f(ALLEGRO_TRANSFORM* transform, float x, float y)
+{
+	if (!transform)
+	{
+		return;
+	}
+
+	al_scale_transform(transform, x, y);
 }

@@ -7,7 +7,7 @@
 #include "g_models.h"
 #include "g_radar.h"
 
-void g_radar_zero_initialize_data(g_radar_t* radar)
+void g_radar_set_zero(g_radar_t* radar)
 {
 	if (!radar)
 	{
@@ -16,7 +16,7 @@ void g_radar_zero_initialize_data(g_radar_t* radar)
 
 	for (size_t i = 0; i < G_MODEL_RADAR_MODEL_COUNT; ++i)
 	{
-		s_model_zero_initialize_data(&radar->m_model[i]);
+		s_model_set_zero(&radar->m_model[i]);
 	}
 	s_point_set_zero(&radar->m_position);
 	radar->m_angle = 0.0f;

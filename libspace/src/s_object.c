@@ -12,14 +12,14 @@ s_point_t m_acceleration;
 float m_max_speed;
 float m_facing;
 
-void s_object_zero_initialize_data(s_object_t* object)
+void s_object_set_zero(s_object_t* object)
 {
 	if (!object)
 	{
 		return;
 	}
 
-	s_model_zero_initialize_data(&object->m_model);
+	s_model_set_zero(&object->m_model);
 	s_point_set_zero(&object->m_velocity);
 	s_point_set_zero(&object->m_acceleration);
 	object->m_rotate_velocity = 0.0f;

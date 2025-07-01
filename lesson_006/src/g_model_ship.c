@@ -9,7 +9,7 @@ static void g_models_generate_ship_model_vertices(g_ship_model_t* model, const s
 {
 	int32_t indices[S_TRIANGLE_POINT_COUNT * G_SHIP_TRIANGLE_COUNT] =
 	{
-		0, 1, 2, 0, 2, 3
+		0, 2, 1, 0, 3, 2
 	};
 
 	s_point_t vertices[G_SHIP_VERTEX_COUNT] =
@@ -69,6 +69,7 @@ void g_model_generate_ship_model(g_ship_model_t* ship_model, s_model_t* model, A
 
 	g_models_generate_ship_model_vertices(ship_model, &center, w, h);
 
+	s_point_set(&model->m_center, &center);
 	model->m_index_buffer.m_count = G_SHIP_TRIANGLE_COUNT * S_TRIANGLE_POINT_COUNT;
 	model->m_index_buffer.m_buffer = ship_model->m_indices;
 	model->m_vertex_buffer.m_count = G_SHIP_VERTEX_COUNT;
@@ -78,5 +79,7 @@ void g_model_generate_ship_model(g_ship_model_t* ship_model, s_model_t* model, A
 
 	s_point_multiply_f(&center, -1.0f);
 	s_model_translate(model, &center);
-	s_model_scale(model, 0.5f);
+
+
+	s_model_scale(model, 1.5f);
 }

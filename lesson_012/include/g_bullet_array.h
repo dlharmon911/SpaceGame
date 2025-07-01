@@ -53,7 +53,7 @@ typedef struct g_bullet_array_t
 /// <summary>Zero initializes bullet array data</summary>
 /// <param name='bullet_array'> - pointer to container of bullet array data</param>
 /// <returns>n/a</returns>
-void g_bullet_array_zero_initialize_data(g_bullet_array_t* bullet_array);
+void g_bullet_array_set_zero(g_bullet_array_t* bullet_array);
 
 /// <summary>Initializes bullet array object and model data</summary>
 /// <param name='texture'> - bitmap of bullet texture</param>

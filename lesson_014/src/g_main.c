@@ -11,7 +11,7 @@ int32_t main(int32_t argc, char** argv)
 		return -1;
 	}
 
-	g_app_zero_initialize_data(data);
+	g_app_set_zero(data);
 
 	if (g_app_initialize(argc, argv, data) == 0)
 	{

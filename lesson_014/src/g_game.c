@@ -15,25 +15,25 @@
 #include "g_collision.h"
 #include "g_game.h"
 
-void g_game_zero_initialize_data(g_game_data_t* data)
+void g_game_set_zero(g_game_data_t* data)
 {
 	if (!data)
 	{
 		return;
 	}
 
-	g_texture_zero_initialize_data(&data->m_textures);
-	g_stats_zero_initialize_data(&data->m_stats);
-	g_ship_zero_initialize_data(&data->m_ship);
-	g_star_array_zero_initialize_data(&data->m_star_array);
-	g_boulder_array_zero_initialize_data(&data->m_boulder_array);
+	g_texture_set_zero(&data->m_textures);
+	g_stats_set_zero(&data->m_stats);
+	g_ship_set_zero(&data->m_ship);
+	g_star_array_set_zero(&data->m_star_array);
+	g_boulder_array_set_zero(&data->m_boulder_array);
 	data->m_input_data = NULL;
 	data->m_settings = NULL;
 	data->m_apply_constraint = true;
 	data->m_is_running = false;
 }
 
-int32_t g_game_initialize_data(g_game_data_t* data)
+int32_t g_game(g_game_data_t* data)
 {
 	if (!data)
 	{
@@ -52,7 +52,7 @@ int32_t g_game_initialize_data(g_game_data_t* data)
 	if (G_TEXTURES_GENERATE_NEW)
 	{
 		s_log_print("Creating the game textures - ");
-		if (g_texture_initialize_data(&data->m_textures) < 0)
+		if (g_texture(&data->m_textures) < 0)
 		{
 			s_log_println("failure");
 			return -1;
@@ -214,7 +214,7 @@ void g_game_draw(const g_game_data_t* data, const s_viewport_t* viewport)
 
 	al_copy_transform(&backup, al_get_current_transform());
 	al_identity_transform(&transform);
-	al_scale_transform(&transform, viewport->m_size.m_x / G_GAMESCREEN_SIZE.m_x, viewport->m_size.m_y / G_GAMESCREEN_SIZE.m_y);
+	al_scale_transform(&transform, viewport->m_rectangle.m_size.m_x / G_GAMESCREEN_SIZE.m_x, viewport->m_rectangle.m_size.m_y / G_GAMESCREEN_SIZE.m_y);
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
 

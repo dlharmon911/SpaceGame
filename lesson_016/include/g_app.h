@@ -59,7 +59,7 @@ typedef struct g_app_data_t
 /// <summary>Zero initialize application data</summary>
 /// <param name='data'> - pointer to container of application data</param>
 /// <returns>n/a</returns>
-void g_app_zero_initialize_data(g_app_data_t* data);
+void g_app_set_zero(g_app_data_t* data);
 
 /// <summary>Initialize application</summary>
 /// <param name='argc'> - argument array size passed from main</param>

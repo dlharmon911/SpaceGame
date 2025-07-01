@@ -21,7 +21,7 @@ typedef struct g_boulder_t
 	g_boulder_model_t m_boulder_model;
 } g_boulder_t;
 
-void g_boulder_zero_initialize_data(g_boulder_t* boulder);
+void g_boulder_set_zero(g_boulder_t* boulder);
 void g_boulder_initialize(ALLEGRO_BITMAP* texture, g_boulder_t* boulder, float scale);
 void g_boulder_draw(const g_boulder_t* boulder, int32_t flag);
 void g_boulder_update(g_boulder_t* boulder);

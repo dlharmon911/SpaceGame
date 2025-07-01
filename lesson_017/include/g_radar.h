@@ -33,7 +33,7 @@ typedef struct g_radar_t
 /// <summary>Zero-initializes data struct</summary>
 /// <param name='radar'> - pointer to container of radar data</param>
 /// <returns>n/a</returns>
-void g_radar_zero_initialize_data(g_radar_t* radar);
+void g_radar_set_zero(g_radar_t* radar);
 
 /// <summary>Initializes object and model data</summary>
 /// <param name='texture'> - bitmap of radar texture</param>

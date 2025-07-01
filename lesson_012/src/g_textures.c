@@ -17,7 +17,7 @@ static const char* g_texture_filenames[G_TEXTURE_COUNT] =
 	"boulder.png"
 };
 
-void g_texture_zero_initialize_data(g_texture_list_t* textures)
+void g_texture_set_zero(g_texture_list_t* textures)
 {
 	if (!textures)
 	{
@@ -79,7 +79,7 @@ int32_t g_load_textures(g_texture_list_t* textures, const char* filename)
 	return rv;
 }
 
-int32_t g_texture_initialize_data(g_texture_list_t* textures)
+int32_t g_texture(g_texture_list_t* textures)
 {
 	int32_t(*function_ptr[])(ALLEGRO_BITMAP**) =
 	{

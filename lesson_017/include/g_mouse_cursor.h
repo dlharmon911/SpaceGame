@@ -15,7 +15,7 @@ typedef struct g_mouse_cursor_t
 	bool m_active;
 } g_mouse_cursor_t;
 
-void g_mouse_cursor_zero_initialize_data(g_mouse_cursor_t* mouse_cursor);
+void g_mouse_cursor_set_zero(g_mouse_cursor_t* mouse_cursor);
 void g_mouse_cursor_initialize(ALLEGRO_BITMAP* texture, g_mouse_cursor_t* mouse_cursor);
 void g_mouse_cursor_set_position(g_mouse_cursor_t* mouse_cursor, const s_point_t* point);
 void g_mouse_cursor_set_position_f(g_mouse_cursor_t* mouse_cursor, float x, float y);

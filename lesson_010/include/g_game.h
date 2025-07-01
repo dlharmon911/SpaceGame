@@ -27,8 +27,8 @@ typedef struct g_game_data_t
 	bool m_is_running;
 } g_game_data_t;
 
-void g_game_zero_initialize_data(g_game_data_t* data);
-int32_t g_game_initialize_data();
+void g_game_set_zero(g_game_data_t* data);
+int32_t g_game();
 void g_game_destroy_data();
 void g_game_logic();
 void g_game_draw();

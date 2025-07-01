@@ -23,6 +23,11 @@ void s_log_open(const char* filename)
 		return;
 	}
 
+	if (*p_file)
+	{
+		return;
+	}
+
 	*p_file = al_fopen(filename, "wb");
 }
 

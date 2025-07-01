@@ -13,7 +13,7 @@ enum
 	G_STAR_SCALE_ARRAY_SIZE = 5
 };
 
-void g_star_array_zero_initialize_data(g_star_array_t* star_array)
+void g_star_array_set_zero(g_star_array_t* star_array)
 {
 	if (!star_array)
 	{
@@ -22,7 +22,7 @@ void g_star_array_zero_initialize_data(g_star_array_t* star_array)
 
 	for (size_t i = 0; i < G_STAR_COUNT; ++i)
 	{
-		g_star_zero_initialize_data(&star_array->m_star[i]);
+		g_star_set_zero(&star_array->m_star[i]);
 	}
 	star_array->m_count = G_STAR_COUNT;
 }

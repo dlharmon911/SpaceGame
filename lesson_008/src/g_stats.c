@@ -37,7 +37,7 @@ void g_stats_draw(const ALLEGRO_FONT* font, const g_stats_t* stats, float x, flo
 	g_stats_draw_line(font, x, y, &line, "Star Count : %d", stats->m_star_count);
 }
 
-void g_stats_zero_initialize_data(g_stats_t* stats)
+void g_stats_set_zero(g_stats_t* stats)
 {
 	if (!stats)
 	{

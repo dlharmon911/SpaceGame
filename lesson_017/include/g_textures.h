@@ -48,21 +48,21 @@ typedef struct g_texture_list_t
 	ALLEGRO_BITMAP* m_texture[G_TEXTURE_COUNT];
 } g_texture_list_t;
 
+/// <summary>Zero initializes texture array data</summary>
+/// <param name='textures'> - struct of bitmap array</param>
+/// <returns>n/a</returns>
+void g_texture_set_zero(g_texture_list_t* textures);
+
 /// <summary>Load texture bitmaps from file</summary>
 /// <param name='textures'> - struct of bitmap array</param>
 /// <param name='filename'> - Name of the archive file</param>
 /// <returns>int32_t - 0 on success, -1 on failure</returns>
 int32_t g_load_textures(g_texture_list_t* textures, const char* filename);
 
-/// <summary>Zero initializes texture array data</summary>
-/// <param name='textures'> - struct of bitmap array</param>
-/// <returns>n/a</returns>
-void g_texture_zero_initialize_data(g_texture_list_t* textures);
-
 /// <summary>Generate texture bitmaps</summary>
 /// <param name='textures'> - struct of bitmap array</param>
 /// <returns>int32_t - 0 on success, -1 on failure</returns>
-int32_t g_texture_initialize_data(g_texture_list_t* textures);
+int32_t g_texture(g_texture_list_t* textures);
 
 /// <summary>Release bitmap memory</summary>
 /// <param name='textures'> - struct of bitmap array</param>

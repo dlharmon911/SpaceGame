@@ -9,7 +9,7 @@
 #include "g_app.h"
 #include "g_game.h"
 
-void g_app_zero_initialize_data(g_app_data_t* data)
+void g_app_set_zero(g_app_data_t* data)
 {
 	if (!data)
 	{
@@ -25,7 +25,7 @@ void g_app_zero_initialize_data(g_app_data_t* data)
 	data->m_show_stats = false;
 	s_point_set_f(&data->m_display_scale, 1.0f, 1.0f);
 
-	g_game_zero_initialize_data(&data->m_game_data);
+	g_game_set_zero(&data->m_game_data);
 }
 
 int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
@@ -147,7 +147,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	if (g_game_initialize_data(&data->m_game_data) < 0)
+	if (g_game(&data->m_game_data) < 0)
 	{
 		return -1;
 	}

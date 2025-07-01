@@ -36,7 +36,7 @@ void g_stats_draw(const ALLEGRO_FONT* font, const g_stats_t* stats, float x, flo
 	g_stats_draw_line(font, x, y, &line, "Ship Position : (%d, %d)", (int32_t)stats->m_ship_position->m_x, (int32_t)stats->m_ship_position->m_y);
 }
 
-void g_stats_zero_initialize_data(g_stats_t* stats)
+void g_stats_set_zero(g_stats_t* stats)
 {
 	if (!stats)
 	{

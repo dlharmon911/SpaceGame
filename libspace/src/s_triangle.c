@@ -5,7 +5,7 @@
 #include "libspace/s_point.h"
 #include "libspace/s_triangle.h"
 
-void s_triangle_zero_initialize_data(s_triangle_t* triangle)
+void s_triangle_set_zero(s_triangle_t* triangle)
 {
 	if (!triangle)
 	{

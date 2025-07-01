@@ -7,7 +7,7 @@
 #include "g_boulder.h"
 #include "g_boulder_array.h"
 
-void g_boulder_array_zero_initialize_data(g_boulder_array_t* boulder_array)
+void g_boulder_array_set_zero(g_boulder_array_t* boulder_array)
 {
 	if (!boulder_array)
 	{
@@ -34,7 +34,7 @@ int32_t g_boulder_array_initialize(g_boulder_array_t* boulder_array, size_t init
 		return -1;
 	}
 
-	g_boulder_zero_initialize_data(&boulder_node.m_boulder);
+	g_boulder_set_zero(&boulder_node.m_boulder);
 	boulder_node.m_status = G_BOULDER_STATUS_DEFAULT;
 
 	for (size_t i = 0; i < initial_size; ++i)
@@ -117,7 +117,7 @@ g_boulder_node_t* g_boulder_array_find_first_dead_boulder(g_boulder_array_t* bou
 		}
 	}
 
-	g_boulder_zero_initialize_data(&new_node.m_boulder);
+	g_boulder_set_zero(&new_node.m_boulder);
 	new_node.m_status = G_BOULDER_STATUS_DEFAULT;
 
 	s_vector_push_back(boulder_array->m_boulder_list, &new_node);

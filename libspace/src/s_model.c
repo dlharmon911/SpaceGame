@@ -9,7 +9,7 @@
 #include "libspace/s_model.h"
 #include "libspace/s_math.h"
 
-static void s_model_index_buffer_zero_initialize_data(s_index_buffer_t* buffer)
+static void s_model_index_buffer_set_zero(s_index_buffer_t* buffer)
 {
 	if (!buffer)
 	{
@@ -20,7 +20,7 @@ static void s_model_index_buffer_zero_initialize_data(s_index_buffer_t* buffer)
 	buffer->m_buffer = NULL;
 }
 
-static void s_model_vertex_buffer_zero_initialize_data(s_vertex_buffer_t* buffer)
+static void s_model_vertex_buffer_set_zero(s_vertex_buffer_t* buffer)
 {
 	if (!buffer)
 	{
@@ -31,7 +31,7 @@ static void s_model_vertex_buffer_zero_initialize_data(s_vertex_buffer_t* buffer
 	buffer->m_buffer = NULL;
 }
 
-void s_model_zero_initialize_data(s_model_t* model)
+void s_model_set_zero(s_model_t* model)
 {
 	if (!model)
 	{
@@ -39,8 +39,8 @@ void s_model_zero_initialize_data(s_model_t* model)
 	}
 
 	model->m_texture = NULL;
-	s_model_index_buffer_zero_initialize_data(&model->m_index_buffer);
-	s_model_vertex_buffer_zero_initialize_data(&model->m_vertex_buffer);
+	s_model_index_buffer_set_zero(&model->m_index_buffer);
+	s_model_vertex_buffer_set_zero(&model->m_vertex_buffer);
 	s_point_set_zero(&model->m_center);
 }
 

@@ -53,7 +53,7 @@ typedef struct s_quad_model_t
 } s_quad_model_t;
 
 void s_models_generate_quad_model_vertices(s_quad_model_t* model, const s_point_t* size, const s_point_t* uv, const s_point_t* uv_size, const s_color_t* color);
-void s_model_zero_initialize_data(s_model_t* model);
+void s_model_set_zero(s_model_t* model);
 void s_model_initialize(s_model_t* model, int32_t* index_array, int32_t index_array_size, s_vertex_t* vertex_array, int32_t vertex_array_size, int32_t* outline_index_array, int32_t outline_index_array_size);
 void s_model_center_to_origin(s_model_t* model);
 void s_model_center_to_point(s_model_t* model, const s_point_t* center);

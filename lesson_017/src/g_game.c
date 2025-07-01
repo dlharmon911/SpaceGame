@@ -15,20 +15,20 @@
 #include "g_collision.h"
 #include "g_game.h"
 
-void g_game_zero_initialize_data(g_game_data_t* data)
+void g_game_set_zero(g_game_data_t* data)
 {
 	if (!data)
 	{
 		return;
 	}
 
-	g_texture_zero_initialize_data(&data->m_textures);
-	g_stats_zero_initialize_data(&data->m_stats);
-	g_ship_zero_initialize_data(&data->m_ship);
-	g_star_array_zero_initialize_data(&data->m_star_array);
-	g_boulder_array_zero_initialize_data(&data->m_boulder_array);
-	s_camera_zero_initialize_data(&data->m_camera);
-	g_radar_zero_initialize_data(&data->m_radar);
+	g_texture_set_zero(&data->m_textures);
+	g_stats_set_zero(&data->m_stats);
+	g_ship_set_zero(&data->m_ship);
+	g_star_array_set_zero(&data->m_star_array);
+	g_boulder_array_set_zero(&data->m_boulder_array);
+	s_camera_set_zero(&data->m_camera);
+	g_radar_set_zero(&data->m_radar);
 	s_point_set_zero(&data->m_mouse);
 	data->m_builtin_font = NULL;
 	data->m_settings = NULL;
@@ -38,7 +38,7 @@ void g_game_zero_initialize_data(g_game_data_t* data)
 	data->m_paused = false;
 }
 
-int32_t g_game_initialize_data(g_game_data_t* data)
+int32_t g_game_initialize(g_game_data_t* data)
 {
 	if (!data)
 	{
@@ -57,7 +57,7 @@ int32_t g_game_initialize_data(g_game_data_t* data)
 	if (G_TEXTURES_GENERATE_NEW)
 	{
 		s_log_print("Creating the game textures - ");
-		if (g_texture_initialize_data(&data->m_textures) < 0)
+		if (g_texture(&data->m_textures) < 0)
 		{
 			s_log_println("failure");
 			return -1;

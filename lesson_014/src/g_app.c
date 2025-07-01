@@ -9,7 +9,7 @@
 #include "g_app.h"
 #include "g_game.h"
 
-void g_app_zero_initialize_data(g_app_data_t* data)
+void g_app_set_zero(g_app_data_t* data)
 {
 	if (!data)
 	{
@@ -24,13 +24,13 @@ void g_app_zero_initialize_data(g_app_data_t* data)
 	data->m_update_logic = false;
 	data->m_show_stats = false;
 	s_point_set_f(&data->m_display_scale, 1.0f, 1.0f);
-	g_game_zero_initialize_data(&data->m_game_data);
-	s_viewport_zero_initialize_data(&data->m_viewport);
+	g_game_set_zero(&data->m_game_data);
+	s_viewport_set_zero(&data->m_viewport);
 
-	s_point_set_f(&data->m_viewport.m_size, 600.0f, 600.0f);
-	s_point_set_f(&data->m_viewport.m_point,
-		(G_DISPLAY_INITIAL_SIZE.m_x - data->m_viewport.m_size.m_x) * 0.5f,
-		(G_DISPLAY_INITIAL_SIZE.m_y - data->m_viewport.m_size.m_y) * 0.5f);
+	s_point_set_f(&data->m_viewport.m_rectangle.m_size, 600.0f, 600.0f);
+	s_point_set_f(&data->m_viewport.m_rectangle.m_point,
+		(G_DISPLAY_INITIAL_SIZE.m_x - data->m_viewport.m_rectangle.m_size.m_x) * 0.5f,
+		(G_DISPLAY_INITIAL_SIZE.m_y - data->m_viewport.m_rectangle.m_size.m_y) * 0.5f);
 }
 
 int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
@@ -151,7 +151,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	if (g_game_initialize_data(&data->m_game_data) < 0)
+	if (g_game(&data->m_game_data) < 0)
 	{
 		return -1;
 	}
@@ -376,15 +376,15 @@ static void g_app_draw_view(const g_app_data_t* data, const s_viewport_t* viewpo
 	static int32_t clip[4] = { 0, 0, 0, 0 };
 
 	al_get_clipping_rectangle(clip, clip + 1, clip + 2, clip + 3);
-	al_set_clipping_rectangle((int32_t)(viewport->m_point.m_x * data->m_display_scale.m_x),
-		(int32_t)(viewport->m_point.m_y * data->m_display_scale.m_y),
-		(int32_t)(viewport->m_size.m_x * data->m_display_scale.m_x),
-		(int32_t)(viewport->m_size.m_y * data->m_display_scale.m_y));
+	al_set_clipping_rectangle((int32_t)(viewport->m_rectangle.m_point.m_x * data->m_display_scale.m_x),
+		(int32_t)(viewport->m_rectangle.m_point.m_y * data->m_display_scale.m_y),
+		(int32_t)(viewport->m_rectangle.m_size.m_x * data->m_display_scale.m_x),
+		(int32_t)(viewport->m_rectangle.m_size.m_y * data->m_display_scale.m_y));
 
 	al_copy_transform(&backup, al_get_current_transform());
 	al_identity_transform(&transform);
 	al_scale_transform(&transform, 1.0f, -1.0f);
-	al_translate_transform(&transform, viewport->m_point.m_x + viewport->m_size.m_x * 0.5f, viewport->m_point.m_y + viewport->m_size.m_y * 0.5f);
+	al_translate_transform(&transform, viewport->m_rectangle.m_point.m_x + viewport->m_rectangle.m_size.m_x * 0.5f, viewport->m_rectangle.m_point.m_y + viewport->m_rectangle.m_size.m_y * 0.5f);
 	al_scale_transform(&transform, data->m_display_scale.m_x, data->m_display_scale.m_y);
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);

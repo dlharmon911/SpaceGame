@@ -4,7 +4,7 @@
 #include "g_constants.h"
 #include "g_textures.h"
 
-void g_texture_zero_initialize_data(g_texture_list_t* textures)
+void g_texture_set_zero(g_texture_list_t* textures)
 {
 	if (!textures)
 	{
@@ -16,7 +16,7 @@ void g_texture_zero_initialize_data(g_texture_list_t* textures)
 	textures->m_boulder = NULL;
 }
 
-int32_t g_texture_initialize_data(g_texture_list_t* textures)
+int32_t g_texture(g_texture_list_t* textures)
 {
 	if (g_texture_generate_ship_texture(&textures->m_ship) < 0)
 	{

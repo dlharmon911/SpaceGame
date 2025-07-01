@@ -29,6 +29,8 @@ extern "C"
 #include "libspace/s_random.h"
 #include "libspace/s_math.h"
 #include "libspace/s_point.h"
+#include "libspace/s_rectangle.h"
+#include "libspace/s_display_scale.h"
 #include "libspace/s_viewport.h"
 #include "libspace/s_triangle.h"
 #include "libspace/s_input.h"
@@ -42,6 +44,7 @@ extern "C"
 #include "libspace/s_screenshot.h"
 #include "libspace/s_collision.h"
 #include "libspace/s_camera.h"
+#include "libspace/s_clip.h"
 
 #ifdef __cplusplus
 }

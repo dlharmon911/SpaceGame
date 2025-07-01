@@ -5,7 +5,7 @@
 #include "libspace/s_point.h"
 #include "libspace/s_color.h"
 
-void s_color_zero_initialize_data(s_color_t* color)
+void s_color_set_zero(s_color_t* color)
 {
 	if (!color)
 	{

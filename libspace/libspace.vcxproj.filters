@@ -81,6 +81,15 @@
     <ClInclude Include="include\libspace\s_camera.h">
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\libspace\s_clip.h">
+      <Filter>Header Files\LibSpace Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libspace\s_display_scale.h">
+      <Filter>Header Files\LibSpace Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libspace\s_rectangle.h">
+      <Filter>Header Files\LibSpace Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\s_input.c">
@@ -138,6 +147,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\s_color.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\s_clip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\s_display_scale.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\s_rectangle.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

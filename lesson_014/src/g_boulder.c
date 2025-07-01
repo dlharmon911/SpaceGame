@@ -6,14 +6,14 @@
 #include "g_constants.h"
 #include "g_boulder.h"
 
-void g_boulder_zero_initialize_data(g_boulder_t* boulder)
+void g_boulder_set_zero(g_boulder_t* boulder)
 {
 	if (!boulder)
 	{
 		return;
 	}
 
-	s_object_zero_initialize_data(&boulder->m_object);
+	s_object_set_zero(&boulder->m_object);
 	boulder->m_object.m_max_speed = G_OBJECT_MAX_SPEED;
 	boulder->m_scale = 1.0f;
 	boulder->m_radius = 0.0f;

@@ -5,7 +5,7 @@
 #include "libspace/s_point.h"
 #include "libspace/s_circle.h"
 
-void s_circle_zero_initialize_data(s_circle_t* circle)
+void s_circle_set_zero(s_circle_t* circle)
 {
 	if (!circle)
 	{

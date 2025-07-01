@@ -27,7 +27,7 @@ typedef struct s_vertex_t
 	};
 } s_vertex_t;
 
-void s_vertex_zero_initialize_data(s_vertex_t* vertex);
+void s_vertex_set_zero(s_vertex_t* vertex);
 const ALLEGRO_VERTEX_DECL* s_vertex_get_decl();
 void s_vertex_create_decl();
 bool s_vertex_decl_created();

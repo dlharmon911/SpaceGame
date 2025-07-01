@@ -20,7 +20,7 @@ typedef struct g_ship_t
 	g_ship_model_t m_ship_model;
 } g_ship_t;
 
-void g_ship_zero_initialize_data(g_ship_t* ship);
+void g_ship_set_zero(g_ship_t* ship);
 void g_ship_initialize(const g_texture_list_t* texture, g_ship_t* ship);
 void g_ship_draw(const g_ship_t* ship, int32_t flag);
 void g_ship_update(g_ship_t* ship);

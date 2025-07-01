@@ -14,6 +14,13 @@ enum S_INPUT_INSTALL_FLAG
 	S_INPUT_INSTALL_JOYSTICK = 0x04
 };
 
+enum S_INPUT_BUTTON_FLAG
+{
+	S_INPUT_BUTTON_DEFAULT,
+	S_INPUT_BUTTON_PRESSED = 0x01,
+	S_INPUT_BUTTON_CHANGED = 0x02
+};
+
 typedef struct S_INPUT_DATA S_INPUT_DATA;
 
 S_INPUT_DATA* s_input_install();
@@ -21,6 +28,7 @@ void s_input_uninstall(S_INPUT_DATA* data);
 uint32_t s_input_get_install_flag(const S_INPUT_DATA* data);
 
 void s_input_register_with_event_queue(const S_INPUT_DATA* data, ALLEGRO_EVENT_QUEUE* queue);
+
 /// <summary>Sets the value of the button state variable at index specified</summary>
 /// <param name="index">index of button array</param>
 /// <param name="pressed">boolean value if pressed or not</param>
@@ -42,6 +50,7 @@ bool s_input_is_keyboard_button_pressed(const S_INPUT_DATA* data, size_t index);
 /// <returns>bool - true if button has been pressed</returns>
 /// 
 bool s_input_was_keyboard_button_pressed(const S_INPUT_DATA* data, size_t index);
+
 /// <summary>Determine if button was released since last checked status</summary>
 /// <param name="index">index of button array</param>
 /// <returns>bool - true if button has been pressed</returns>
@@ -56,8 +65,6 @@ void s_input_acknowledge_keyboard_button(S_INPUT_DATA* data, size_t index);
 /// <param name="index">index of button array</param>
 /// <returns>n/a</returns>
 void s_input_acknowledge_all_keyboard_buttons(S_INPUT_DATA* data);
-
-
 
 /// <summary>Set the coordinates of the joystick axis</summary>
 /// <param name="stick">stick index</param>

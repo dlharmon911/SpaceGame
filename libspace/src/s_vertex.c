@@ -12,7 +12,7 @@ static ALLEGRO_VERTEX_DECL** s_vertex_get_internal_decl()
 	return &s_vertex_decl;
 }
 
-void s_vertex_zero_initialize_data(s_vertex_t* vertex)
+void s_vertex_set_zero(s_vertex_t* vertex)
 {
 	if (!vertex)
 	{

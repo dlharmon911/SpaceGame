@@ -47,6 +47,6 @@ void g_stats_draw(const ALLEGRO_FONT* font, const g_stats_t* stats, float x, flo
 /// <summary>Set members of stats to zero point values</summary>
 /// <param name='stats'> - stats data struct</param>
 /// <returns>n/a - no return value</returns>
-void g_stats_zero_initialize_data(g_stats_t* stats);
+void g_stats_set_zero(g_stats_t* stats);
 
 #endif // !_HEADER_GUARD_STATS_H_

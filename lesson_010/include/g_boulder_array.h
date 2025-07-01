@@ -24,7 +24,7 @@ typedef struct g_boulder_array_t
 	s_vector_t* m_boulder_list;
 } g_boulder_array_t;
 
-void g_boulder_array_zero_initialize_data(g_boulder_array_t* boulder_array);
+void g_boulder_array_set_zero(g_boulder_array_t* boulder_array);
 int32_t g_boulder_array_initialize(g_boulder_array_t* boulder_array, size_t initial_size);
 void g_boulder_array_free(g_boulder_array_t* boulder_array);
 void g_boulder_array_draw(g_boulder_array_t* boulder_array, int32_t flag);

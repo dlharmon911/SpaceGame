@@ -1,8 +1,8 @@
 Initialization begin
 Installing the keyboard - success
 Installing the mouse - success
-Creating the display (800.0, 600.0) - success
-Creating the timer (60.0) - success
+Creating the display (800.0, 600.0) -success
+Creating the timer (0.0) -success
 Creating the event queue - success
 Initialization end
 

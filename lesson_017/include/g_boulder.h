@@ -51,7 +51,7 @@ typedef struct g_boulder_t
 /// <summary>Zero initializes boulder data</summary>
 /// <param name='boulder'> - pointer to container of boulder data</param>
 /// <returns>n/a</returns>
-void g_boulder_zero_initialize_data(g_boulder_t* boulder);
+void g_boulder_set_zero(g_boulder_t* boulder);
 
 /// <summary>Initializes boulder model data</summary>
 /// <param name='texture'> - bitmap of boulder texture</param>

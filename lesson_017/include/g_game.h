@@ -42,6 +42,8 @@ typedef struct g_game_data_t
 	/// <summary>Mouse position relative to center</summary>
 	s_point_t m_mouse;
 
+	s_viewport_t m_viewport;
+
 	/// <summary>If window constraint turned off, camera follows ship</summary>
 	s_camera_t m_camera;
 
@@ -64,12 +66,12 @@ typedef struct g_game_data_t
 /// <summary>Zero-initializes game data struct</summary>
 /// <param name='data'> - pointer to container of game data</param>
 /// <returns>n/a</returns>
-void g_game_zero_initialize_data(g_game_data_t* data);
+void g_game_set_zero(g_game_data_t* data);
 
 /// <summary>Initializes game object and model data</summary>
 /// <param name='data'> - pointer to container of game data</param>
 /// <returns>int32_t = 0 on success, -1 on failure</returns>
-int32_t g_game_initialize_data(g_game_data_t* data);
+int32_t g_game_initialize(g_game_data_t* data);
 
 /// <summary>Release game data memory</summary>
 /// <param name='data'> - pointer to container of game data</param>

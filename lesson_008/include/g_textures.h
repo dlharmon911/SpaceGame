@@ -18,8 +18,8 @@ typedef struct g_texture_list_t
 	ALLEGRO_BITMAP* m_star;
 } g_texture_list_t;
 
-void g_texture_zero_initialize_data(g_texture_list_t* textures);
-int32_t g_texture_initialize_data(g_texture_list_t* textures);
+void g_texture_set_zero(g_texture_list_t* textures);
+int32_t g_texture(g_texture_list_t* textures);
 void g_texture_unitialize_data(g_texture_list_t* textures);
 
 #endif // !_HEADER_GUARD_TEXTURES_H_

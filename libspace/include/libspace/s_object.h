@@ -42,7 +42,7 @@ typedef struct s_object_t
 /// <summary>Zero-initializes data struct</summary>
 /// <param name='object'> - pointer to container of object data</param>
 /// <returns>n/a</returns>
-void s_object_zero_initialize_data(s_object_t* object);
+void s_object_set_zero(s_object_t* object);
 
 /// <summary>Resets object position/rotation to zero</summary>
 /// <param name='object'> - pointer to container of object data</param>

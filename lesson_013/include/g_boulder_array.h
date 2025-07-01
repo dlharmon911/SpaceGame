@@ -39,7 +39,7 @@ typedef struct g_boulder_array_t
 /// <summary>Zero initializes boulder array data</summary>
 /// <param name='boulder_array'> - pointer to container of boulder array data</param>
 /// <returns>n/a</returns>
-void g_boulder_array_zero_initialize_data(g_boulder_array_t* boulder_array);
+void g_boulder_array_set_zero(g_boulder_array_t* boulder_array);
 
 /// <summary>Initializes boulder array vector</summary>
 /// <param name='boulder_array'> - pointer to container of boulder array data</param>

@@ -8,7 +8,7 @@
 
 static g_game_data_t* s_game_data = NULL;
 
-void g_game_zero_initialize_data(g_game_data_t* data)
+void g_game_set_zero(g_game_data_t* data)
 {
 	s_game_data = data;
 
@@ -17,15 +17,15 @@ void g_game_zero_initialize_data(g_game_data_t* data)
 		return;
 	}
 
-	g_texture_zero_initialize_data(&s_game_data->m_textures);
-	g_stats_zero_initialize_data(&s_game_data->m_stats);
-	g_ship_zero_initialize_data(&s_game_data->m_ship);
+	g_texture_set_zero(&s_game_data->m_textures);
+	g_stats_set_zero(&s_game_data->m_stats);
+	g_ship_set_zero(&s_game_data->m_ship);
 	s_game_data->m_draw_flag = S_MODEL_DRAW_FLAG_TEXTURED;
 	data->m_input_data = NULL;
 	data->m_is_running = false;
 }
 
-int32_t g_game_initialize_data()
+int32_t g_game()
 {
 	s_log_print("Creating the vertex declaration - ");
 	s_vertex_create_decl();
@@ -37,7 +37,7 @@ int32_t g_game_initialize_data()
 	s_log_println("success");
 
 	s_log_print("Creating the game textures\n");
-	if (g_texture_initialize_data(&s_game_data->m_textures) < 0)
+	if (g_texture(&s_game_data->m_textures) < 0)
 	{
 		return -1;
 	}

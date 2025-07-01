@@ -16,19 +16,19 @@ typedef struct g_app_data_t
 
 static g_app_data_t g_data;
 
-static void g_app_zero_initialize_data()
+static void g_app_set_zero()
 {
 	g_data.m_display = NULL;
 	g_data.m_logic_timer = NULL;
 	g_data.m_event_queue = NULL;
 	g_data.m_update_logic = false;
 
-	g_game_zero_initialize_data(&g_data.m_game_data);
+	g_game_set_zero(&g_data.m_game_data);
 }
 
 int32_t g_app_initialize()
 {
-	g_app_zero_initialize_data();
+	g_app_set_zero();
 
 	if (!al_init())
 	{

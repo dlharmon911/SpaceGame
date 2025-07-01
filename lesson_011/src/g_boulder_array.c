@@ -7,7 +7,7 @@
 #include "g_boulder.h"
 #include "g_boulder_array.h"
 
-void g_boulder_array_zero_initialize_data(g_boulder_array_t* boulder_array)
+void g_boulder_array_set_zero(g_boulder_array_t* boulder_array)
 {
 	if (!boulder_array)
 	{
@@ -33,7 +33,7 @@ int32_t g_boulder_array_initialize(g_boulder_array_t* boulder_array, size_t init
 		return -1;
 	}
 
-	g_boulder_zero_initialize_data(&node.m_boulder);
+	g_boulder_set_zero(&node.m_boulder);
 	node.m_status = 0;
 
 	for (size_t i = 0; i < initial_size; ++i)

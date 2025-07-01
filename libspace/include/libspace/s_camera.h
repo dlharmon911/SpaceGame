@@ -28,7 +28,10 @@ typedef struct s_camera_t
 	s_point_t* m_following;
 } s_camera_t;
 
-void s_camera_zero_initialize_data(s_camera_t* camera);
+/// <summary>Zero initialize a camera struct. </summary>
+/// <param name='camera'> - pointer to camera data</param>
+/// <returns>n/a - no return</returns>
+void s_camera_set_zero(s_camera_t* camera);
 void s_camera_set(s_camera_t* camera, const s_camera_t* camera2);
 void s_camera_set_p(s_camera_t* camera, const s_point_t* center, s_point_t* following, const s_point_t* velocity);
 const s_point_t* s_camera_get_center(const s_camera_t* camera);

@@ -46,12 +46,12 @@ typedef struct g_game_data_t
 /// <summary>Zero-initializes game data struct</summary>
 /// <param name='bullet'> - pointer to container of game data</param>
 /// <returns>n/a</returns>
-void g_game_zero_initialize_data(g_game_data_t* data);
+void g_game_set_zero(g_game_data_t* data);
 
 /// <summary>Initializes game object and model data</summary>
 /// <param name='bullet'> - pointer to container of game data</param>
 /// <returns>int32_t = 0 on success, -1 on failure</returns>
-int32_t g_game_initialize_data(g_game_data_t* data);
+int32_t g_game(g_game_data_t* data);
 
 /// <summary>Release game data memory</summary>
 /// <param name='bullet'> - pointer to container of game data</param>

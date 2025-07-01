@@ -24,7 +24,7 @@ typedef struct s_triangle_t
 	};
 } s_triangle_t;
 
-void s_triangle_zero_initialize_data(s_triangle_t* triangle);
+void s_triangle_set_zero(s_triangle_t* triangle);
 void s_triangle_set_p(s_triangle_t* triangle, const s_point_t* point1, const s_point_t* point2, const s_point_t* point3);
 void s_triangle_set(s_triangle_t* triangle, const s_triangle_t* triangle2);
 void s_triangle_draw(const s_triangle_t* triangle, float x, float y, ALLEGRO_COLOR color, float thickness);

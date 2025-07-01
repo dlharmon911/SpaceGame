@@ -13,13 +13,6 @@ enum S_INPUT_BUTTON_COUNT
 	S_INPUT_JOYSTICK_BUTTON_MAX = 36
 };
 
-enum S_INPUT_BUTTON_FLAG
-{
-	S_INPUT_BUTTON_DEFAULT,
-	S_INPUT_BUTTON_PRESSED = 0x01,
-	S_INPUT_BUTTON_CHANGED = 0x02
-};
-
 typedef struct S_INPUT_JOYSTICK_STICK
 {
 	float axis[S_INPUT_JOYSTICK_AXES_MAX];
@@ -58,7 +51,7 @@ typedef struct S_INPUT_DATA
 	S_INPUT_JOYSTICK_DATA m_joystick;
 } S_INPUT_DATA;
 
-static void s_input_mouse_zero_initialize_data(S_INPUT_MOUSE_DATA* data)
+static void s_input_mouse_set_zero(S_INPUT_MOUSE_DATA* data)
 {
 	if (!data)
 	{
@@ -69,11 +62,11 @@ static void s_input_mouse_zero_initialize_data(S_INPUT_MOUSE_DATA* data)
 	{
 		data->m_button[i] = 0;
 	}
-	s_point_zero_initialize_data(&data->m_axis);
+	s_point_set_zero(&data->m_axis);
 	data->m_install_flag = S_INPUT_INSTALL_DEFAULT;
 }
 
-static void s_input_keyboard_zero_initialize_data(S_INPUT_KEYBOARD_DATA* data)
+static void s_input_keyboard_set_zero(S_INPUT_KEYBOARD_DATA* data)
 {
 	if (!data)
 	{
@@ -87,7 +80,7 @@ static void s_input_keyboard_zero_initialize_data(S_INPUT_KEYBOARD_DATA* data)
 	data->m_install_flag = S_INPUT_INSTALL_DEFAULT;
 }
 
-static void s_input_joystick_zero_initialize_data(S_INPUT_JOYSTICK_DATA* data)
+static void s_input_joystick_set_zero(S_INPUT_JOYSTICK_DATA* data)
 {
 	if (!data)
 	{
@@ -113,16 +106,16 @@ static void s_input_joystick_zero_initialize_data(S_INPUT_JOYSTICK_DATA* data)
 
 }
 
-static void s_input_zero_initialize_data(S_INPUT_DATA* data)
+static void s_input_set_zero(S_INPUT_DATA* data)
 {
 	if (!data)
 	{
 		return;
 	}
 
-	s_input_mouse_zero_initialize_data(&data->m_mouse);
-	s_input_keyboard_zero_initialize_data(&data->m_keyboard);
-	s_input_joystick_zero_initialize_data(&data->m_joystick);
+	s_input_mouse_set_zero(&data->m_mouse);
+	s_input_keyboard_set_zero(&data->m_keyboard);
+	s_input_joystick_set_zero(&data->m_joystick);
 }
 
 static int32_t s_input_install_mouse_data(S_INPUT_MOUSE_DATA* data)
@@ -209,7 +202,7 @@ static int32_t s_input_install_data(S_INPUT_DATA** data)
 		return -1;
 	}
 
-	s_input_zero_initialize_data(*data);
+	s_input_set_zero(*data);
 
 	if (s_input_install_mouse_data(&(*data)->m_mouse) < 0)
 	{
@@ -582,7 +575,7 @@ void s_input_reconfigure_joystick(S_INPUT_DATA* data, bool change)
 {
 	if (change)
 	{
-		s_input_joystick_zero_initialize_data(&data->m_joystick);
+		s_input_joystick_set_zero(&data->m_joystick);
 	}
 }
 

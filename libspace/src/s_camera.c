@@ -5,7 +5,7 @@
 #include "libspace/s_point.h"
 #include "libspace/s_camera.h"
 
-void s_camera_zero_initialize_data(s_camera_t* camera)
+void s_camera_set_zero(s_camera_t* camera)
 {
 	if (!camera)
 	{

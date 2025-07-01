@@ -8,15 +8,15 @@
 #include "g_bullet.h"
 #include "g_bullet_array.h"
 
-void g_ship_zero_initialize_data(g_ship_t* ship)
+void g_ship_set_zero(g_ship_t* ship)
 {
 	if (!ship)
 	{
 		return;
 	}
 
-	s_object_zero_initialize_data(&ship->m_object);
-	g_bullet_array_zero_initialize_data(&ship->m_bullet_array);
+	s_object_set_zero(&ship->m_object);
+	g_bullet_array_set_zero(&ship->m_bullet_array);
 
 	ship->m_object.m_max_speed = G_SHIP_MAX_SPEED;
 }

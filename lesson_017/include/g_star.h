@@ -25,7 +25,7 @@ typedef struct g_star_t
 /// <summary>Zero-initializes data struct</summary>
 /// <param name='star'> - pointer to container of star data</param>
 /// <returns>n/a</returns>
-void g_star_zero_initialize_data(g_star_t* star);
+void g_star_set_zero(g_star_t* star);
 
 /// <summary>Initializes object and model data</summary>
 /// <param name='texture'> - bitmap of star texture</param>

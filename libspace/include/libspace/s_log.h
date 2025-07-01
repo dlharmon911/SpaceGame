@@ -26,7 +26,7 @@ void s_log_close();
 /// <returns>n/a - no return value</returns>
 void s_log_flush();
 
-/// <summary>Closed the log file</summary>
+/// <summary>Write a series of bytes to the log file</summary>
 /// <param name='buffer'> - data to write</param>
 /// <param name='size'> - byte count of buffer data</param>
 /// <returns>n/a - no return value</returns>
@@ -42,7 +42,7 @@ void s_log_print(const char* message);
 /// <returns>n/a - no return value</returns>
 void s_log_println(const char* message);
 
-/// <summary>Write a string S_STRING_TRUE or S_STRING_FALSE depending on boolean value</summary>
+/// <summary>Write a string true/false (depending on boolean value) to the log file</summary>
 /// <param name='value'> - value output</param>
 /// <returns>n/a - no return value</returns>
 void s_log_print_bool(bool value);

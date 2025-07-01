@@ -46,7 +46,7 @@ typedef struct g_bullet_t
 /// <summary>Zero-initializes data struct</summary>
 /// <param name='bullet'> - pointer to container of bullet data</param>
 /// <returns>n/a</returns>
-void g_bullet_zero_initialize_data(g_bullet_t* bullet);
+void g_bullet_set_zero(g_bullet_t* bullet);
 
 /// <summary>Initializes object and model data</summary>
 /// <param name='texture'> - bitmap of bullet texture</param>

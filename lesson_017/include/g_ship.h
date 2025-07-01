@@ -47,7 +47,7 @@ typedef struct g_ship_t
 /// <summary>Zero-initializes data struct</summary>
 /// <param name='ship'> - pointer to container of ship data</param>
 /// <returns>n/a</returns>
-void g_ship_zero_initialize_data(g_ship_t* ship);
+void g_ship_set_zero(g_ship_t* ship);
 
 /// <summary>Initializes object and model data</summary>
 /// <param name='texture'> - bitmap of ship texture</param>

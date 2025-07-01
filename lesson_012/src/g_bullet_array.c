@@ -9,7 +9,7 @@
 #include "g_bullet.h"
 #include "g_bullet_array.h"
 
-void g_bullet_array_zero_initialize_data(g_bullet_array_t* bullet_array)
+void g_bullet_array_set_zero(g_bullet_array_t* bullet_array)
 {
 	if (!bullet_array)
 	{
@@ -26,7 +26,7 @@ void g_bullet_array_zero_initialize_data(g_bullet_array_t* bullet_array)
 		node = &bullet_array->m_bullet[i];
 
 		node->m_status = G_BULLET_STATUS_DEFAULT;
-		g_bullet_zero_initialize_data(&node->m_bullet);
+		g_bullet_set_zero(&node->m_bullet);
 	}
 }
 

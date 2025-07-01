@@ -11,7 +11,7 @@ static const s_point_t G_STATS_LINE_OFFSET = { 0.5f, 0.5f };
 static const float G_STATS_LINE_SPACING = 9.0f;
 static const ALLEGRO_COLOR G_STATS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-void g_stats_zero_initialize_data(g_stats_t* stats)
+void g_stats_set_zero(g_stats_t* stats)
 {
 	if (!stats)
 	{

@@ -22,7 +22,7 @@ typedef struct g_app_data_t
 
 static g_app_data_t g_data;
 
-static void g_app_zero_initialize_data()
+static void g_app_set_zero()
 {
 	g_data.m_display = NULL;
 	g_data.m_logic_timer = NULL;
@@ -33,12 +33,12 @@ static void g_app_zero_initialize_data()
 	g_data.m_show_stats = false;
 	s_point_set_f(&g_data.m_display_scale, 1.0f, 1.0f);
 
-	g_game_zero_initialize_data(&g_data.m_game_data);
+	g_game_set_zero(&g_data.m_game_data);
 }
 
 int32_t g_app_initialize()
 {
-	g_app_zero_initialize_data();
+	g_app_set_zero();
 
 	if (!al_init())
 	{
@@ -132,7 +132,7 @@ int32_t g_app_initialize()
 	}
 	s_log_println("success");
 
-	if (g_game_initialize_data() < 0)
+	if (g_game() < 0)
 	{
 		return -1;
 	}

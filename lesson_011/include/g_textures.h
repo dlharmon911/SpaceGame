@@ -29,8 +29,8 @@ typedef struct g_texture_list_t
 
 int32_t g_load_textures(g_texture_list_t* textures, const char* filename);
 
-void g_texture_zero_initialize_data(g_texture_list_t* textures);
-int32_t g_texture_initialize_data(g_texture_list_t* textures);
+void g_texture_set_zero(g_texture_list_t* textures);
+int32_t g_texture(g_texture_list_t* textures);
 void g_texture_unitialize_data(g_texture_list_t* textures);
 
 int32_t g_texture_generate_ship_texture(ALLEGRO_BITMAP** bitmap);
