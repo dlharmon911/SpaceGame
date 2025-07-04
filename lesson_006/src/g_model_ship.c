@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_models.h"
+#include "g_model_data.h"
 
 static void g_models_generate_ship_model_vertices(g_ship_model_t* model, const s_point_t* center, float w, float h)
 {
@@ -79,7 +79,6 @@ void g_model_generate_ship_model(g_ship_model_t* ship_model, s_model_t* model, A
 
 	s_point_multiply_f(&center, -1.0f);
 	s_model_translate(model, &center);
-
 
 	s_model_scale(model, 1.5f);
 }

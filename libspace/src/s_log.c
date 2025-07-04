@@ -56,7 +56,7 @@ void s_log_close()
 	{
 		return;
 	}
-	
+
 	al_fclose(*p_file);
 	(*p_file) = NULL;
 }
@@ -210,7 +210,7 @@ static size_t s_log_get_format_length(const char* format, va_list ap)
 #endif
 
 #ifdef __GNUC__
-static int s_log_get_format_length(const char *format, va_list ap)
+static int s_log_get_format_length(const char* format, va_list ap)
 {
 	va_list ap_copy;
 	va_copy(ap_copy, ap);
@@ -229,8 +229,8 @@ void s_log_print_vargs(const char* const format, va_list va_arg_list)
 	{
 		return;
 	}
-	
-	length = s_log_get_format_length(format, va_arg_list);
+
+	length = s_log_get_format_length(format, va_arg_list) + 1;
 
 	if (length <= 0)
 	{

@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 enum
 {
@@ -94,7 +94,7 @@ int32_t g_texture_generate_boulder_texture(ALLEGRO_BITMAP** bitmap)
 
 	al_set_target_bitmap(target);
 
-	s_log_println("passed!");
+	s_log_println("success");
 
 	return 0;
 }

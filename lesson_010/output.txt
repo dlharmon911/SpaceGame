@@ -1,18 +1,18 @@
 Initialization begin
 Loading config settings - success
-Initializing Image Addon- success
-Initializing Primitives Addon- success
-Initializing Font Addon- success
+Initializing Image Addon - success
+Initializing Primitives Addon - success
+Initializing Font Addon - success
 Installing the input - success
-Creating the display (1253.0, 617.0) -success
-Creating the timer (0.0) -success
+Creating the display (1253.0, 617.0) - success
+Creating the timer (0.0) - success
 Creating the event queue - success
 Creating the built-in font - success
 Creating the vertex declaration - success
 Creating the game textures
-Generating ship bitmap - passed!
-Generating star bitmap - passed!
-Generating boulder bitmap - passed!
+Generating ship bitmap - success
+Generating star bitmap - success
+Generating boulder bitmap - success
 Initialization end
 
 Shutdown begin

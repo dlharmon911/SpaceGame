@@ -5,7 +5,7 @@ Initializing Primitives Addon- success
 Initializing Font Addon- success
 Initializing PhysicsFS Addon- success
 Installing the input - success
-Creating the display (1285.0, 1017.0) -success
+Creating the display (975.0, 886.0) -success
 Creating the timer (0.0) -success
 Creating the event queue - success
 Creating the built-in font - success

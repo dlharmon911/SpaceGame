@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 
 static void g_models_generate_star_model_vertices(g_star_model_t* model, const s_point_t* center, float u, float v, float z)
 {

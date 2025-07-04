@@ -1,0 +1,463 @@
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_physfs.h>
+#include <physfs.h>
+#include <time.h>
+#include "g_constants.h"
+#include "g_app.h"
+#include "g_game.h"
+
+void g_app_set_zero(g_app_data_t* data)
+{
+	if (!data)
+	{
+		return;
+	}
+
+	data->m_display = NULL;
+	data->m_logic_timer = NULL;
+	data->m_event_queue = NULL;
+	data->m_input_data = NULL;
+	data->m_builtin_font = NULL;
+	data->m_update_logic = false;
+	data->m_show_stats = false;
+	g_state_data_set_zero(&data->m_state_data);
+	s_display_scale_reset();
+	g_game_set_zero(&data->m_game_data);
+	s_viewport_set_zero(&data->m_viewport);
+	g_mouse_cursor_set_zero(&data->m_mouse_cursor);
+}
+
+int32_t g_app_initialize(const char* exe_filename, g_app_data_t* data)
+{
+	if (!exe_filename)
+	{
+		return -1;
+	}
+
+	if (!data)
+	{
+		return -1;
+	}
+
+	if (!al_init())
+	{
+		return -1;
+	}
+
+	s_random_set_seed((uint32_t)time(NULL));
+
+	s_log_open("output.txt");
+	if (!s_log_is_open())
+	{
+		return -1;
+	}
+	s_log_println("Initialization begin");
+
+	s_log_print("Loading config settings - ");
+	if (g_settings_load("config.ini", &data->m_settings) < 0)
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Initializing Image Addon - ");
+	if (!al_init_image_addon())
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Initializing Primitives Addon - ");
+	if (!al_init_primitives_addon())
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Initializing Font Addon - ");
+	if (!al_init_font_addon())
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Initializing PhysicsFS Addon - ");
+	if (!PHYSFS_init(exe_filename))
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Installing the input - ");
+	if (!(data->m_input_data = s_input_install()))
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_printf("Creating the display (%.1lf, %.1lf) - ", data->m_settings.m_display.m_size.m_x, data->m_settings.m_display.m_size.m_y);
+	al_set_new_window_title(G_TITLE);
+	al_set_new_display_flags(ALLEGRO_RESIZABLE | ALLEGRO_WINDOWED);
+	if (!(data->m_display = al_create_display((int32_t)data->m_settings.m_display.m_size.m_x, (int32_t)data->m_settings.m_display.m_size.m_y)))
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
+	al_flip_display();
+
+	s_point_set_zero(&data->m_viewport.m_rectangle.m_point);
+	s_point_set(&data->m_viewport.m_rectangle.m_size, &data->m_settings.m_display.m_size);
+
+	s_point_set(&data->m_viewport.m_scale, &data->m_settings.m_display.m_size);
+	s_point_divide(&data->m_viewport.m_scale, &G_DISPLAY_INITIAL_SIZE);
+	s_display_scale_set(&data->m_viewport.m_scale);
+
+	al_hide_mouse_cursor(data->m_display);
+
+	s_log_printf("Creating the timer (%.1lf) - ", G_LOGIC_TIMER_RATE);
+	if (!(data->m_logic_timer = al_create_timer(1.0 / G_LOGIC_TIMER_RATE)))
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	s_log_print("Creating the event queue - ");
+	if (!(data->m_event_queue = al_create_event_queue()))
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	al_register_event_source(data->m_event_queue, al_get_display_event_source(data->m_display));
+	al_register_event_source(data->m_event_queue, al_get_timer_event_source(data->m_logic_timer));
+	s_input_register_with_event_queue(data->m_input_data, data->m_event_queue);
+
+	s_log_print("Creating the built-in font - ");
+	if (!(data->m_builtin_font = al_create_builtin_font()))
+	{
+		s_log_println("failure");
+		return -1;
+	}
+	s_log_println("success");
+
+	g_game_set_state_data(&data->m_state_data.m_state[G_STATE_GAME], &data->m_game_data);
+	data->m_state_data.m_index = G_STATE_GAME;
+
+	data->m_game_data.m_is_running = true;
+	data->m_game_data.m_settings = &data->m_settings;
+	data->m_game_data.m_stats.m_settings = &data->m_settings;
+	data->m_game_data.m_builtin_font = data->m_builtin_font;
+	data->m_game_data.m_input_data = data->m_input_data;
+
+	for (int32_t i = 0; i < G_STATE_COUNT; ++i)
+	{
+		if (data->m_state_data.m_state[i].m_initialize(data->m_state_data.m_state[i].m_data) < 0)
+		{
+			return -1;
+		}
+	}
+
+	s_log_println("Initialization end\n");
+	s_log_flush();
+
+	g_mouse_cursor_initialize(data->m_game_data.m_textures.m_texture[G_TEXTURE_STAR], &data->m_mouse_cursor);
+
+	return 0;
+}
+
+void g_app_shutdown(g_app_data_t* data)
+{
+	if (!data)
+	{
+		return;
+	}
+
+	s_log_println("Shutdown begin");
+
+	for (int32_t i = 0; i < G_STATE_COUNT; ++i)
+	{
+		data->m_state_data.m_state[i].m_destroy(data->m_state_data.m_state[i].m_data);
+	}
+
+	if (data->m_builtin_font)
+	{
+		al_destroy_font(data->m_builtin_font);
+		data->m_builtin_font = NULL;
+		s_log_println("The built-in font has been destroyed");
+	}
+
+	if (data->m_event_queue)
+	{
+		al_destroy_event_queue(data->m_event_queue);
+		data->m_event_queue = NULL;
+		s_log_println("The event queue has been destroyed");
+	}
+
+	if (data->m_logic_timer)
+	{
+		al_destroy_timer(data->m_logic_timer);
+		data->m_logic_timer = NULL;
+		s_log_println("The timer has been destroyed");
+	}
+
+	if (data->m_display)
+	{
+		al_destroy_display(data->m_display);
+		data->m_display = NULL;
+		s_log_println("The display has been destroyed");
+	}
+
+	if (data->m_input_data)
+	{
+		s_input_uninstall(data->m_input_data);
+		data->m_input_data = NULL;
+	}
+
+	if (PHYSFS_isInit())
+	{
+		PHYSFS_deinit();
+	}
+
+	if (al_is_font_addon_initialized())
+	{
+		s_log_println("Uninitializing font addon");
+		al_shutdown_font_addon();
+	}
+
+	if (al_is_primitives_addon_initialized())
+	{
+		s_log_println("Uninitializing primitives addon");
+		al_shutdown_primitives_addon();
+	}
+
+	if (al_is_image_addon_initialized())
+	{
+		s_log_println("Uninitializing image addon");
+		al_shutdown_image_addon();
+	}
+
+	s_log_print("Saving settings to config file - ");
+	if (g_settings_save("config.ini", &data->m_settings) < 0)
+	{
+		s_log_println("failed");
+	}
+	else
+	{
+		s_log_println("success");
+	}
+
+	s_log_println("Shutdown end");
+
+	s_log_flush();
+	s_log_close();
+
+	if (al_is_system_installed())
+	{
+		al_uninstall_system();
+	}
+}
+
+/// <summary>Processes all events in the event queue.</summary>
+/// <param name='n/a'> - no parameters</param>
+/// <returns>n/a - no return</returns>
+static void g_app_input(g_app_data_t* data)
+{
+	ALLEGRO_EVENT event;
+
+	if (!data)
+	{
+		return;
+	}
+
+	while (!al_is_event_queue_empty(data->m_event_queue))
+	{
+		al_get_next_event(data->m_event_queue, &event);
+
+		switch (event.type)
+		{
+		case ALLEGRO_EVENT_TIMER:
+		{
+			data->m_update_logic = true;
+		} break;
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+		{
+			data->m_game_data.m_is_running = false;
+		} break;
+		case ALLEGRO_EVENT_DISPLAY_RESIZE:
+		{
+			data->m_settings.m_display.m_size.m_x = (float)event.display.width;
+			data->m_settings.m_display.m_size.m_y = (float)event.display.height;
+			s_point_set(&data->m_viewport.m_scale, &data->m_settings.m_display.m_size);
+			s_point_divide(&data->m_viewport.m_scale, &G_DISPLAY_INITIAL_SIZE);
+			s_display_scale_set(&data->m_viewport.m_scale);
+			al_acknowledge_resize(event.display.source);
+		} break;
+		case ALLEGRO_EVENT_KEY_DOWN:
+		{
+			s_input_set_keyboard_button_array_index(data->m_input_data, (size_t)event.keyboard.keycode, true);
+		} break;
+		case ALLEGRO_EVENT_KEY_UP:
+		{
+			s_input_set_keyboard_button_array_index(data->m_input_data, (size_t)event.keyboard.keycode, false);
+		} break;
+		case ALLEGRO_EVENT_MOUSE_AXES:
+		{
+			s_input_set_mouse_axis(data->m_input_data, (float)event.mouse.x, (float)event.mouse.y);
+			s_point_set_f(&data->m_game_data.m_mouse, (float)event.mouse.x, (float)event.mouse.y);
+			g_mouse_cursor_set_position(&data->m_mouse_cursor, &data->m_game_data.m_mouse);
+			s_point_divide(&data->m_game_data.m_mouse, s_display_scale_get());
+			s_point_subtract_f(&data->m_game_data.m_mouse, data->m_game_data.m_viewport.m_rectangle.m_point.m_x + data->m_game_data.m_viewport.m_rectangle.m_size.m_x * 0.5f, data->m_game_data.m_viewport.m_rectangle.m_point.m_y + data->m_game_data.m_viewport.m_rectangle.m_size.m_y * 0.5f);
+		} break;
+		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+		{
+			s_input_set_mouse_button_array_index(data->m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+		{
+			s_input_set_mouse_button_array_index(data->m_input_data, (size_t)event.mouse.button, false);
+		} break;
+		case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
+		{
+			g_mouse_cursor_set_visible(&data->m_mouse_cursor, true);
+		} break;
+		case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+		{
+			g_mouse_cursor_set_visible(&data->m_mouse_cursor, false);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_AXIS:
+		{
+			s_input_set_joystick_axis(data->m_input_data, event.joystick.stick, event.joystick.axis, event.joystick.pos);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN:
+		{
+			s_input_set_joystick_button_array_index(data->m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_BUTTON_UP:
+		{
+			s_input_set_joystick_button_array_index(data->m_input_data, (size_t)event.mouse.button, true);
+		} break;
+		case ALLEGRO_EVENT_JOYSTICK_CONFIGURATION:
+		{
+			s_input_reconfigure_joystick(data->m_input_data, al_reconfigure_joysticks());
+		} break;
+		default: return;
+		}
+	}
+}
+
+/// <summary>Logic for the application is processed. </summary>
+/// <param name='n/a'> - no parameters</param>
+/// <returns>n/a - no return</returns>
+static void g_app_logic(g_app_data_t* data)
+{
+	if (!data)
+	{
+		return;
+	}
+
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_F1))
+	{
+		data->m_show_stats = !data->m_show_stats;
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_F1);
+	}
+
+	if (s_input_was_keyboard_button_released(data->m_input_data, ALLEGRO_KEY_F2))
+	{
+		s_screenshot_save(al_get_backbuffer(data->m_display));
+		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_F2);
+	}
+
+	data->m_state_data.m_state[data->m_state_data.m_index].m_logic(data->m_state_data.m_state[data->m_state_data.m_index].m_data);
+} 
+
+/// <summary>Display is updated. The double buffer is set as the target bitmap. After it is drawn to, the display
+/// gets set as the target bitmap. Then the double buffer is drawn to display.</summary>
+/// <param name='n/a'> - no parameters</param>
+/// <returns>n/a - no return</returns>
+static void g_app_draw(const g_app_data_t* data)
+{
+	if (!data)
+	{
+		return;
+	}
+
+	static ALLEGRO_TRANSFORM backup;
+	static ALLEGRO_TRANSFORM transform;
+	static s_rectangle_t current_clip;
+
+	al_copy_transform(&backup, al_get_current_transform());
+	s_rectangle_set(&current_clip, s_clip_get_current_clip());
+
+	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
+
+	al_identity_transform(&transform);
+	s_viewport_transform(&transform, &data->m_game_data.m_viewport);
+	s_point_scale(&transform, &data->m_viewport.m_scale);
+	al_compose_transform(&transform, &backup);
+	al_use_transform(&transform);
+	s_clip_set_current_clip_scaled(&data->m_game_data.m_viewport.m_rectangle, &data->m_viewport.m_scale);
+	data->m_state_data.m_state[data->m_state_data.m_index].m_draw(data->m_state_data.m_state[data->m_state_data.m_index].m_data);
+	s_clip_set_current_clip(&current_clip);
+
+	if (data->m_show_stats)
+	{
+		al_identity_transform(&transform);
+		al_scale_transform(&transform, 1.0f, 2.0f);
+		al_compose_transform(&transform, &backup);
+		al_use_transform(&transform);
+		g_stats_draw(data->m_builtin_font, &data->m_game_data.m_stats, 0.0f, 0.0f);
+	}
+
+	al_identity_transform(&transform);
+	al_compose_transform(&transform, &backup);
+	al_use_transform(&transform);
+	g_mouse_cursor_draw(&data->m_mouse_cursor, S_MODEL_DRAW_FLAG_TEXTURED);
+
+	al_use_transform(&backup);
+	al_flip_display();
+}
+
+void g_app_loop(g_app_data_t* data)
+{
+	double start_time = 0.0;
+	double end_time = 0.0;
+
+	if (!data)
+	{
+		return;
+	}
+
+	al_start_timer(data->m_logic_timer);
+
+	while (data->m_game_data.m_is_running)
+	{
+		g_app_input(data);
+
+		if (data->m_update_logic)
+		{
+			data->m_update_logic = false;
+			g_app_logic(data);
+		}
+
+		g_app_draw(data);
+
+		end_time = al_get_time();
+		data->m_game_data.m_stats.m_fps = (float)(1.0 / (end_time - start_time));
+		start_time = end_time;
+	}
+
+	al_stop_timer(data->m_logic_timer);
+}

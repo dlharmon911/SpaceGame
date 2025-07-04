@@ -138,7 +138,7 @@ void g_boulder_array_populate_boulder_data(g_boulder_t* boulder)
 	s_model_translate(&boulder->m_object.m_model, &point);
 
 	boulder->m_object.m_rotate_velocity = s_random_generate_constraint_f(G_BOULDER_START_ROTATE_VELOCITY_MIN, G_BOULDER_START_ROTATE_VELOCITY_MAX);
-	
+
 	if (s_random_percent(0.5f))
 	{
 		boulder->m_object.m_rotate_velocity = -boulder->m_object.m_rotate_velocity;

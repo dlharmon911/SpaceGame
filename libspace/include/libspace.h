@@ -45,6 +45,7 @@ extern "C"
 #include "libspace/s_collision.h"
 #include "libspace/s_camera.h"
 #include "libspace/s_clip.h"
+#include "libspace/s_state.h"
 
 #ifdef __cplusplus
 }

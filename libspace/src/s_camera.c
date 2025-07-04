@@ -101,7 +101,7 @@ void s_camera_set_center(s_camera_t* camera, const s_point_t* center)
 	{
 		return;
 	}
-	
+
 	s_point_set(&camera->m_center, center);
 }
 
@@ -128,7 +128,7 @@ void s_camera_set_velocity(s_camera_t* camera, const s_point_t* velocity)
 void s_camera_update(s_camera_t* camera)
 {
 	s_point_t difference = { 0.0f, 0.0f };
-	float speed = {0.0f};
+	float speed = { 0.0f };
 	float angle = { 0.0f };
 
 	if (!camera)
@@ -162,4 +162,3 @@ void s_camera_translate_transform(ALLEGRO_TRANSFORM* transform, const s_camera_t
 {
 	al_translate_transform(transform, -camera->m_center.m_x, -camera->m_center.m_y);
 }
-

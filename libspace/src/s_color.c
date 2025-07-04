@@ -17,4 +17,3 @@ void s_color_set_zero(s_color_t* color)
 		color->m_float_array[i] = 0.0f;
 	}
 }
-

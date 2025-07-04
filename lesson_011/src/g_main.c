@@ -2,7 +2,7 @@
 
 int32_t main(int32_t argc, char** argv)
 {
-	if (g_app_initialize(argc, argv) == 0)
+	if (g_app_initialize(argv[0]) == 0)
 	{
 		g_app_loop();
 	}

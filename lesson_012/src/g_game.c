@@ -3,8 +3,8 @@
 #include <libspace.h>
 #include "g_constants.h"
 #include "g_stats.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 #include "g_ship.h"
 #include "g_star.h"
 #include "g_star_array.h"
@@ -21,7 +21,7 @@ void g_game_set_zero(g_game_data_t* data)
 		return;
 	}
 
-	g_texture_set_zero(&data->m_textures);
+	g_texture_data_set_zero(&data->m_textures);
 	g_stats_set_zero(&data->m_stats);
 	g_ship_set_zero(&data->m_ship);
 	g_star_array_set_zero(&data->m_star_array);
@@ -45,7 +45,7 @@ int32_t g_game(g_game_data_t* data)
 	if (G_TEXTURES_GENERATE_NEW)
 	{
 		s_log_print("Creating the game textures - ");
-		if (g_texture(&data->m_textures) < 0)
+		if (g_texture_data_generate(&data->m_textures) < 0)
 		{
 			s_log_println("failure");
 			return -1;
@@ -55,7 +55,7 @@ int32_t g_game(g_game_data_t* data)
 	else
 	{
 		s_log_printf("Loading the game textures: \"%s\" - ", G_TEXTURE_ARCHIVE_FILENAME);
-		if (g_load_textures(&data->m_textures, G_TEXTURE_ARCHIVE_FILENAME) < 0)
+		if (g_texture_data_load(&data->m_textures, G_TEXTURE_ARCHIVE_FILENAME) < 0)
 		{
 			s_log_println("failure");
 			return -1;
@@ -88,7 +88,7 @@ int32_t g_game(g_game_data_t* data)
 void g_game_destroy_data(g_game_data_t* data)
 {
 	g_boulder_array_free(&data->m_boulder_array);
-	g_texture_unitialize_data(&data->m_textures);
+	g_texture_data_destroy(&data->m_textures);
 
 	if (s_vertex_decl_created())
 	{

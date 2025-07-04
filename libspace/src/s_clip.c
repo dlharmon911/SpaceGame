@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <math.h>
 #include "libspace/s_base.h"
 #include "libspace/s_point.h"
 #include "libspace/s_clip.h"
@@ -35,7 +36,19 @@ void s_clip_set_current_clip(const s_rectangle_t* clip)
 	al_set_clipping_rectangle(c[0], c[1], c[2], c[3]);
 }
 
-void s_clip_set_current_clip_scale(const s_rectangle_t* clip, const s_point_t* scale)
+void s_clip_set_current_clip_f(float x, float y, float width, float height)
+{
+	static int32_t c[S_RECTANGLE_FLOAT_SIZE] = { 0, 0, 0, 0 };
+
+	c[0] = (int32_t)x;
+	c[1] = (int32_t)y;
+	c[2] = (int32_t)width;
+	c[3] = (int32_t)height;
+
+	al_set_clipping_rectangle(c[0], c[1], c[2], c[3]);
+}
+
+void s_clip_set_current_clip_scaled(const s_rectangle_t* clip, const s_point_t* scale)
 {
 	static int32_t c[S_RECTANGLE_FLOAT_SIZE] = { 0, 0, 0, 0 };
 	float v = 0.0f;
@@ -56,16 +69,33 @@ void s_clip_set_current_clip_scale(const s_rectangle_t* clip, const s_point_t* s
 
 		if (i & 1)
 		{
-			v *= scale->m_y;
+			v *= fabsf(scale->m_y);
 		}
 		else
 		{
-			v *= scale->m_x;
+			v *= fabsf(scale->m_x);
 		}
 
-		c[i] = (int32_t)v; 
+		c[i] = (int32_t)v;
 	}
 
 	al_set_clipping_rectangle(c[0], c[1], c[2], c[3]);
 }
 
+
+void s_clip_set_current_clip_scaled_f(float x, float y, float width, float height, const s_point_t* scale)
+{
+	static int32_t c[S_RECTANGLE_FLOAT_SIZE] = { 0, 0, 0, 0 };
+
+	if (!scale)
+	{
+		return;
+	}
+
+	c[0] = (int32_t)(x * fabsf(scale->m_x));
+	c[1] = (int32_t)(y * fabsf(scale->m_y));
+	c[2] = (int32_t)(width * fabsf(scale->m_x));
+	c[3] = (int32_t)(height * fabsf(scale->m_y));
+
+	al_set_clipping_rectangle(c[0], c[1], c[2], c[3]);
+}

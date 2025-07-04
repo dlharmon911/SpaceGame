@@ -150,6 +150,7 @@
     <ClInclude Include="include\libspace\s_random.h" />
     <ClInclude Include="include\libspace\s_rectangle.h" />
     <ClInclude Include="include\libspace\s_screenshot.h" />
+    <ClInclude Include="include\libspace\s_state.h" />
     <ClInclude Include="include\libspace\s_string.h" />
     <ClInclude Include="include\libspace\s_triangle.h" />
     <ClInclude Include="include\libspace\s_vector.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="src\s_random.c" />
     <ClCompile Include="src\s_rectangle.c" />
     <ClCompile Include="src\s_screenshot.c" />
+    <ClCompile Include="src\s_state.c" />
     <ClCompile Include="src\s_triangle.c" />
     <ClCompile Include="src\s_vector.c" />
     <ClCompile Include="src\s_vertex.c" />

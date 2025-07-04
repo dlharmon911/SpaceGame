@@ -81,7 +81,6 @@ static void s_viewport_translate(ALLEGRO_TRANSFORM* transform, const s_viewport_
 	al_translate_transform(transform, translate_amount.m_x, translate_amount.m_y);
 }
 
-
 void s_viewport_transform(ALLEGRO_TRANSFORM* transform, const s_viewport_t* viewport)
 {
 	if (!transform)
@@ -93,10 +92,7 @@ void s_viewport_transform(ALLEGRO_TRANSFORM* transform, const s_viewport_t* view
 	{
 		return;
 	}
-	static ALLEGRO_TRANSFORM backup;
-	al_copy_transform(&backup, al_get_current_transform());
 
-	al_identity_transform(transform);
 	s_point_scale(transform, &viewport->m_scale);
 	s_viewport_translate(transform, viewport);
 }

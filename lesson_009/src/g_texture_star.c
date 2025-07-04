@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 static void bitmaps_draw_star(float x, float y)
 {
@@ -60,7 +60,7 @@ int32_t g_texture_generate_star_texture(ALLEGRO_BITMAP** bitmap)
 
 	al_convert_mask_to_alpha(*bitmap, S_COLOR_MAGIC_PINK.m_al_color);
 
-	s_log_println("passed!");
+	s_log_println("success");
 
 	return 0;
 }

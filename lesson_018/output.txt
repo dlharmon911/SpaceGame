@@ -1,0 +1,34 @@
+Initialization begin
+Loading config settings - success
+Initializing Image Addon - success
+Initializing Primitives Addon - success
+Initializing Font Addon - success
+Initializing PhysicsFS Addon - success
+Installing the input - success
+Creating the display (1399.0, 918.0) - success
+Creating the timer (60.0) - success
+Creating the event queue - success
+Creating the built-in font - success
+Creating the vertex declaration - success
+Creating the game textures - Generating star bitmap - success
+Generating ship bitmap - success
+Generating boulder bitmap - success
+Generating star bitmap - success
+success
+Initializing ship data
+Initializing and scattering boulders
+Initializing and scattering stars
+Initialization end
+
+Shutdown begin
+Releasing texture memory
+The vertex declaration has been destroyed
+The built-in font has been destroyed
+The event queue has been destroyed
+The timer has been destroyed
+The display has been destroyed
+Uninitializing font addon
+Uninitializing primitives addon
+Uninitializing image addon
+Saving settings to config file - success
+Shutdown end

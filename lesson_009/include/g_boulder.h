@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 static const float G_BOULDER_START_VELOCITY_MAX = 0.8f;
 static const float G_BOULDER_START_VELOCITY_MIN = 0.5f;

@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 
 static const float G_BOULDER_SIZE = 128.0f;
 static const float G_BOULDER_RADIUS_DIFFERANCE_MAX = 12.0f;

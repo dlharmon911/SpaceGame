@@ -13,7 +13,7 @@ int32_t main(int32_t argc, char** argv)
 
 	g_app_set_zero(data);
 
-	if (g_app_initialize(argc, argv, data) == 0)
+	if (g_app_initialize(argv[0], data) == 0)
 	{
 		g_app_loop(data);
 	}

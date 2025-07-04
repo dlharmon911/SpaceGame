@@ -6,8 +6,8 @@
 #include <string.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 #include "g_star.h"
 
 enum

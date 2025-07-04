@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 #include "g_ship.h"
 
 void g_ship_set_zero(g_ship_t* ship)

@@ -14,6 +14,9 @@ static const char* const G_VERSION = "0.0.16";
 /// <summary>Constant for the initial display size</summary>
 static const s_point_t G_DISPLAY_INITIAL_SIZE = { 800.0f, 800.0f };
 
+/// <summary>Constant for the view size</summary>
+static const s_point_t G_GAME_VIEW_SIZE = { 600.0f, 600.0f };
+
 enum
 {
 	/// <summary>Constant for the screen width</summary>
@@ -25,7 +28,7 @@ enum
 static const s_point_t G_GAMESCREEN_SIZE = { (float)G_GAMESCREEN_WIDTH, (float)G_GAMESCREEN_HEIGHT };
 
 /// <summary>Constant for the half of the screen size</summary>
-static const s_point_t G_GAMESCREEN_SIZE_HALF = { 0.5f * (float)G_GAMESCREEN_WIDTH, 0.5f * (float)G_GAMESCREEN_HEIGHT};
+static const s_point_t G_GAMESCREEN_SIZE_HALF = { 0.5f * (float)G_GAMESCREEN_WIDTH, 0.5f * (float)G_GAMESCREEN_HEIGHT };
 
 /// <summary>Constant for the top/left position of the screen</summary>
 static const s_point_t G_GAMESCREEN_TOP_LEFT = { -(float)G_GAMESCREEN_WIDTH * 0.5f, -(float)G_GAMESCREEN_HEIGHT * 0.5f };

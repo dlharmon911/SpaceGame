@@ -4,7 +4,7 @@
 #include "g_constants.h"
 #include "g_game.h"
 #include "g_stats.h"
-#include "g_models.h"
+#include "g_model_data.h"
 
 static g_game_data_t* s_game_data = NULL;
 
@@ -16,7 +16,7 @@ void g_game_set_zero(g_game_data_t* data)
 	{
 		return;
 	}
-	g_texture_set_zero(&s_game_data->m_textures);
+	g_texture_data_set_zero(&s_game_data->m_textures);
 	g_stats_set_zero(&s_game_data->m_stats);
 	data->m_input_data = NULL;
 	data->m_is_running = false;
@@ -34,7 +34,7 @@ int32_t g_game()
 	s_log_println("success");
 
 	s_log_print("Creating the game textures\n");
-	if (g_texture(&s_game_data->m_textures) < 0)
+	if (g_texture_data_generate(&s_game_data->m_textures) < 0)
 	{
 		return -1;
 	}
@@ -46,7 +46,7 @@ int32_t g_game()
 
 void g_game_destroy_data()
 {
-	g_texture_unitialize_data(&s_game_data->m_textures);
+	g_texture_data_destroy(&s_game_data->m_textures);
 
 	if (s_vertex_decl_created())
 	{

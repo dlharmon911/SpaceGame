@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include "g_constants.h"
 #include "g_stats.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 #include "g_ship.h"
 #include "g_star.h"
 #include "g_star_array.h"
@@ -22,11 +22,12 @@ void g_game_set_zero(g_game_data_t* data)
 		return;
 	}
 
-	g_texture_set_zero(&data->m_textures);
+	g_texture_data_set_zero(&data->m_textures);
 	g_stats_set_zero(&data->m_stats);
 	g_ship_set_zero(&data->m_ship);
 	g_star_array_set_zero(&data->m_star_array);
 	g_boulder_array_set_zero(&data->m_boulder_array);
+	s_viewport_set_zero(&data->m_viewport);
 	s_camera_set_zero(&data->m_camera);
 	g_radar_set_zero(&data->m_radar);
 	s_point_set_zero(&data->m_mouse);
@@ -45,6 +46,12 @@ int32_t g_game_initialize(g_game_data_t* data)
 		return -1;
 	}
 
+	s_point_set(&data->m_viewport.m_rectangle.m_size, &G_GAME_VIEW_SIZE);
+	s_point_set(&data->m_viewport.m_rectangle.m_point, &G_DISPLAY_INITIAL_SIZE);
+	s_point_subtract(&data->m_viewport.m_rectangle.m_point, &data->m_viewport.m_rectangle.m_size);
+	s_point_multiply_f(&data->m_viewport.m_rectangle.m_point, 0.5f);
+	s_point_set_f(&data->m_viewport.m_scale, data->m_viewport.m_rectangle.m_size.m_x / G_GAMESCREEN_SIZE.m_x, -data->m_viewport.m_rectangle.m_size.m_y / G_GAMESCREEN_SIZE.m_y);
+
 	s_log_print("Creating the vertex declaration - ");
 	s_vertex_create_decl();
 	if (!s_vertex_decl_created())
@@ -57,7 +64,7 @@ int32_t g_game_initialize(g_game_data_t* data)
 	if (G_TEXTURES_GENERATE_NEW)
 	{
 		s_log_print("Creating the game textures - ");
-		if (g_texture(&data->m_textures) < 0)
+		if (g_texture_data_generate(&data->m_textures) < 0)
 		{
 			s_log_println("failure");
 			return -1;
@@ -67,7 +74,7 @@ int32_t g_game_initialize(g_game_data_t* data)
 	else
 	{
 		s_log_printf("Loading the game textures: \"%s\" - ", G_TEXTURE_ARCHIVE_FILENAME);
-		if (g_load_textures(&data->m_textures, G_TEXTURE_ARCHIVE_FILENAME) < 0)
+		if (g_texture_data_load(&data->m_textures, G_TEXTURE_ARCHIVE_FILENAME) < 0)
 		{
 			s_log_println("failure");
 			return -1;
@@ -108,7 +115,7 @@ void g_game_destroy_data(g_game_data_t* data)
 	}
 
 	s_log_println("Releasing texture memory");
-	g_texture_unitialize_data(&data->m_textures);
+	g_texture_data_destroy(&data->m_textures);
 
 	if (s_vertex_decl_created())
 	{
@@ -176,7 +183,7 @@ void g_game_logic(g_game_data_t* data)
 	{
 		g_ship_fire_bullet(&data->m_ship);
 		s_input_acknowledge_keyboard_button(data->m_input_data, ALLEGRO_KEY_SPACE);
-		s_input_acknowledge_mouse_button(data->m_input_data,  ALLEGRO_MOUSE_BUTTON_LEFT);
+		s_input_acknowledge_mouse_button(data->m_input_data, ALLEGRO_MOUSE_BUTTON_LEFT);
 	}
 
 	g_game_update(data);
@@ -255,7 +262,7 @@ void g_game_draw(const g_game_data_t* data)
 	}
 
 	al_clear_to_color(S_COLOR_BLACK.m_al_color);
-	
+
 	al_copy_transform(&backup, al_get_current_transform());
 
 	al_identity_transform(&transform);
@@ -272,7 +279,7 @@ void g_game_draw(const g_game_data_t* data)
 	}
 
 	al_rotate_transform(&transform, angle);
-	
+
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
 

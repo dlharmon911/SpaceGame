@@ -6,8 +6,8 @@
 #include <string.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 #include "g_star.h"
 
 enum
@@ -45,7 +45,7 @@ typedef struct g_star_array_t
 
 void g_star_array_set_zero(g_star_array_t* star_array);
 void g_star_array_draw(const g_star_array_t* star_array, int32_t flag);
-void g_star_array_scatter(const g_texture_list_t* texture_list, g_star_array_t* star_array);
+void g_star_array_scatter(const g_texture_data_t* texture_list, g_star_array_t* star_array);
 void g_star_array_update(g_star_array_t* star_array, const s_point_t* ship_velocity);
 
 #endif // !_HEADER_GUARD_STAR_ARRAY_H_

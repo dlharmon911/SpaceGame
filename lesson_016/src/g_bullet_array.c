@@ -4,8 +4,8 @@
 #include <libspace.h>
 #include <math.h>
 #include "g_constants.h"
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 #include "g_bullet.h"
 #include "g_bullet_array.h"
 
@@ -227,4 +227,3 @@ void g_bullet_array_apply_window_constraint(g_bullet_array_t* bullet_array, cons
 		}
 	}
 }
-

@@ -125,4 +125,3 @@ void g_mouse_cursor_draw(const g_mouse_cursor_t* mouse_cursor, int32_t flag)
 		g_star_draw(&mouse_cursor->m_icon, flag);
 	}
 }
-

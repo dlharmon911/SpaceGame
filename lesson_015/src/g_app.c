@@ -26,16 +26,11 @@ void g_app_set_zero(g_app_data_t* data)
 	s_point_set_f(&data->m_display_scale, 1.0f, 1.0f);
 	g_game_set_zero(&data->m_game_data);
 	s_viewport_set_zero(&data->m_viewport);
-
-	s_point_set_f(&data->m_viewport.m_rectangle.m_size, 600.0f, 600.0f);
-	s_point_set_f(&data->m_viewport.m_rectangle.m_point,
-		(G_DISPLAY_INITIAL_SIZE.m_x - data->m_viewport.m_rectangle.m_size.m_x) * 0.5f,
-		(G_DISPLAY_INITIAL_SIZE.m_y - data->m_viewport.m_rectangle.m_size.m_y) * 0.5f);
 }
 
-int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
+int32_t g_app_initialize(const char* exe_filename, g_app_data_t* data)
 {
-	if (!argv)
+	if (!exe_filename)
 	{
 		return -1;
 	}
@@ -67,7 +62,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Image Addon- ");
+	s_log_print("Initializing Image Addon - ");
 	if (!al_init_image_addon())
 	{
 		s_log_println("failure");
@@ -75,7 +70,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Primitives Addon- ");
+	s_log_print("Initializing Primitives Addon - ");
 	if (!al_init_primitives_addon())
 	{
 		s_log_println("failure");
@@ -83,7 +78,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Font Addon- ");
+	s_log_print("Initializing Font Addon - ");
 	if (!al_init_font_addon())
 	{
 		s_log_println("failure");
@@ -91,8 +86,8 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing PhysicsFS Addon- ");
-	if (!PHYSFS_init(argv[0]))
+	s_log_print("Initializing PhysicsFS Addon - ");
+	if (!PHYSFS_init(exe_filename))
 	{
 		s_log_println("failure");
 		return -1;
@@ -160,6 +155,12 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 
 	s_log_println("Initialization end\n");
 	s_log_flush();
+
+	s_point_set(&data->m_viewport.m_rectangle.m_size, &G_GAME_VIEW_SIZE);
+	s_point_set(&data->m_viewport.m_rectangle.m_point, &G_DISPLAY_INITIAL_SIZE);
+	s_point_subtract(&data->m_viewport.m_rectangle.m_point, &data->m_viewport.m_rectangle.m_size);
+	s_point_multiply_f(&data->m_viewport.m_rectangle.m_point, 0.5f);
+	s_point_set_f(&data->m_viewport.m_scale, data->m_viewport.m_rectangle.m_size.m_x / G_GAMESCREEN_SIZE.m_x, -data->m_viewport.m_rectangle.m_size.m_y / G_GAMESCREEN_SIZE.m_y);
 
 	data->m_game_data.m_input_data = data->m_input_data;
 	data->m_game_data.m_is_running = true;
@@ -311,8 +312,6 @@ static void g_app_input(g_app_data_t* data)
 
 			s_point_divide(&data->m_game_data.m_mouse, &data->m_display_scale);
 			s_point_subtract_f(&data->m_game_data.m_mouse, data->m_viewport.m_rectangle.m_point.m_x + data->m_viewport.m_rectangle.m_size.m_x * 0.5f, data->m_viewport.m_rectangle.m_point.m_y + data->m_viewport.m_rectangle.m_size.m_y * 0.5f);
-
-
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
@@ -368,87 +367,34 @@ static void g_app_logic(g_app_data_t* data)
 	g_game_logic(&data->m_game_data);
 }
 
-static void g_app_draw_game_viewport(const g_game_data_t* data, const s_viewport_t* viewport)
-{
-	static ALLEGRO_TRANSFORM backup;
-	static ALLEGRO_TRANSFORM transform;
-
-	if (!data)
-	{
-		return;
-	}
-
-	al_copy_transform(&backup, al_get_current_transform());
-	al_identity_transform(&transform);
-	s_viewport_scale(&transform, viewport, &G_GAMESCREEN_SIZE);
-	al_compose_transform(&transform, &backup);
-	al_use_transform(&transform);
-
-	g_game_draw(data);
-
-	al_use_transform(&backup);
-}
-
-static void g_app_draw_viewport(const g_app_data_t* data, const s_viewport_t* viewport)
-{
-	if (!data)
-	{
-		return;
-	}
-
-	if (!viewport)
-	{
-		return;
-	}
-
-	static ALLEGRO_TRANSFORM backup;
-	static ALLEGRO_TRANSFORM transform;
-	static int32_t clip[4] = { 0, 0, 0, 0 };
-
-	al_get_clipping_rectangle(clip, clip + 1, clip + 2, clip + 3);
-	al_set_clipping_rectangle((int32_t)(viewport->m_rectangle.m_point.m_x * data->m_display_scale.m_x),
-		(int32_t)(viewport->m_rectangle.m_point.m_y * data->m_display_scale.m_y),
-		(int32_t)(viewport->m_rectangle.m_size.m_x * data->m_display_scale.m_x),
-		(int32_t)(viewport->m_rectangle.m_size.m_y * data->m_display_scale.m_y));
-
-	al_copy_transform(&backup, al_get_current_transform());
-	al_identity_transform(&transform);
-	al_scale_transform(&transform, 1.0f, -1.0f);
-	s_viewport_translate(&transform, viewport);
-	al_scale_transform(&transform, data->m_display_scale.m_x, data->m_display_scale.m_y);
-	al_compose_transform(&transform, &backup);
-	al_use_transform(&transform);
-
-	g_app_draw_game_viewport(&data->m_game_data, &data->m_viewport);
-
-	al_use_transform(&backup);
-	al_set_clipping_rectangle(clip[0], clip[1], clip[2], clip[3]);
-}
-
-/// <summary>Display is updated. The double buffer is set as the target bitmap. After it is drawn to, the display
-/// gets set as the target bitmap. Then the double buffer is drawn to display.</summary>
-/// <param name='n/a'> - no parameters</param>
-/// <returns>n/a - no return</returns>
 static void g_app_draw(const g_app_data_t* data)
 {
 	if (!data)
 	{
 		return;
 	}
-	
+
 	static ALLEGRO_TRANSFORM backup;
 	static ALLEGRO_TRANSFORM transform;
-
-
-	al_identity_transform(&transform);
-	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
-	g_app_draw_viewport(data, &data->m_viewport);
+	static s_rectangle_t current_clip;
 
 	al_copy_transform(&backup, al_get_current_transform());
+	s_rectangle_set(&current_clip, s_clip_get_current_clip());
+
+	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
+
+	s_clip_set_current_clip_scaled(&data->m_viewport.m_rectangle, s_display_scale_get());
+	s_viewport_transform(&transform, &data->m_viewport);
+	s_point_scale(&transform, s_display_scale_get());
+	al_compose_transform(&transform, &backup);
+	al_use_transform(&transform);
+
+	g_game_draw(&data->m_game_data);
+
+	al_use_transform(&backup);
+	s_clip_set_current_clip(&current_clip);
+
 	al_identity_transform(&transform);
-
-
-
 	al_scale_transform(&transform, 1.0f, 2.0f);
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
@@ -458,9 +404,10 @@ static void g_app_draw(const g_app_data_t* data)
 		g_stats_draw(data->m_builtin_font, &data->m_game_data.m_stats, 0.0f, 0.0f);
 	}
 
+	al_identity_transform(&transform);
+	al_use_transform(&transform);
+
 	al_use_transform(&backup);
-
-
 	al_flip_display();
 }
 

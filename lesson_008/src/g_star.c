@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 #include "g_star.h"
 
 void g_star_set_zero(g_star_t* star)
@@ -17,7 +17,7 @@ void g_star_set_zero(g_star_t* star)
 	star->m_z = 0.0f;
 }
 
-void g_star_initialize(const g_texture_list_t* texture_list, g_star_t* star, float z)
+void g_star_initialize(const g_texture_data_t* texture_list, g_star_t* star, float z)
 {
 	if (!texture_list)
 	{

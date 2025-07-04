@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 /// <summary>Data struct for star entity</summary>
 typedef struct g_star_t

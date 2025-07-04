@@ -43,4 +43,3 @@ void s_rectangle_set_p(s_rectangle_t* rectangle, const s_point_t* point, const s
 	s_point_set(&rectangle->m_point, point);
 	s_point_set(&rectangle->m_size, size);
 }
-

@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 /// <summary>Max object speed</summary>
 static const float G_BOULDER_MAX_SPEED = { 2.0f };

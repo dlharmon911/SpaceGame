@@ -17,7 +17,6 @@ typedef struct g_stats_collision_t
 	size_t m_collisions_per_frame;
 	/// <summary>Number of collision checks/frame</summary>
 	size_t m_full_collisions_per_frame;
-
 } g_stats_collision_t;
 
 /// <summary>Process collisions from bullet array vs boulder_array</summary>

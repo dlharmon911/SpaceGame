@@ -7,7 +7,7 @@
 #include "g_bullet.h"
 #include "g_bullet_array.h"
 #include "g_collision.h"
-#include "g_models.h"
+#include "g_model_data.h"
 
 static bool g_collison_do_boulder_vs_bullet_collision(const g_boulder_t* boulder, const g_bullet_t* bullet, g_stats_collision_t* stats)
 {
@@ -128,4 +128,3 @@ bool g_collison_do_boulder_array_vs_bullet_array_collision(g_boulder_array_t* bo
 
 	return (bool)hit_count;
 }
-

@@ -154,13 +154,13 @@
     <ClInclude Include="include\g_boulder_array.h" />
     <ClInclude Include="include\g_constants.h" />
     <ClInclude Include="include\g_game.h" />
-    <ClInclude Include="include\g_models.h" />
+    <ClInclude Include="include\g_model_data.h" />
     <ClInclude Include="include\g_settings.h" />
     <ClInclude Include="include\g_ship.h" />
     <ClInclude Include="include\g_star.h" />
     <ClInclude Include="include\g_star_array.h" />
     <ClInclude Include="include\g_stats.h" />
-    <ClInclude Include="include\g_textures.h" />
+    <ClInclude Include="include\g_texture_data.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\g_app.c" />
@@ -178,7 +178,7 @@
     <ClCompile Include="src\g_star.c" />
     <ClCompile Include="src\g_star_array.c" />
     <ClCompile Include="src\g_stats.c" />
-    <ClCompile Include="src\g_textures.c" />
+    <ClCompile Include="src\g_texture_data.c" />
     <ClCompile Include="src\g_texture_boulder.c" />
     <ClCompile Include="src\g_texture_ship.c" />
     <ClCompile Include="src\g_texture_star.c" />

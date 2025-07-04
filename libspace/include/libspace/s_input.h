@@ -48,7 +48,7 @@ bool s_input_is_keyboard_button_pressed(const S_INPUT_DATA* data, size_t index);
 /// <summary>Determine if button was pressed since last checked status</summary>
 /// <param name="index">index of button array</param>
 /// <returns>bool - true if button has been pressed</returns>
-/// 
+///
 bool s_input_was_keyboard_button_pressed(const S_INPUT_DATA* data, size_t index);
 
 /// <summary>Determine if button was released since last checked status</summary>

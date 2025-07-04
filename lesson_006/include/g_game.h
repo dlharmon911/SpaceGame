@@ -5,13 +5,13 @@
 #include <stdint.h>
 #include "g_constants.h"
 #include "g_stats.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 
 typedef struct g_game_data_t
 {
 	g_stats_t m_stats;
-	g_texture_list_t m_textures;
+	g_texture_data_t m_textures;
 	g_ship_model_t m_ship_model;
 	s_model_t m_model;
 	S_INPUT_DATA* m_input_data;

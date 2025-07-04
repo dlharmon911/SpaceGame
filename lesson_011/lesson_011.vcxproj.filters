@@ -42,7 +42,7 @@
     <ClInclude Include="include\g_game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\g_models.h">
+    <ClInclude Include="include\g_model_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\g_settings.h">
@@ -60,7 +60,7 @@
     <ClInclude Include="include\g_stats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\g_textures.h">
+    <ClInclude Include="include\g_texture_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -119,7 +119,7 @@
     <ClCompile Include="src\g_texture_star.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\g_textures.c">
+    <ClCompile Include="src\g_texture_data.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

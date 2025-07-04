@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 /// <summary>Initial speed of bullet</summary>
 static const float G_BULLET_SPEED = 12.0f;
@@ -26,11 +26,8 @@ static const s_point_t G_BULLET_SIZE = { 4.0f, 1.0f };
 /// <summary>Sizing multiplier of the bullet model</summary>
 static const float G_BULLET_SIZE_SCALE = { 3.0f };
 
-
 /// <summary>Maximum number of update steps before automatically die</summary>
 static const size_t G_BULLET_ITERATIONS = 48;
-
-
 
 /// <summary>Data struct for bullet entity</summary>
 typedef struct g_bullet_t

@@ -33,11 +33,10 @@ typedef struct g_app_data_t
 void g_app_set_zero(g_app_data_t* data);
 
 /// <summary>Initialize application</summary>
-/// <param name='argc'> - argument array size passed from main</param>
-/// <param name='argv'> - argument array passed from main</param>
+/// <param name='exe_name'> - Executable filename</param>
 /// <param name='data'> - pointer to container of application data</param>
 /// <returns>int32_t - returns 0 on success or -1 on error</returns>
-int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data);
+int32_t g_app_initialize(const char* exe_filename, g_app_data_t* data);
 
 /// <summary>Application is shut down. All data is freed in the process. </summary>
 /// <param name='data'> - pointer to container of application data</param>

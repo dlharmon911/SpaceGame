@@ -25,8 +25,7 @@
 #include "g_game.h"
 #include "g_mouse_cursor.h"
 
-
-/// <summary>Data struct for application</summary>
+ /// <summary>Data struct for application</summary>
 typedef struct g_app_data_t
 {
 	/// <summary>Data struct for game specific</summary>
@@ -39,11 +38,11 @@ typedef struct g_app_data_t
 	ALLEGRO_EVENT_QUEUE* m_event_queue;
 	/// <summary>Input data (keyboard, mouse, joystick)</summary>
 	S_INPUT_DATA* m_input_data;
-	/// <summary>Scale ration of display to actual game area</summary>
+	/// <summary>Scale ratio of display to actual game area</summary>
 	ALLEGRO_FONT* m_builtin_font;
 	/// <summary>Data struct for configuration settings</summary>
 	g_settings_t m_settings;
-	/// <summary>Position and size of game view</summary>
+	/// <summary>Position and size of view</summary>
 	s_viewport_t m_viewport;
 	/// <summary>Data struct for mouse cursor</summary>
 	g_mouse_cursor_t m_mouse_cursor;
@@ -59,11 +58,10 @@ typedef struct g_app_data_t
 void g_app_set_zero(g_app_data_t* data);
 
 /// <summary>Initialize application</summary>
-/// <param name='argc'> - argument array size passed from main</param>
-/// <param name='argv'> - argument array passed from main</param>
+/// <param name='exe_name'> - Executable filename</param>
 /// <param name='data'> - pointer to container of application data</param>
 /// <returns>int32_t - returns 0 on success or -1 on error</returns>
-int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data);
+int32_t g_app_initialize(const char* exe_filename, g_app_data_t* data);
 
 /// <summary>Application is shut down. All data is freed in the process. </summary>
 /// <param name='data'> - pointer to container of application data</param>

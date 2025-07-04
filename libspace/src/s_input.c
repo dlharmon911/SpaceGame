@@ -87,8 +87,8 @@ static void s_input_joystick_set_zero(S_INPUT_JOYSTICK_DATA* data)
 		return;
 	}
 
-	data->m_joystick = NULL;	
-	
+	data->m_joystick = NULL;
+
 	for (size_t i = 0; i < S_INPUT_JOYSTICK_STICK_MAX; ++i)
 	{
 		S_INPUT_JOYSTICK_STICK* stick = &data->m_state.m_stick[i];
@@ -103,7 +103,6 @@ static void s_input_joystick_set_zero(S_INPUT_JOYSTICK_DATA* data)
 		data->m_state.m_button[i] = 0;
 	}
 	data->m_install_flag = S_INPUT_INSTALL_DEFAULT;
-
 }
 
 static void s_input_set_zero(S_INPUT_DATA* data)
@@ -129,7 +128,7 @@ static int32_t s_input_install_mouse_data(S_INPUT_MOUSE_DATA* data)
 	{
 		return -1;
 	}
-	
+
 	if (!al_install_mouse())
 	{
 		return -1;
@@ -178,7 +177,7 @@ static void s_input_install_joystick_data(S_INPUT_JOYSTICK_DATA* data)
 	{
 		return;
 	}
-	
+
 	data->m_joystick = al_get_joystick(0);
 	data->m_install_flag = S_INPUT_INSTALL_JOYSTICK;
 }
@@ -268,8 +267,8 @@ uint32_t s_input_get_install_flag(const S_INPUT_DATA* data)
 	}
 
 	return (data->m_keyboard.m_install_flag |
-			data->m_mouse.m_install_flag |
-			data->m_joystick.m_install_flag);
+		data->m_mouse.m_install_flag |
+		data->m_joystick.m_install_flag);
 }
 
 void s_input_register_with_event_queue(const S_INPUT_DATA* data, ALLEGRO_EVENT_QUEUE* queue)
@@ -444,7 +443,6 @@ void s_input_set_joystick_axis(S_INPUT_DATA* data, int32_t stick, int32_t axis, 
 
 	data->m_joystick.m_state.m_stick[stick].axis[axis] = position;
 }
-
 
 void s_input_set_joystick_button_array_index(S_INPUT_DATA* data, size_t index, bool pressed)
 {

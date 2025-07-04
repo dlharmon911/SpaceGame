@@ -6,8 +6,8 @@
 #include <libspace.h>
 #include "g_constants.h"
 #include "g_stats.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 #include "g_ship.h"
 #include "g_star.h"
 #include "g_star_array.h"
@@ -15,7 +15,7 @@
 typedef struct g_game_data_t
 {
 	g_stats_t m_stats;
-	g_texture_list_t m_textures;
+	g_texture_data_t m_textures;
 	g_ship_t m_ship;
 	g_star_array_t m_star_array;
 	int32_t m_draw_flag;

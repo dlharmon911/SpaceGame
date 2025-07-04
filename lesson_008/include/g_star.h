@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 typedef struct g_star_t
 {
@@ -16,7 +16,7 @@ typedef struct g_star_t
 } g_star_t;
 
 void g_star_set_zero(g_star_t* star);
-void g_star_initialize(const g_texture_list_t* texture_list, g_star_t* star, float z);
+void g_star_initialize(const g_texture_data_t* texture_list, g_star_t* star, float z);
 void g_star_draw(const g_star_t* star, int32_t flag);
 void g_star_update(g_star_t* star, const s_point_t* velocity);
 

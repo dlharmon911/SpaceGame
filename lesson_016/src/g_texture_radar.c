@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_textures.h"
+#include "g_texture_data.h"
 
 static const ALLEGRO_COLOR G_RADAR_COLOR_SHADE = { 0.0f, 1.0f, 0.0f, 1.0f };
 static const ALLEGRO_COLOR G_RADAR_COLOR_CROSSHAIR = { 0.75f, 0.75f, 0.75f, 1.0f };
@@ -133,13 +133,11 @@ int32_t g_texture_generate_radar_texture(ALLEGRO_BITMAP** bitmap)
 	g_texture_generate_radar_overlay(half_size.m_x + G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS, G_RADAR_CIRCLE_RADIUS);
 	g_texture_generate_radar_icon(half_size.m_x, half_size.m_y, G_RADAR_ICON_TEXTURE_SIZE.m_x, G_RADAR_ICON_TEXTURE_SIZE.m_y);
 
-
-
 	al_set_target_bitmap(target);
 
 	al_convert_mask_to_alpha(*bitmap, S_COLOR_MAGIC_PINK.m_al_color);
 
-	s_log_println("passed!");
+	s_log_println("success");
 
 	return 0;
 }

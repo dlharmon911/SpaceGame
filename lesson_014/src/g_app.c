@@ -27,15 +27,15 @@ void g_app_set_zero(g_app_data_t* data)
 	g_game_set_zero(&data->m_game_data);
 	s_viewport_set_zero(&data->m_viewport);
 
-	s_point_set_f(&data->m_viewport.m_rectangle.m_size, 600.0f, 600.0f);
+	s_point_set(&data->m_viewport.m_rectangle.m_size, &G_GAME_VIEW_SIZE);
 	s_point_set_f(&data->m_viewport.m_rectangle.m_point,
 		(G_DISPLAY_INITIAL_SIZE.m_x - data->m_viewport.m_rectangle.m_size.m_x) * 0.5f,
 		(G_DISPLAY_INITIAL_SIZE.m_y - data->m_viewport.m_rectangle.m_size.m_y) * 0.5f);
 }
 
-int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
+int32_t g_app_initialize(const char* exe_filename, g_app_data_t* data)
 {
-	if (!argv)
+	if (!exe_filename)
 	{
 		return -1;
 	}
@@ -67,7 +67,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Image Addon- ");
+	s_log_print("Initializing Image Addon - ");
 	if (!al_init_image_addon())
 	{
 		s_log_println("failure");
@@ -75,7 +75,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Primitives Addon- ");
+	s_log_print("Initializing Primitives Addon - ");
 	if (!al_init_primitives_addon())
 	{
 		s_log_println("failure");
@@ -83,7 +83,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Font Addon- ");
+	s_log_print("Initializing Font Addon - ");
 	if (!al_init_font_addon())
 	{
 		s_log_println("failure");
@@ -91,8 +91,8 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing PhysicsFS Addon- ");
-	if (!PHYSFS_init(argv[0]))
+	s_log_print("Initializing PhysicsFS Addon - ");
+	if (!PHYSFS_init(exe_filename))
 	{
 		s_log_println("failure");
 		return -1;
@@ -405,7 +405,7 @@ static void g_app_draw(const g_app_data_t* data)
 	{
 		return;
 	}
-	
+
 	static ALLEGRO_TRANSFORM backup;
 	static ALLEGRO_TRANSFORM transform;
 

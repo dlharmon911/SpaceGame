@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 
 void g_model_generate_radar_model_quad(s_quad_model_t* quad_model, s_model_t* model, const s_point_t* position, const s_point_t* size, float scale)
 {

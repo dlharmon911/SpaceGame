@@ -63,7 +63,7 @@ int32_t g_app_initialize()
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Image Addon- ");
+	s_log_print("Initializing Image Addon - ");
 	if (!al_init_image_addon())
 	{
 		s_log_println("failure");
@@ -71,7 +71,7 @@ int32_t g_app_initialize()
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Primitives Addon- ");
+	s_log_print("Initializing Primitives Addon - ");
 	if (!al_init_primitives_addon())
 	{
 		s_log_println("failure");
@@ -79,7 +79,7 @@ int32_t g_app_initialize()
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Font Addon- ");
+	s_log_print("Initializing Font Addon - ");
 	if (!al_init_font_addon())
 	{
 		s_log_println("failure");

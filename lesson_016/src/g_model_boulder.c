@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 
 static const float G_BOULDER_SIZE = 128.0f;
 static const float G_BOULDER_RADIUS_DIFFERANCE_MAX = 12.0f;
@@ -127,12 +127,11 @@ void g_model_generate_boulder_model(g_boulder_model_t* boulder_model, s_model_t*
 
 	g_models_generate_boulder_model_scaled(boulder_model, scale, radius);
 
-	s_model_initialize(model, 
+	s_model_initialize(model,
 		boulder_model->m_indices,
 		G_BOULDER_TRIANGLE_COUNT * S_TRIANGLE_POINT_COUNT,
 		boulder_model->m_vertices,
 		G_BOULDER_VERTEX_COUNT,
 		boulder_model->m_outline,
 		G_BOULDER_OUTLINE_VERTEX_COUNT);
-
 }

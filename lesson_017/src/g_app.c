@@ -27,17 +27,11 @@ void g_app_set_zero(g_app_data_t* data)
 	g_game_set_zero(&data->m_game_data);
 	s_viewport_set_zero(&data->m_viewport);
 	g_mouse_cursor_set_zero(&data->m_mouse_cursor);
-
-	s_point_set_f(&data->m_viewport.m_rectangle.m_size, 600.0f, 600.0f);
-	s_point_set(&data->m_viewport.m_rectangle.m_point, &G_DISPLAY_INITIAL_SIZE);
-	s_point_subtract(&data->m_viewport.m_rectangle.m_point, &data->m_viewport.m_rectangle.m_size);
-	s_point_multiply_f(&data->m_viewport.m_rectangle.m_point, 0.5f);
-	s_point_set_f(&data->m_viewport.m_scale, data->m_viewport.m_rectangle.m_size.m_x / G_GAMESCREEN_SIZE.m_x, -data->m_viewport.m_rectangle.m_size.m_y / G_GAMESCREEN_SIZE.m_y);
 }
 
-int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
+int32_t g_app_initialize(const char* exe_filename, g_app_data_t* data)
 {
-	if (!argv)
+	if (!exe_filename)
 	{
 		return -1;
 	}
@@ -69,7 +63,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Image Addon- ");
+	s_log_print("Initializing Image Addon - ");
 	if (!al_init_image_addon())
 	{
 		s_log_println("failure");
@@ -77,7 +71,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Primitives Addon- ");
+	s_log_print("Initializing Primitives Addon - ");
 	if (!al_init_primitives_addon())
 	{
 		s_log_println("failure");
@@ -85,7 +79,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing Font Addon- ");
+	s_log_print("Initializing Font Addon - ");
 	if (!al_init_font_addon())
 	{
 		s_log_println("failure");
@@ -93,8 +87,8 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	}
 	s_log_println("success");
 
-	s_log_print("Initializing PhysicsFS Addon- ");
-	if (!PHYSFS_init(argv[0]))
+	s_log_print("Initializing PhysicsFS Addon - ");
+	if (!PHYSFS_init(exe_filename))
 	{
 		s_log_println("failure");
 		return -1;
@@ -107,7 +101,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 		s_log_println("failure");
 		return -1;
 	}
-	s_log_println("success");  
+	s_log_println("success");
 
 	s_log_printf("Creating the display (%.1lf, %.1lf) - ", data->m_settings.m_display.m_size.m_x, data->m_settings.m_display.m_size.m_y);
 	al_set_new_window_title(G_TITLE);
@@ -121,11 +115,12 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
 	al_flip_display();
 
-	s_point_t scale = { 0.0f, 0.0f };
+	s_point_set_zero(&data->m_viewport.m_rectangle.m_point);
+	s_point_set(&data->m_viewport.m_rectangle.m_size, &data->m_settings.m_display.m_size);
 
-	s_point_set(&scale, &data->m_settings.m_display.m_size);
-	s_point_divide(&scale, &G_DISPLAY_INITIAL_SIZE);
-	s_display_scale_set(&scale);
+	s_point_set(&data->m_viewport.m_scale, &data->m_settings.m_display.m_size);
+	s_point_divide(&data->m_viewport.m_scale, &G_DISPLAY_INITIAL_SIZE);
+	s_display_scale_set(&data->m_viewport.m_scale);
 
 	al_hide_mouse_cursor(data->m_display);
 
@@ -156,6 +151,7 @@ int32_t g_app_initialize(int32_t argc, char** argv, g_app_data_t* data)
 		return -1;
 	}
 	s_log_println("success");
+
 
 	data->m_game_data.m_is_running = true;
 	data->m_game_data.m_settings = &data->m_settings;
@@ -293,13 +289,11 @@ static void g_app_input(g_app_data_t* data)
 		} break;
 		case ALLEGRO_EVENT_DISPLAY_RESIZE:
 		{
-			s_point_t scale = { 0.0f, 0.0f };
-
 			data->m_settings.m_display.m_size.m_x = (float)event.display.width;
 			data->m_settings.m_display.m_size.m_y = (float)event.display.height;
-			s_point_set(&scale, &data->m_settings.m_display.m_size);
-			s_point_divide(&scale, &G_DISPLAY_INITIAL_SIZE);
-			s_display_scale_set(&scale);
+			s_point_set(&data->m_viewport.m_scale, &data->m_settings.m_display.m_size);
+			s_point_divide(&data->m_viewport.m_scale, &G_DISPLAY_INITIAL_SIZE);
+			s_display_scale_set(&data->m_viewport.m_scale);
 			al_acknowledge_resize(event.display.source);
 		} break;
 		case ALLEGRO_EVENT_KEY_DOWN:
@@ -316,7 +310,7 @@ static void g_app_input(g_app_data_t* data)
 			s_point_set_f(&data->m_game_data.m_mouse, (float)event.mouse.x, (float)event.mouse.y);
 			g_mouse_cursor_set_position(&data->m_mouse_cursor, &data->m_game_data.m_mouse);
 			s_point_divide(&data->m_game_data.m_mouse, s_display_scale_get());
-			s_point_subtract_f(&data->m_game_data.m_mouse, data->m_viewport.m_rectangle.m_point.m_x + data->m_viewport.m_rectangle.m_size.m_x * 0.5f, data->m_viewport.m_rectangle.m_point.m_y + data->m_viewport.m_rectangle.m_size.m_y * 0.5f);
+			s_point_subtract_f(&data->m_game_data.m_mouse, data->m_game_data.m_viewport.m_rectangle.m_point.m_x + data->m_game_data.m_viewport.m_rectangle.m_size.m_x * 0.5f, data->m_game_data.m_viewport.m_rectangle.m_point.m_y + data->m_game_data.m_viewport.m_rectangle.m_size.m_y * 0.5f);
 		} break;
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 		{
@@ -378,7 +372,7 @@ static void g_app_logic(g_app_data_t* data)
 	}
 
 	g_game_logic(&data->m_game_data);
-}
+} 
 
 /// <summary>Display is updated. The double buffer is set as the target bitmap. After it is drawn to, the display
 /// gets set as the target bitmap. Then the double buffer is drawn to display.</summary>
@@ -390,7 +384,7 @@ static void g_app_draw(const g_app_data_t* data)
 	{
 		return;
 	}
-	
+
 	static ALLEGRO_TRANSFORM backup;
 	static ALLEGRO_TRANSFORM transform;
 	static s_rectangle_t current_clip;
@@ -400,30 +394,27 @@ static void g_app_draw(const g_app_data_t* data)
 
 	al_clear_to_color(S_COLOR_EIGENGRAU.m_al_color);
 
-	s_clip_set_current_clip_scale(&data->m_viewport.m_rectangle, s_display_scale_get());
-	s_viewport_transform(&transform, &data->m_viewport);
-	s_point_scale(&transform, s_display_scale_get());
-	al_compose_transform(&transform, &backup);
-	al_use_transform(&transform);
-	 
-	g_game_draw(&data->m_game_data);
-
-	al_use_transform(&backup);
-	s_clip_set_current_clip(&current_clip);
-
 	al_identity_transform(&transform);
-	al_scale_transform(&transform, 1.0f, 2.0f);
+	s_viewport_transform(&transform, &data->m_game_data.m_viewport);
+	s_point_scale(&transform, &data->m_viewport.m_scale);
 	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
+	s_clip_set_current_clip_scaled(&data->m_game_data.m_viewport.m_rectangle, &data->m_viewport.m_scale);
+	g_game_draw(&data->m_game_data);
+	s_clip_set_current_clip(&current_clip);
 
 	if (data->m_show_stats)
 	{
+		al_identity_transform(&transform);
+		al_scale_transform(&transform, 1.0f, 2.0f);
+		al_compose_transform(&transform, &backup);
+		al_use_transform(&transform);
 		g_stats_draw(data->m_builtin_font, &data->m_game_data.m_stats, 0.0f, 0.0f);
 	}
 
 	al_identity_transform(&transform);
+	al_compose_transform(&transform, &backup);
 	al_use_transform(&transform);
-
 	g_mouse_cursor_draw(&data->m_mouse_cursor, S_MODEL_DRAW_FLAG_TEXTURED);
 
 	al_use_transform(&backup);

@@ -5,11 +5,10 @@
 #include <stdint.h>
 #include <string.h>
 #include <libspace.h>
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 #include "g_bullet.h"
 #include "g_bullet_array.h"
-
 
 /// <summary>Max object speed</summary>
 static const float G_SHIP_MAX_SPEED = { 4.0f };

@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include "g_constants.h"
 #include "g_stats.h"
-#include "g_models.h"
-#include "g_textures.h"
+#include "g_model_data.h"
+#include "g_texture_data.h"
 #include "g_ship.h"
 #include "g_star.h"
 #include "g_star_array.h"
@@ -20,45 +20,34 @@ typedef struct g_game_data_t
 {
 	/// <summary>Game status information</summary>
 	g_stats_t m_stats;
-
 	/// <summary>Container that holds all textures</summary>
-	g_texture_list_t m_textures;
-
+	g_texture_data_t m_textures;
 	/// <summary>Ship entity data</summary>
 	g_ship_t m_ship;
-
 	/// <summary>Star entity data array</summary>
 	g_star_array_t m_star_array;
-
 	/// <summary>Boulder entity data array</summary>
 	g_boulder_array_t m_boulder_array;
-
 	/// <summary>Input data (keyboard, mouse, joystick)</summary>
 	S_INPUT_DATA* m_input_data;
-
 	/// <summary>Configuration settings handler</summary>
 	g_settings_t* m_settings;
-
 	/// <summary>Mouse position relative to center</summary>
 	s_point_t m_mouse;
-
+	/// <summary>Position and size of view</summary>
 	s_viewport_t m_viewport;
-
 	/// <summary>If window constraint turned off, camera follows ship</summary>
 	s_camera_t m_camera;
-
+	/// <summary>Boolean if angle of ship is static or not</summary>
 	bool m_fixed_angle;
-
 	/// <summary>Built-in 8x8 font</summary>
 	ALLEGRO_FONT* m_builtin_font;
-
+	/// <summary>Container for radar</summary>
 	g_radar_t m_radar;
-
+	/// <summary>Boolean if game logic is paused or not</summary>
 	bool m_paused;
-
 	/// <summary>Boolean set if object should be constrained to window</summary>
 	bool m_apply_constraint;
-
 	/// <summary>Boolean set if game should continue to process</summary>
 	bool m_is_running;
 } g_game_data_t;

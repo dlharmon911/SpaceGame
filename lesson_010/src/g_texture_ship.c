@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <libspace.h>
 #include "g_constants.h"
-#include "g_textures.h"
-#include "g_models.h"
+#include "g_texture_data.h"
+#include "g_model_data.h"
 
 /// <summary>Color of the ship's outer hull</summary>
 static const ALLEGRO_COLOR G_COLOR_SHIP_HULL = { 1.0f, 1.0f, 0.0f, 1.0f };
@@ -63,7 +63,7 @@ int32_t g_texture_generate_ship_texture(ALLEGRO_BITMAP** bitmap)
 
 	al_set_target_bitmap(target);
 
-	s_log_println("passed!");
+	s_log_println("success");
 
 	return 0;
 }

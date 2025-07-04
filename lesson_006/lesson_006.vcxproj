@@ -148,9 +148,9 @@
     <ClInclude Include="include\g_app.h" />
     <ClInclude Include="include\g_constants.h" />
     <ClInclude Include="include\g_game.h" />
-    <ClInclude Include="include\g_models.h" />
+    <ClInclude Include="include\g_model_data.h" />
     <ClInclude Include="include\g_stats.h" />
-    <ClInclude Include="include\g_textures.h" />
+    <ClInclude Include="include\g_texture_data.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\g_app.c" />
@@ -158,7 +158,7 @@
     <ClCompile Include="src\g_main.c" />
     <ClCompile Include="src\g_model_ship.c" />
     <ClCompile Include="src\g_stats.c" />
-    <ClCompile Include="src\g_textures.c" />
+    <ClCompile Include="src\g_texture_data.c" />
     <ClCompile Include="src\g_texture_ship.c" />
   </ItemGroup>
   <ItemGroup>

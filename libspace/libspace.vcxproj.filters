@@ -33,9 +33,6 @@
     <ClInclude Include="include\libspace\s_math.h">
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\libspace\s_model.h">
-      <Filter>Header Files\LibSpace Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\libspace\s_point.h">
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
@@ -88,6 +85,12 @@
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\libspace\s_rectangle.h">
+      <Filter>Header Files\LibSpace Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libspace\s_state.h">
+      <Filter>Header Files\LibSpace Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libspace\s_model.h">
       <Filter>Header Files\LibSpace Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -156,6 +159,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\s_rectangle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\s_state.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
